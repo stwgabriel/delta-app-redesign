@@ -1,95 +1,147 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { usePatientContext } from "@/contexts/patient";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { TbLetterX } from "react-icons/tb";
 
 export default function Home() {
+  const router = useRouter();
+  const { myCharts, getPatient, now, searchPatientCPF, createPatient } =
+    usePatientContext();
+
+  const [cpfInput, setCpfInput] = useState("");
+  const [currentPatient, setCurrentPatient] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [patientFound, setPatientFound] = useState(null);
+
+  function _setCpfInput(val) {
+    const nval = val.replace(/\D/, "");
+    setCpfInput(nval);
+
+    if (nval.length === 11) {
+      setLoading(true);
+      const patient = searchPatientCPF(nval);
+      if (patient !== null) {
+        setCurrentPatient(patient);
+        setPatientFound(true);
+      } else {
+        setPatientFound(false);
+      }
+      setLoading(false);
+    } else {
+      setPatientFound(null);
+      setCurrentPatient(null);
+    }
+  }
+
+  useEffect(() => {
+    console.log(myCharts);
+    console.log(patientFound, cpfInput.length);
+  }, []);
+
+  function newPatient(cpf) {
+    const patient = createPatient(cpf);
+    router.push(`/patient?id=${patient.id}`);
+  }
+
+  function gotoPatient() {
+    if (currentPatient) {
+      router.push(`/patient?id=${currentPatient.id}`);
+    } else {
+      console.warn("No patient", currentPatient);
+    }
+  }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <section className="flex-column my-4">
+        <div className="flex-column">
+          <label className="form-label">CPF do paciente</label>
+          <input
+            disabled={loading}
+            className="form-control"
+            value={cpfInput}
+            onChange={(x) => _setCpfInput(x.target.value)}
+          />
         </div>
-      </div>
+        <div className="flex-column my-4">
+          {loading && <Spinner className="my-3" />}
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+          {patientFound === null && cpfInput.length === 0 && (
+            <button className="btn btn-secondary" onClick={() => newPatient()}>
+              Criar paciente não identificado
+            </button>
+          )}
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+          {patientFound === false && (
+            <>
+              <span className="text-danger my-1">Paciente não encontrado!</span>
+              <button
+                className="btn btn-warning"
+                onClick={() => newPatient(cpfInput)}
+              >
+                Criar Paciente
+              </button>
+            </>
+          )}
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          {patientFound === true && (
+            <>
+              <span className="text-success my-1">Paciente encontrado!</span>
+              <button className="btn btn-success" onClick={gotoPatient}>
+                Ir para paciente
+              </button>
+            </>
+          )}
+        </div>
+      </section>
+      <section className="flex-column my-4 align-items-center">
+        <table className="table table-responsive caption-top my-3">
+          <caption>Meus casos ativos</caption>
+          <thead className="table-dark">
+            <tr>
+              <th>ID do caso</th>
+              <th>Nome do paciente</th>
+              <th>Tempo desde início do atendimento</th>
+              <th>Horário do início do atendimento</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myCharts !== null &&
+              myCharts.map((c, i) => (
+                <tr key={`c-${i}`}>
+                  <td>
+                    <Link
+                      href={`/chart?id=${c.id}`}
+                      className="link-underline-primary"
+                    >
+                      {c.id}
+                    </Link>
+                  </td>
+                  <td className="d-flex justify-content-center">
+                    <Link href={`/patient?id=${c.patient_id}`}>
+                      {getPatient(c.patient_id).name || (
+                        <>
+                          <TbLetterX className="text-danger" />
+                          Não informado
+                        </>
+                      )}
+                    </Link>
+                  </td>
+                  <td className="text-center">
+                    Há {((now - new Date(c.start_time)) / 1000 / 60).toFixed(1)}{" "}
+                    minutos
+                  </td>
+                  <td className="text-center">{`${new Date(
+                    c.start_time
+                  ).toLocaleDateString()} ${new Date(
+                    c.start_time
+                  ).toLocaleTimeString()}`}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </section>
+    </>
   );
 }

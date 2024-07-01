@@ -1,0 +1,53 @@
+[
+  {
+    "name": "p2",
+    "title": "Morreu?p2",
+    "type": "input",
+    "info": "Olha o monitor aí",
+    "input_type": "InputOptionCol",
+    "options": [
+      {
+        "value": "Sim"
+      },
+      {
+        "value": "Não"
+      },
+      {
+        "value": "Não Sei"
+      }
+    ],
+    "next": []
+  },
+  {
+    "name": "p1",
+    "title": "Morreu?",
+    "type": "input",
+    "info": "Olha o monitor aí",
+    "input_type": "InputOptionCol",
+    "mandatory": true,
+    "options": [
+      {
+        "value": "Sim"
+      },
+      {
+        "value": "Não"
+      },
+      {
+        "value": "Não Sei"
+      }
+    ],
+    "next": [
+      {
+        "name": "p2",
+        "conditions": [
+          {
+            "name": "p1",
+            "field": "value",
+            "operator": "===",
+            "value": "Sim"
+          }
+        ]
+      }
+    ]
+  }
+]

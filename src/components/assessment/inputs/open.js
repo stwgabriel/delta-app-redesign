@@ -17,7 +17,6 @@ export default function InputOpen({ item }) {
 
     const re = new RegExp(varMask);
     if (varValue.match(re)) {
-      console.log("validated");
       nvars[varName] = varValue;
       setVars(nvars);
       nvarsValidations[varName] = true;
@@ -25,13 +24,8 @@ export default function InputOpen({ item }) {
     } else {
       nvarsValidations[varName] = false;
       setVarsValidations(nvarsValidations);
-      console.log("not valid");
     }
   }
-
-  useEffect(() => {
-    console.log(vars);
-  }, [vars]);
 
   return (
     <div className="flex-column">

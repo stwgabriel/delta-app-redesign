@@ -1,41 +1,76 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { jsx } from "react/jsx-runtime";
 
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [authData, setAuthData] = useState({});
-  const [startAssessmentTime, setStartAssessmentTime] = useState();
+  const [authInstituicao, setAuthInstituicao] = useState(null);
+  const [authUsuario, setAuthUsuario] = useState(null);
+  const [loadedAuthUsuario, setLoadedAuthUsuario] = useState(false);
+  const [loadedAuthInstituicao, setLoadedAuthInstituicao] = useState(false);
 
-  function setSaverWrapper(name, func, val, json = false) {
-    const cval = json ? JSON.stringify(val) : val;
-    localStorage.setItem(name, cval);
-    func(val);
+  useEffect(() => {
+    const inst = localStorage.getItem("auth_instituicao");
+    if (inst === undefined) {
+      setLoadedAuthInstituicao(true);
+      return;
+    }
+    setAuthInstituicao(JSON.parse(inst));
+    setLoadedAuthInstituicao(true);
+  }, []);
+
+  function loginInstituicao(username, password) {
+    const login = {
+      username,
+      password,
+    };
+    setAuthInstituicao(login);
+    localStorage.setItem("auth_instituicao", JSON.stringify(login));
   }
 
-  function loadFunc(name, func, json = false) {
-    const val = localStorage.getItem(name);
-    if (val !== null) {
-      const nval = json ? JSON.parse(val) : val;
-      func(nval);
-    }
+  function logoutInstituicao() {
+    setAuthInstituicao(null);
+    localStorage.removeItem("auth_instituicao");
   }
 
   useEffect(() => {
-    loadFunc("authData", setAuthData, true);
-    loadFunc("startAssessmentTime", setStartAssessmentTime);
-    return () => {};
+    const user = localStorage.getItem("auth_usuario");
+    if (user === undefined) {
+      setLoadedAuthUsuario(true);
+      return;
+    }
+    setAuthUsuario(JSON.parse(user));
+    setLoadedAuthUsuario(true);
   }, []);
+
+  function loginUsuario(cpf, crm_uf, crm_number) {
+    const login = {
+      cpf,
+      crm_uf,
+      crm_number,
+    };
+    setAuthUsuario(login);
+    localStorage.setItem("auth_usuario", JSON.stringify(login));
+  }
+
+  function logoutUsuario() {
+    setAuthUsuario(null);
+    localStorage.removeItem("auth_usuario");
+  }
 
   return (
     <AuthContext.Provider
       value={{
-        authData,
-        setAuthData: (v) => setSaverWrapper("authData", setAuthData, v, true),
-        startAssessmentTime,
-        setStartAssessmentTime: (v) =>
-          setSaverWrapper("startAssessmentTime", setStartAssessmentTime, v),
+        loginInstituicao,
+        authInstituicao,
+        loginUsuario,
+        authUsuario,
+        logoutUsuario,
+        logoutInstituicao,
+        loadedAuthUsuario,
+        loadedAuthInstituicao,
       }}
     >
       {children}

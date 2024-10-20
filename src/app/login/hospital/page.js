@@ -1,21 +1,34 @@
 "use client";
 import Image from "next/image";
 
-import { useAuthContext } from "@/contexts/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAPIContext } from "@/contexts/api";
+import Spinner from "@/components/spinner";
 
-export default function Home() {
+export default function LoginHospitalPage() {
   const router = useRouter();
-  const { loginInstituicao, logoutUsuario, logoutInstituicao } =
-    useAuthContext();
+
+  const { login_hospital, isLoggedHospital, isTokensLoaded } = useAPIContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  function do_login() {
+    setLoading(true);
+    setErrorMessage(null);
+    login_hospital(username, password)
+      .then(() => setErrorMessage(null))
+      .catch((e) => setErrorMessage(e.message || "Erro desconhecido"))
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   useEffect(() => {
-    logoutUsuario();
-    logoutInstituicao();
-  }, []);
+    if (isTokensLoaded && isLoggedHospital) router.push("/login/doctor");
+  }, [isLoggedHospital]);
 
   return (
     <>
@@ -29,7 +42,7 @@ export default function Home() {
         />
         <h2 className="fs-1 fw-bold my-5">Delta Stroke Inc</h2>
 
-        <h2 className="fs-4 my-5">Login da Instituição</h2>
+        <h2 className="fs-4 my-5">Login do Hospital</h2>
         <div className="flex-column my-5">
           <div className="input-group">
             <span className="input-group-text">Username</span>
@@ -50,16 +63,18 @@ export default function Home() {
               onChange={(x) => setPassword(x.target.value)}
             />
           </div>
-          <button
-            type="button"
-            className="btn btn-dark mt-3"
-            onClick={() => {
-              loginInstituicao(username, password);
-              router.push("/");
-            }}
-          >
-            Entrar com a Instituição
-          </button>
+          <p className="text-danger">{errorMessage}</p>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <button
+              type="button"
+              className="btn btn-dark mt-3"
+              onClick={do_login}
+            >
+              Entrar com a Instituição
+            </button>
+          )}
         </div>
       </section>
     </>

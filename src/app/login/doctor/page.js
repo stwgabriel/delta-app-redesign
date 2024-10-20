@@ -1,24 +1,43 @@
 "use client";
-import { usePatientContext } from "@/contexts/patient";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { TbLetterX } from "react-icons/tb";
 
 import Image from "next/image";
-import { useAuthContext } from "@/contexts/auth";
-export default function Home() {
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAPIContext } from "@/contexts/api";
+import Spinner from "@/components/spinner";
+
+export default function LoginDoctorPage() {
   const router = useRouter();
-  const { authInstituicao, loginUsuario, logoutUsuario } = useAuthContext();
+  const { login_doctor, isLoggedHospital, isLoggedDoctor, isTokensLoaded } =
+    useAPIContext();
+
   const [CPF, setCPF] = useState("");
   const [CRMUF, setCRMUF] = useState("");
   const [CRMNumber, setCRMNumber] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
   useEffect(() => {
-    if (authInstituicao === null) {
-      router.push("/login/instituicao");
+    if (isTokensLoaded && !isLoggedHospital) {
+      router.push("/login/hospital");
     }
-  }, []);
+  }, [isLoggedHospital]);
+
+  function do_login() {
+    setLoading(true);
+    setErrorMessage(null);
+    login_doctor(CPF, CRMNumber, CRMUF)
+      .then(() => setErrorMessage(null))
+      .catch((e) => setErrorMessage(e.message || "Erro desconhecido"))
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    if (isTokensLoaded && isLoggedDoctor) router.push("/overview/doctor");
+  }, [isLoggedDoctor]);
 
   return (
     <>
@@ -31,9 +50,6 @@ export default function Home() {
           alt="Logo"
         />
         <h1 className="fs-1 fw-bold my-5">Delta Stroke Inc</h1>
-        <h1 className="fs-3 my-2 text-decoration-underline">
-          {authInstituicao?.username}
-        </h1>
         <h1 className="fs-4 my-4">Login do usuário</h1>
         <div className="flex-column my-5">
           <div className="input-group">
@@ -63,16 +79,18 @@ export default function Home() {
               onChange={(x) => setCRMNumber(x.target.value)}
             />
           </div>
-          <button
-            type="button"
-            className="btn btn-dark mt-3"
-            onClick={() => {
-              loginUsuario(CPF, CRMUF, CRMNumber);
-              router.push("/");
-            }}
-          >
-            Entrar
-          </button>
+          <p className="text-danger">{errorMessage}</p>
+          {loading ? (
+            <Spinner />
+          ) : (
+            <button
+              type="button"
+              className="btn btn-dark mt-3"
+              onClick={do_login}
+            >
+              Entrar
+            </button>
+          )}
         </div>
       </section>
     </>

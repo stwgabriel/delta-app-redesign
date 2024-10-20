@@ -1,31 +1,27 @@
 "use client";
-import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/contexts/auth";
-import { useEffect } from "react";
 export default function Home() {
-  const router = useRouter();
-  const { authInstituicao, authUsuario } = useAuthContext();
-
-  useEffect(() => {
-    if (authInstituicao === null) {
-      router.push("/login/instituicao");
-    }
-
-    if (authUsuario === null) {
-      router.push("/login/usuario");
-    }
-  }, []);
-
   return (
     <>
-      <section className="flex-column align-items-center mt-5">
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={() => router.push("/prontuario/pag1")}
-        >
-          IR PARA ATENDIMENTO
-        </button>
+      <section className="flex-column align-items-center mt-5"></section>
+      <section className="flex-column mt-5">
+        <span className="fs-3 mb-2">Sobre nós</span>
+        <span className="text-justify">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit
+          amet elit purus. Donec mauris ante, consequat a aliquet et, vehicula
+          malesuada libero. Vivamus eget magna id quam semper auctor vel vitae
+          nisi. Nunc tempor, ligula quis egestas vestibulum, augue lorem
+          vulputate justo, vitae posuere massa nisl vel dui. Integer non nulla
+          aliquet, laoreet ipsum vel, molestie quam. Mauris vitae leo vehicula,
+          finibus sem vitae, laoreet metus. Mauris sollicitudin vehicula leo ac
+          aliquam. Suspendisse et molestie libero. In hac habitasse platea
+          dictumst. Nam quis nulla ipsum. Nam nunc velit, iaculis et odio sed,
+          ultricies consectetur enim. Phasellus vel nunc et eros auctor
+          ullamcorper. Quisque eleifend finibus placerat. Integer scelerisque
+          ipsum dignissim ex lobortis, sed interdum sem ultricies. Aliquam
+          iaculis tincidunt pharetra. Donec fermentum orci et libero malesuada
+          malesuada. Vivamus tristique nec massa nec facilisis. Pellentesque
+          elit urna, scelerisque vel dolor et, ultricies condimentum risus.
+        </span>
       </section>
     </>
   );

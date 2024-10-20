@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { jsx } from "react/jsx-runtime";
 
 const AuthContext = createContext();
 

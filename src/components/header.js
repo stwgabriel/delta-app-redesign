@@ -1,13 +1,23 @@
 "use client";
 
-import { useAuthContext } from "@/contexts/auth";
+import { useAPIContext } from "@/contexts/api";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { FaHome } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import Spinner from "./spinner";
 
 export default function Header() {
-  const { authInstituicao, authUsuario } = useAuthContext();
+  const router = useRouter();
+  const {
+    isTokensLoaded,
+    isLoggedConsultor,
+    isLoggedHospital,
+    isLoggedDoctor,
+    logout_consultor,
+    logout_hospital,
+    logout_doctor,
+  } = useAPIContext();
+
   return (
     <nav className="navbar bg-secondary p-3">
       <div>
@@ -23,11 +33,63 @@ export default function Header() {
         </Link>
       </div>
       <div className="flex-column me-5">
-        <span>Instituição:{authInstituicao?.username}</span>
-        <span>CPF: {authUsuario?.cpf}</span>
-        <span>
-          CRM: {authUsuario?.crm_uf}/{authUsuario?.crm_number}
-        </span>
+        {!isTokensLoaded ? (
+          <Spinner />
+        ) : isLoggedConsultor ? (
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={logout_consultor}
+            >
+              Sair Consultor
+            </button>
+          </div>
+        ) : isLoggedDoctor ? (
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={logout_doctor}
+            >
+              Sair Doctor
+            </button>
+          </div>
+        ) : isLoggedHospital ? (
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={logout_hospital}
+            >
+              Sair Hospital
+            </button>{" "}
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={() => router.push("/login/doctor")}
+            >
+              Entrar Doctor
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={() => router.push("/login/hospital")}
+            >
+              Entrar Hospital
+            </button>{" "}
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={() => router.push("/login/consultor")}
+            >
+              Entrar Consultor
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   );

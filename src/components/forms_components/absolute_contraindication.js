@@ -131,7 +131,7 @@ export default function AbsoluteContraindicationsForm({
           <div className="flex-column my-2 ms-4">
             <span>Em tratamento?</span>
             <div className="d-flex mb-3 mt-3 justify-content-around">
-              {question.treatment_system_response_group_template.response_templates.map(
+              {question.treatment_response_group_template.response_templates.map(
                 (op) => (
                   <React.Fragment key={`${question.id}-treatment-${op.id}`}>
                     <input

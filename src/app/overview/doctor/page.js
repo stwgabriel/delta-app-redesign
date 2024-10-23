@@ -2,7 +2,7 @@
 
 import { useAPIContext } from "@/contexts/api";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export default function OverviewDoctorPage() {
   const { isTokensLoaded, isLoggedDoctor } = useAPIContext();
@@ -12,5 +12,16 @@ export default function OverviewDoctorPage() {
     if (isTokensLoaded && !isLoggedDoctor) router.push("/");
   }, [isLoggedDoctor]);
 
-  return <span>Overview Doctor Page</span>;
+  return (
+    <React.Fragment>
+      <section>
+        <button
+          className="btn btn-primary"
+          onClick={() => router.push("/prontuario/pag1")}
+        >
+          Novo atendimento
+        </button>
+      </section>
+    </React.Fragment>
+  );
 }

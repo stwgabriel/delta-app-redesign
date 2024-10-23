@@ -9,15 +9,11 @@ import SectionRankin from "./section_rankin";
 import SectionComorbidades from "./section_comorbidades";
 import SectionMedicamentosAnticoagulantes from "./section_medicamentos_anticoagulantes";
 import SectionMedicamentos from "./section_medicamentos";
+import { useAPIContext } from "@/contexts/api";
 
 export default function ProntuarioPage1Page() {
   const router = useRouter();
-  const {
-    authInstituicao,
-    authUsuario,
-    loadedAuthUsuario,
-    loadedAuthInstituicao,
-  } = useAuthContext();
+  const { isLoggedDoctor, isTokensLoaded } = useAPIContext();
 
   // ---------------------------------------------------------------------------
 
@@ -26,13 +22,10 @@ export default function ProntuarioPage1Page() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (loadedAuthInstituicao && authInstituicao === null) {
-      router.push("/login/instituicao");
+    if (isTokensLoaded && !isLoggedDoctor) {
+      router.push("/login/doctor");
     }
-    if (loadedAuthUsuario && authUsuario === null) {
-      router.push("/login/usuario");
-    }
-  }, [loadedAuthUsuario, loadedAuthInstituicao]);
+  }, [isTokensLoaded]);
 
   return (
     <>

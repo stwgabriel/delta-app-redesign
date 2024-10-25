@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/contexts/auth";
 import { useEffect } from "react";
 import { useForm } from "@/contexts/form";
 import SectionInformacoesBasicas from "./section_informacoes_basicas";

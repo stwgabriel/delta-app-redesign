@@ -40,12 +40,12 @@ export const APIContextProvider = ({ children }) => {
   function _getValidToken(scope) {
     return new Promise((resolve, reject) => {
       let token = tokens[scope];
-      if (token === undefined) return reject(null);
+      if (token === undefined) reject(null);
       let decodedToken = decodeJWT(token);
       let valid_to = new Date(decodedToken.valid_to) - 60 * 1000 * 15;
       if (valid_to > new Date()) {
         // More than one minute to expire token
-        return resolve(token);
+        resolve(token);
       } else {
         // Less than one minute to expire token
         // Refresh token
@@ -73,35 +73,47 @@ export const APIContextProvider = ({ children }) => {
     };
     const url = `${baseUrl}${_url}`;
     return new Promise((resolve, reject) => {
-      fetch(url, configs).then((r) => {
-        if (r.ok) {
-          r.json().then(resolve);
-        } else {
-          r.json().then(reject);
-        }
-      });
+      fetch(url, configs)
+        .then((r) => {
+          if (r.ok) {
+            r.json().then(resolve);
+          } else {
+            r.json().then(reject);
+          }
+        })
+        .catch(reject);
     });
+  }
+
+  function _authorized_request(_url, configs = {}, scope = null) {
+    return new Promise((resolve, reject) => {
+      if (scope !== null) {
+        _getValidToken(scope)
+          .then((token) => {
+            let headers = configs["headers"] || {};
+
+            headers["authorization"] =
+              headers["authorization"] || `Bearer ${token}`;
+
+            configs["headers"] = headers;
+
+            _request(_url, configs).then(resolve).catch(reject);
+          })
+          .catch(reject);
+      } else {
+        _request(_url, configs).then(resolve).catch(reject);
+      }
+    });
+  }
+
+  function _get(_url, configs = {}, scope = null) {
+    configs["method"] = "GET";
+    return _authorized_request(_url, configs, scope);
   }
 
   function _post(_url, configs = {}, scope = null) {
     configs["method"] = "POST";
-
-    if (scope !== null) {
-      return _getValidToken(scope).then((token) => {
-        let headers = configs["headers"] || {};
-
-        headers["authorization"] =
-          headers["authorization"] || `Bearer ${token}`;
-
-        configs["headers"] = headers;
-        return new Promise((resolve, reject) => {
-          _request(_url, configs).then(resolve).catch(reject);
-        });
-      });
-    }
-    return new Promise((resolve, reject) => {
-      _request(_url, configs).then(resolve).catch(reject);
-    });
+    return _authorized_request(_url, configs, scope);
   }
 
   function login_consultor(username, password) {
@@ -165,6 +177,14 @@ export const APIContextProvider = ({ children }) => {
     popToken("DOCTOR");
   }
 
+  function get_my_charts() {
+    const url = "/v1/chart/my";
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _get(url, configs, "DOCTOR").then(resolve).catch(reject);
+    });
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -178,6 +198,7 @@ export const APIContextProvider = ({ children }) => {
         isLoggedHospital: tokens["HOSPITAL"] !== undefined,
         isLoggedDoctor: tokens["DOCTOR"] !== undefined,
         isTokensLoaded,
+        get_my_charts,
       }}
     >
       {children}

@@ -10,15 +10,33 @@ export default function OverviewDoctorPage() {
   const router = useRouter();
 
   const [myCharts, setMyCharts] = useState(null);
+  const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedDoctor) router.push("/");
+    if (isTokensLoaded && !isLoggedDoctor) {
+      console.log("Back to main page");
+      router.push("/");
+    }
     if (isTokensLoaded) onLoaded();
-  }, [isLoggedDoctor]);
+    console.log("hey");
+  }, [isTokensLoaded, isLoggedDoctor]);
+
+  useEffect(() => {
+    console.log(myCharts);
+  }, [myCharts]);
 
   function onLoaded() {
+    console.log("hey");
     get_my_charts().then(setMyCharts).catch(console.error);
   }
+
+  const setActiveElementOnHover = (id) => {
+    setActiveId(id);
+  };
+
+  const resetActiveElementOnLeave = () => {
+    setActiveId(null);
+  };
 
   return (
     <React.Fragment>
@@ -30,17 +48,30 @@ export default function OverviewDoctorPage() {
           Novo atendimento
         </button>
       </section>
-      <section className="flex-column">
+      <section className="flex-column mt-5">
+        <span className="fs-3">Meus prontuários</span>
         {myCharts === null ? (
           <Spinner />
         ) : (
           myCharts.map((chart, i) => (
-            <React.Fragment key={i}>
-              <div className="card">
-                <span>{chart.id}</span>
-                <span>{new Date(chart.logged_at).toLocaleString()} </span>
-              </div>
-            </React.Fragment>
+            <div
+              key={chart.id}
+              className={`card p-3 my-2 ${
+                activeId === chart.id ? "bg-warning" : ""
+              }`}
+              onMouseEnter={() => setActiveElementOnHover(chart.id)}
+              onMouseLeave={resetActiveElementOnLeave}
+              onClick={() =>
+                router.push(`/prontuario/overview?chart_id=${chart.id}`)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <span>ID: {chart.id}</span>
+              <span>
+                Criado em: {new Date(chart.logged_at).toLocaleString()}
+              </span>
+              <span>Nome: {chart.name}</span>
+            </div>
           ))
         )}
       </section>

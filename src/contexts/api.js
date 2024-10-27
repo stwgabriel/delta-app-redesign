@@ -66,12 +66,20 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
+  function _getValidTokenUserScope() {
+    if ("CONSULTOR" in tokens) return "CONSULTOR";
+    if ("DOCTOR" in tokens) return "DOCTOR";
+
+    return null;
+  }
+
   function _request(_url, configs) {
     configs["headers"] = {
       "content-type": "application/json",
       ...configs["headers"],
     };
     const url = `${baseUrl}${_url}`;
+
     return new Promise((resolve, reject) => {
       fetch(url, configs)
         .then((r) => {
@@ -96,7 +104,6 @@ export const APIContextProvider = ({ children }) => {
               headers["authorization"] || `Bearer ${token}`;
 
             configs["headers"] = headers;
-
             _request(_url, configs).then(resolve).catch(reject);
           })
           .catch(reject);
@@ -185,6 +192,41 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
+  function get_chart(chart_id) {
+    const url = `/v1/chart?chart_id=${chart_id}`;
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _get(url, configs, _getValidTokenUserScope()).then(resolve).catch(reject);
+    });
+  }
+
+  function get_chart_chat(chart_id) {
+    const url = `/v1/chart/chat?chart_id=${chart_id}`;
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _get(url, configs, _getValidTokenUserScope()).then(resolve).catch(reject);
+    });
+  }
+
+  function post_chart_chat_message(chart_id, message) {
+    const url = `/v1/chart/chat/message?chart_id=${chart_id}`;
+    const configs = { body: JSON.stringify({ message }) };
+    return new Promise((resolve, reject) => {
+      _post(url, configs, _getValidTokenUserScope())
+        .then(resolve)
+        .catch(reject);
+    });
+  }
+
+  function get_my_user_id() {
+    let scope = _getValidTokenUserScope();
+    let token = tokens[scope];
+    if (token === undefined) return null;
+    let decodedToken = decodeJWT(token);
+
+    return decodedToken["user_id"];
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -198,7 +240,11 @@ export const APIContextProvider = ({ children }) => {
         isLoggedHospital: tokens["HOSPITAL"] !== undefined,
         isLoggedDoctor: tokens["DOCTOR"] !== undefined,
         isTokensLoaded,
+        get_my_user_id,
         get_my_charts,
+        get_chart,
+        get_chart_chat,
+        post_chart_chat_message,
       }}
     >
       {children}

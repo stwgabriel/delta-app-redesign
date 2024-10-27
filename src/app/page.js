@@ -1,5 +1,22 @@
 "use client";
+import { useAPIContext } from "@/contexts/api";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 export default function Home() {
+  const router = useRouter();
+
+  const { isLoggedConsultor, isLoggedDoctor, isTokensLoaded } = useAPIContext();
+
+  useEffect(() => {
+    if (isTokensLoaded) {
+      if (isLoggedConsultor) {
+        router.push("/overview/consultor");
+      } else if (isLoggedDoctor) {
+        router.push("/overview/doctor");
+      }
+    }
+  }, [isTokensLoaded]);
+
   return (
     <>
       <section className="flex-column align-items-center mt-5"></section>

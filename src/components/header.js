@@ -23,10 +23,10 @@ export default function Header() {
       <div>
         <Link className="text-dark" href={"/"}>
           <Image
-            src={"/logo.png"}
+            src={"/delta_stroke_icon.webp"}
             width={80}
             height={80}
-            style={{ borderRadius: "50%" }}
+            style={{ borderRadius: "10%" }}
             priority={100}
             alt="Logo"
           />

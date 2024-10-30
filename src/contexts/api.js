@@ -10,6 +10,7 @@ export const APIContextProvider = ({ children }) => {
 
   const [tokens, _setTokens] = useState({});
   const [isTokensLoaded, setIsTokensLoaded] = useState(false);
+
   useEffect(() => {
     let savedTokens = localStorage.getItem("tokens");
     if (savedTokens === null || savedTokens === undefined) savedTokens = {};
@@ -40,7 +41,7 @@ export const APIContextProvider = ({ children }) => {
   function _getValidToken(scope) {
     return new Promise((resolve, reject) => {
       let token = tokens[scope];
-      if (token === undefined) reject(null);
+      if (token === undefined) reject("No token");
       let decodedToken = decodeJWT(token);
       let valid_to = new Date(decodedToken.valid_to) - 60 * 1000 * 15;
       if (valid_to > new Date()) {
@@ -66,11 +67,15 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
-  function _getValidTokenUserScope() {
+  function _getValidUserScope() {
     if ("CONSULTOR" in tokens) return "CONSULTOR";
     if ("DOCTOR" in tokens) return "DOCTOR";
 
     return null;
+  }
+
+  function _getValidUserToken() {
+    return _getValidToken(_getValidUserScope());
   }
 
   function _request(_url, configs) {
@@ -84,9 +89,9 @@ export const APIContextProvider = ({ children }) => {
       fetch(url, configs)
         .then((r) => {
           if (r.ok) {
-            r.json().then(resolve);
+            r.json().then(resolve).catch(reject);
           } else {
-            r.json().then(reject);
+            r.json().then(reject).catch(reject);
           }
         })
         .catch(reject);
@@ -196,7 +201,7 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart?chart_id=${chart_id}`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidTokenUserScope()).then(resolve).catch(reject);
+      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
     });
   }
 
@@ -204,7 +209,7 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart/chat?chart_id=${chart_id}`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidTokenUserScope()).then(resolve).catch(reject);
+      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
     });
   }
 
@@ -212,14 +217,12 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart/chat/message?chart_id=${chart_id}`;
     const configs = { body: JSON.stringify({ message }) };
     return new Promise((resolve, reject) => {
-      _post(url, configs, _getValidTokenUserScope())
-        .then(resolve)
-        .catch(reject);
+      _post(url, configs, _getValidUserScope()).then(resolve).catch(reject);
     });
   }
 
   function get_my_user_id() {
-    let scope = _getValidTokenUserScope();
+    let scope = _getValidUserScope();
     let token = tokens[scope];
     if (token === undefined) return null;
     let decodedToken = decodeJWT(token);
@@ -245,6 +248,7 @@ export const APIContextProvider = ({ children }) => {
         get_chart,
         get_chart_chat,
         post_chart_chat_message,
+        _getValidUserToken,
       }}
     >
       {children}

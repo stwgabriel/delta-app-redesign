@@ -1,42 +1,95 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAPIContext } from "./api";
 const WebSocketContext = createContext();
 
-let ws = null;
-
+let ws;
+let listeners = {};
 export const WebSocketContextProvider = ({ children }) => {
+  const { isTokensLoaded, _getValidUserToken } = useAPIContext();
+
+  const [isReady, setIsReady] = useState(false);
+  const [ws, setWs] = useState(null);
+  // const [listeners, setListeners] = useState({});
+
   // useEffect(() => {
-  //   ws = new WebSocket(
-  //     "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production"
-  //   );
+  //   console.log(listeners);
+  // }, [listeners]);
 
-  //   ws.addEventListener("open", (event) => {
-  //     console.log("WebSocket is open now.");
-  //     ws.send(
-  //       JSON.stringify({
-  //         action: "authorization",
-  //         token:
-  //           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6IkRPQ1RPUiIsInJlZnJlc2hfdG9rZW4iOiIxMWU0ZWFlZWZhNmQ1MTk2OTc3MjNlYTYyZDdmY2YwZjYyM2Y5NWViMWYyZTRiNzg0ODZhZTI3MGU0NGNhY2MzZDZmZTFlMzJkODEzOTkyYzNlY2UwYWQ1MWRiNWY5M2UwYmEyZmY0MjAxNjg1ZmY2MjBlNjRjMTQwOTNiZDBkNzE1OTYzODZlMGI2YmFhZDRjZDFhODE1MzliOGVlZjUwNTc4NDEyMWRjYThkZjQ5YTZlY2NkZjY0NDBmMzczODE1ODM0ZDZjNSIsInRva2VuIjoiZGU5OGE3ZTExYjg4M2I1N2MyNDEzMDg3YzQ0NjUzYzY1N2NkOTQyNTc1OWQzYTIxODY4MzFlMjkyMmQyYWMwMDYxZmQyMDU1ODRmZGRmMjQ5ODVkNmZlZjBlMzM5YmIzN2U1ZiIsInZhbGlkX3RvIjoiMjAyNC0xMC0yMFQxODoyNDoyNi4yNzc5NTMtMDM6MDAiLCJpc19hY3RpdmUiOnRydWUsInVzZXJfaWQiOiI1NTYyMWIzMy00YzE3LTQ3YzAtODdlYS00MWJjMDRhYjUyYjMiLCJob3NwaXRhbF9pZCI6ImM0NmVhODAyLTFhMzktNDRhMS1hOTdmLWE4MmNlYWEwNjk1ZiJ9.qUwLy3NWbsPwpgcTrrQ45VYTycU7rRV4_eTTFVNvGsk",
-  //       })
-  //     );
-  //   });
+  useEffect(() => {
+    if (!isTokensLoaded) return;
+    const socket = new WebSocket(
+      "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production"
+    );
 
-  //   ws.addEventListener("message", (event) => {
-  //     console.log("Message from server ", event.data);
-  //     // Handle the incoming message here
-  //   });
+    setWs(socket);
+    socket.addEventListener("open", () => {
+      if (socket.readyState === WebSocket.OPEN) {
+        _getValidUserToken()
+          .then((token) => {
+            socket.send(
+              JSON.stringify({
+                action: "login",
+                token,
+              })
+            );
+            setIsReady(true);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
+      } else {
+        console.warn("Connection not open yet");
+      }
+    });
 
-  //   ws.addEventListener("error", (event) => {
-  //     console.error("WebSocket error observed:", event);
-  //   });
+    socket.addEventListener("message", (x) => handleIncomingMessage(x));
 
-  //   ws.addEventListener("close", (event) => {
-  //     console.log("WebSocket is closed now.");
-  //   });
-  // }, []);
+    socket.addEventListener("error", console.error);
+  }, [isTokensLoaded]);
+
+  function handleIncomingMessage(event) {
+    const eventData = JSON.parse(event.data);
+    const action = eventData["action"];
+    const current_listeners = listeners[action] || [];
+    if (current_listeners.length > 0) {
+      current_listeners.forEach((callback) => {
+        callback(eventData);
+      });
+    } else {
+      console.log("No one to listen to event", action);
+    }
+  }
+
+  function emit(action, content) {
+    console.log("sending...", action, content);
+    ws.send(
+      JSON.stringify({
+        action,
+        content,
+      })
+    );
+  }
+
+  function addEventListener(eventName, callback) {
+    // console.log(eventName, callback);
+    // setListeners((oldListeners) => {
+    //   return {
+    //     ...oldListeners,
+    //     [eventName]: [...(oldListeners[eventName] || []), callback],
+    //   };
+    // });
+
+    listeners = {
+      ...listeners,
+      [eventName]: [...(listeners[eventName] || []), callback],
+    };
+  }
 
   return (
-    <WebSocketContext.Provider value={{}}>{children}</WebSocketContext.Provider>
+    <WebSocketContext.Provider value={{ isReady, emit, addEventListener }}>
+      {children}
+    </WebSocketContext.Provider>
   );
 };
 

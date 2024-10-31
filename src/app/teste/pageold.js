@@ -1,7 +1,6 @@
 "use client";
 import { useWebSocketContext } from "@/contexts/ws";
-import { uuidv4 } from "@/utils/funcs";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const peerConfiguration = {
   iceServers: [
@@ -11,18 +10,18 @@ const peerConfiguration = {
   ],
 };
 
+const myId = Math.floor(Math.random() * 1000);
 let pc = null;
-const device_id = uuidv4();
 export default function Home() {
   const localVideoElement = useRef();
   const remoteVideoElement = useRef();
   const ws = useWebSocketContext();
 
   const [offers, setOffers] = useState([]);
-  const [callId, setCallId] = useState(null);
 
   let localStream;
   let remoteStream;
+  let didIOffer = false;
 
   useEffect(() => {
     if (!ws.isReady) return;
@@ -76,8 +75,9 @@ export default function Home() {
         console.log(e);
         if (e.candidate) {
           ws.emit("send_ice_candidate_to_signaling_server", {
-            device_id,
-            candidate: e.candidate,
+            iceCandidate: e.candidate,
+            iceUserName: myId,
+            didIOffer,
           });
         }
       });
@@ -109,11 +109,8 @@ export default function Home() {
       const offer = await pc.createOffer();
       console.log(offer);
       pc.setLocalDescription(offer);
-      ws.emit("new_offer", {
-        call_id: callId,
-        device_id,
-        offer,
-      });
+      didIOffer = true;
+      ws.emit("new_offer", offer);
     } catch (err) {
       console.log(err);
     }
@@ -136,49 +133,22 @@ export default function Home() {
     console.log(answer);
   }
 
-  function create_call() {
-    ws.emitAwait("create_call", {})
-      .then((e) => {
-        console.log("it worked", e);
-        setCallId(e.call_id);
-      })
-      .catch((e) => {
-        console.log("failed!!", e);
-      });
-  }
-
   return (
     <div className="flex-column">
-      <button className="btn" onClick={create_call}>
-        Initiate Call
-      </button>
+      <span></span>
 
-      {callId !== null && (
-        <React.Fragment>
-          <div className="flex-column">
-            <span>
-              <h3>Local Stream</h3>
-              <video
-                ref={localVideoElement}
-                autoPlay
-                playsInline
-                controls
-              ></video>
-            </span>
-            <span>
-              <h3>Remote Stream</h3>
-              <video
-                ref={remoteVideoElement}
-                autoPlay
-                playsInline
-                controls
-              ></video>
-            </span>
-          </div>
+      <div className="flex-column">
+        <span>
+          <h3>Local Stream</h3>
+          <video ref={localVideoElement} autoPlay playsInline controls></video>
+        </span>
+        <span>
+          <h3>Remote Stream</h3>
+          <video ref={remoteVideoElement} autoPlay playsInline controls></video>
+        </span>
+      </div>
 
-          <button onClick={call}>Call</button>
-        </React.Fragment>
-      )}
+      <button onClick={call}>Call</button>
 
       {offers.map((o, i) => (
         <div key={i}>

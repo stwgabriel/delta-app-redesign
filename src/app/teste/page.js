@@ -12,7 +12,8 @@ const peerConfiguration = {
 };
 
 let pc = null;
-const device_id = uuidv4();
+let localStream;
+let remoteStream;
 export default function Home() {
   const localVideoElement = useRef();
   const remoteVideoElement = useRef();
@@ -21,16 +22,36 @@ export default function Home() {
   const [offers, setOffers] = useState([]);
   const [callId, setCallId] = useState(null);
 
-  let localStream;
-  let remoteStream;
-
   useEffect(() => {
     if (!ws.isReady) return;
-    ws.addEventListener("new_offer", function (data) {
-      console.log("New offer!");
-      setOffers((old) => [...old, data]);
+    ws.addEventListener("offer_list", function (data) {
+      console.log("New offer list!", data);
+      setOffers(data.content);
     });
+
+    ws.addEventListener("answer_response", addAnswer);
+    ws.addEventListener(
+      "received_ice_candidate_from_server",
+      addNewIceCandidate
+    );
   }, [ws.isReady]);
+
+  function addNewIceCandidate(iceCandidate) {
+    iceCandidate.content.forEach((c) => {
+      pc.addIceCandidate(c.content);
+      console.log("======Added Ice Candidate======", c);
+    });
+  }
+
+  async function addAnswer(answer) {
+    //addAnswer is called in socketListeners when an answerResponse is emitted.
+    //at this point, the offer and answer have been exchanged!
+    //now CLIENT1 needs to set the remote
+    console.log("yay! an answer");
+    console.log(answer);
+    await pc.setRemoteDescription(answer.content);
+    // console.log(pc.signalingState)
+  }
 
   function fetchUserMedia() {
     return new Promise(async (resolve, reject) => {
@@ -38,8 +59,8 @@ export default function Home() {
         navigator.mediaDevices.enumerateDevices().then(console.log);
 
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          //audio:true
+          // video: true,
+          audio: true,
         });
 
         localVideoElement.current.srcObject = stream;
@@ -66,17 +87,17 @@ export default function Home() {
         pc.addTrack(track, localStream);
       });
 
-      pc.addEventListener("signalingstatechange", (event) => {
-        console.log(event);
-        console.log(pc.signalingState);
-      });
+      // pc.addEventListener("signalingstatechange", (event) => {
+      //   console.warn(event);
+      //   console.warn(pc.signalingState);
+      //   console.error("look at this");
+      // });
 
       pc.addEventListener("icecandidate", (e) => {
         console.log("ice candidate found!");
-        console.log(e);
+        // console.log(e);
         if (e.candidate) {
           ws.emit("send_ice_candidate_to_signaling_server", {
-            device_id,
             candidate: e.candidate,
           });
         }
@@ -84,7 +105,7 @@ export default function Home() {
 
       pc.addEventListener("track", (e) => {
         console.log("got a track from other peer");
-        console.log(e);
+        // console.log(e);
         e.streams[0].getTracks().forEach((track) => {
           remoteStream.addTrack(track, remoteStream);
           console.log("track added");
@@ -92,8 +113,8 @@ export default function Home() {
       });
 
       if (offerObj) {
-        console.log(offerObj);
-        await pc.setRemoteDescription(offerObj.content);
+        console.log("setting remote description", offerObj);
+        await pc.setRemoteDescription(offerObj.offer);
       }
       resolve();
     });
@@ -111,7 +132,6 @@ export default function Home() {
       pc.setLocalDescription(offer);
       ws.emit("new_offer", {
         call_id: callId,
-        device_id,
         offer,
       });
     } catch (err) {
@@ -120,27 +140,32 @@ export default function Home() {
   }
 
   async function answerOffer(offerObj) {
+    setCallId(offerObj.call_id);
     await fetchUserMedia();
-
     await createPeerConnection(offerObj);
-
     const answer = await pc.createAnswer({});
     await pc.setLocalDescription(answer);
-    offerObj.content.answer = answer;
-    const offerIceCandidates = await ws.emit("new_answer", offerObj.content);
-    offerIceCandidates.forEach((c) => {
-      pc.addIceCandidate(c);
-      console.log("Added ice candidate");
-    });
-    console.log(offerObj);
+
     console.log(answer);
+    console.log(offerObj);
+
+    const offerIceCandidates = await ws.emitAwait("new_answer", {
+      call_user_id: offerObj.id,
+      answer,
+    });
+    console.log(offerIceCandidates);
+
+    offerIceCandidates.content.forEach((c) => {
+      pc.addIceCandidate(c.content);
+      console.log("Added ice candidate", c);
+    });
   }
 
   function create_call() {
     ws.emitAwait("create_call", {})
       .then((e) => {
         console.log("it worked", e);
-        setCallId(e.call_id);
+        setCallId(e.content.call_id);
       })
       .catch((e) => {
         console.log("failed!!", e);
@@ -153,7 +178,7 @@ export default function Home() {
         Initiate Call
       </button>
 
-      {callId !== null && (
+      {callId && (
         <React.Fragment>
           <div className="flex-column">
             <span>
@@ -187,6 +212,74 @@ export default function Home() {
           </button>
         </div>
       ))}
+
+      <button
+        onClick={() => {
+          localStream.getTracks().forEach((track) => {
+            if (track.kind === "video") {
+              track.enabled = false;
+            }
+          });
+        }}
+        className="btn-warning"
+      >
+        Stop video
+      </button>
+      <button
+        onClick={async () => {
+          localStream.getTracks().forEach((track) => {
+            if (track.kind === "video") {
+              track.enabled = true;
+            }
+          });
+        }}
+        className="btn-warning"
+      >
+        Start video
+      </button>
+      <button
+        onClick={() => {
+          console.log("Connection");
+          let senderList = pc.getSenders();
+
+          senderList.forEach((sender) => {
+            console.log(sender);
+          });
+        }}
+        className="btn-warning"
+      >
+        Check Connection
+      </button>
+
+      <button
+        onClick={() => {
+          console.log("local stream");
+          console.log(localStream);
+          console.log(localStream.getTracks());
+          const tracks = localStream.getTracks();
+          for (var i = 0; i < tracks.length; i++) {
+            console.log(tracks[i]);
+          }
+        }}
+        className="btn-warning"
+      >
+        Check local stream
+      </button>
+
+      <button
+        onClick={() => {
+          console.log("remote stream");
+          console.log(remoteStream);
+          console.log(remoteStream.getTracks());
+          const tracks = remoteStream.getTracks();
+          for (var i = 0; i < tracks.length; i++) {
+            console.log(tracks[i]);
+          }
+        }}
+        className="btn-warning"
+      >
+        Check remote stream
+      </button>
     </div>
   );
 }

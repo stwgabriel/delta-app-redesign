@@ -53,7 +53,7 @@ export const WebSocketContextProvider = ({ children }) => {
           callback(eventData);
         });
       } else {
-        console.log("No one to listen to event", action);
+        console.warn("No one to listen to event", action, eventData, event);
       }
     }
   }

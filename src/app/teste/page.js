@@ -1,6 +1,5 @@
 "use client";
 import { useWebSocketContext } from "@/contexts/ws";
-import { uuidv4 } from "@/utils/funcs";
 import React, { useEffect, useRef, useState } from "react";
 
 const peerConfiguration = {
@@ -20,7 +19,6 @@ export default function Home() {
   const ws = useWebSocketContext();
 
   const [offers, setOffers] = useState([]);
-  const [callId, setCallId] = useState(null);
 
   useEffect(() => {
     if (!ws.isReady) return;
@@ -49,7 +47,11 @@ export default function Home() {
     //now CLIENT1 needs to set the remote
     console.log("yay! an answer");
     console.log(answer);
-    await pc.setRemoteDescription(answer.content);
+    await pc.setRemoteDescription(answer.content.answer);
+    answer.content.icecandidates.forEach((c) => {
+      pc.addIceCandidate(c.content);
+      console.log("======Added Ice Candidate======", c);
+    });
     // console.log(pc.signalingState)
   }
 
@@ -59,7 +61,7 @@ export default function Home() {
         navigator.mediaDevices.enumerateDevices().then(console.log);
 
         const stream = await navigator.mediaDevices.getUserMedia({
-          // video: true,
+          video: true,
           audio: true,
         });
 
@@ -131,7 +133,6 @@ export default function Home() {
       console.log(offer);
       pc.setLocalDescription(offer);
       ws.emit("new_offer", {
-        call_id: callId,
         offer,
       });
     } catch (err) {
@@ -140,7 +141,6 @@ export default function Home() {
   }
 
   async function answerOffer(offerObj) {
-    setCallId(offerObj.call_id);
     await fetchUserMedia();
     await createPeerConnection(offerObj);
     const answer = await pc.createAnswer({});
@@ -150,7 +150,7 @@ export default function Home() {
     console.log(offerObj);
 
     const offerIceCandidates = await ws.emitAwait("new_answer", {
-      call_user_id: offerObj.id,
+      call_id: offerObj.id,
       answer,
     });
     console.log(offerIceCandidates);
@@ -161,49 +161,22 @@ export default function Home() {
     });
   }
 
-  function create_call() {
-    ws.emitAwait("create_call", {})
-      .then((e) => {
-        console.log("it worked", e);
-        setCallId(e.content.call_id);
-      })
-      .catch((e) => {
-        console.log("failed!!", e);
-      });
-  }
-
   return (
     <div className="flex-column">
-      <button className="btn" onClick={create_call}>
+      <button className="btn" onClick={call}>
         Initiate Call
       </button>
 
-      {callId && (
-        <React.Fragment>
-          <div className="flex-column">
-            <span>
-              <h3>Local Stream</h3>
-              <video
-                ref={localVideoElement}
-                autoPlay
-                playsInline
-                controls
-              ></video>
-            </span>
-            <span>
-              <h3>Remote Stream</h3>
-              <video
-                ref={remoteVideoElement}
-                autoPlay
-                playsInline
-                controls
-              ></video>
-            </span>
-          </div>
-
-          <button onClick={call}>Call</button>
-        </React.Fragment>
-      )}
+      <div className="flex-column">
+        <span>
+          <h3>Local Stream</h3>
+          <video ref={localVideoElement} autoPlay playsInline controls></video>
+        </span>
+        <span>
+          <h3>Remote Stream</h3>
+          <video ref={remoteVideoElement} autoPlay playsInline controls></video>
+        </span>
+      </div>
 
       {offers.map((o, i) => (
         <div key={i}>

@@ -47,7 +47,7 @@ export default function ProntuarioPage3Page() {
       <section className="flex-column mb-5">
         <button
           className="btn btn-primary"
-          onClick={() => router.push("/hall")}
+          // onClick={() => router.push("/hall")}
         >
           Chamar atendente
         </button>

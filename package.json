@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cornerstonejs/core": "^1.86.1",
+    "@cornerstonejs/nifti-volume-loader": "^1.86.1",
     "amazon-chime-sdk-component-library-react": "^3.9.0",
     "amazon-chime-sdk-js": "^3.25.0",
     "aws-sdk": "^2.1691.0",
@@ -28,6 +30,7 @@
     "socket.io-client": "^4.7.5",
     "styled-components": "^5.3.11",
     "styled-system": "^5.1.5",
+    "twilio-video": "^2.28.1",
     "webrtc-adapter": "^9.0.1",
     "ws": "^8.18.0"
   }

@@ -4,6 +4,7 @@ import { useAuthContext } from "@/contexts/auth";
 import { useEffect, useState, useRef } from "react";
 import { interpolateColour } from "@/utils/colorf";
 import { nih_template } from "@/utils/templates";
+import { ROUTES } from "@/utils/hosts";
 
 export default function ProntuarioPage2Page() {
   const router = useRouter();
@@ -17,10 +18,10 @@ export default function ProntuarioPage2Page() {
 
   useEffect(() => {
     if (loadedAuthInstituicao && authInstituicao === null) {
-      router.push("/login/instituicao");
+      router.push(ROUTES.LOGIN_HOSPITAL);
     }
     if (loadedAuthUsuario && authUsuario === null) {
-      router.push("/login/usuario");
+      router.push(ROUTES.LOGIN_DOCTOR);
     }
   }, [loadedAuthUsuario, loadedAuthInstituicao]);
 
@@ -147,7 +148,7 @@ export default function ProntuarioPage2Page() {
       <section className="flex-column mb-5">
         <button
           className="btn btn-primary"
-          onClick={() => router.push("/prontuario/pag3")}
+          onClick={() => router.push(ROUTES.PRONTUARIO_PAG3)}
         >
           Enviar
         </button>

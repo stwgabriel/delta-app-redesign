@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
+import { ROUTES } from "@/utils/hosts";
 
 export default function LoginConsultorPage() {
   const router = useRouter();
@@ -27,7 +28,8 @@ export default function LoginConsultorPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded && isLoggedConsultor) router.push("/overview/consultor");
+    if (isTokensLoaded && isLoggedConsultor)
+      router.push(ROUTES.LANDING_PAGE_CONSULTOR);
   }, [isLoggedConsultor]);
 
   return (

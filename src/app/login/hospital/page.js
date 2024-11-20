@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
+import { ROUTES } from "@/utils/hosts";
 
 export default function LoginHospitalPage() {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function LoginHospitalPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded && isLoggedHospital) router.push("/login/doctor");
+    if (isTokensLoaded && isLoggedHospital) router.push(ROUTES.LOGIN_DOCTOR);
   }, [isLoggedHospital]);
 
   return (

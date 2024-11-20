@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAPIContext } from "./api";
 import { uuidv4 } from "@/utils/funcs";
+import { get_socket_host } from "@/utils/hosts";
 const WebSocketContext = createContext();
 
 let listeners = {};
@@ -9,33 +10,52 @@ let response_waitings = {};
 let ws;
 
 export const WebSocketContextProvider = ({ children }) => {
-  const { isTokensLoaded, _getValidUserToken } = useAPIContext();
+  const { isTokensLoaded, _getValidUserToken, tokens } = useAPIContext();
 
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    if (!isTokensLoaded) return;
-    ws = new WebSocket(
-      "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production"
-    );
+    if (ws) return;
+    ws = new WebSocket(get_socket_host());
 
     ws.addEventListener("open", handleOpenConnection);
     ws.addEventListener("message", handleIncomingMessage);
     ws.addEventListener("error", console.error);
-  }, [isTokensLoaded]);
+  }, []);
 
   function handleOpenConnection(event) {
-    console.log(ws);
     if (event.currentTarget.readyState === WebSocket.OPEN) {
-      _getValidUserToken()
-        .then((token) => {
-          emit("login", { token });
-          setIsReady(true);
-        })
-        .catch(console.error);
+      setIsReady(true);
     } else {
       console.warn("Connection not open yet");
     }
+  }
+
+  useEffect(() => {
+    // Login in / change login whenever token changed
+    if (!isReady) return;
+    if (!isTokensLoaded) return;
+    login().catch(console.warn);
+  }, [isReady, isTokensLoaded, tokens]);
+
+  function login() {
+    return new Promise((resolve, reject) => {
+      _getValidUserToken()
+        .then((token) => {
+          emit("login", { token });
+          console.log("Logging in socket");
+          resolve();
+        })
+        .catch((x) => {
+          if (x === "No token") {
+            console.log("No token to login on websockets");
+            resolve();
+          } else {
+            console.warn(x);
+            reject(x);
+          }
+        });
+    });
   }
 
   function handleIncomingMessage(event) {
@@ -59,7 +79,8 @@ export const WebSocketContextProvider = ({ children }) => {
   }
 
   function emit(action, content, configs = {}) {
-    console.log("sending...", action, content);
+    console.log("Sockets sending message...");
+    // console.log(action, content)
     _getValidUserToken()
       .then((token) =>
         ws.send(
@@ -84,14 +105,6 @@ export const WebSocketContextProvider = ({ children }) => {
   }
 
   function addEventListener(eventName, callback) {
-    // console.log(eventName, callback);
-    // setListeners((oldListeners) => {
-    //   return {
-    //     ...oldListeners,
-    //     [eventName]: [...(oldListeners[eventName] || []), callback],
-    //   };
-    // });
-
     listeners = {
       ...listeners,
       [eventName]: [...(listeners[eventName] || []), callback],

@@ -9,6 +9,7 @@ import SectionComorbidades from "./section_comorbidades";
 import SectionMedicamentosAnticoagulantes from "./section_medicamentos_anticoagulantes";
 import SectionMedicamentos from "./section_medicamentos";
 import { useAPIContext } from "@/contexts/api";
+import { ROUTES } from "@/utils/hosts";
 
 export default function ProntuarioPage1Page() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function ProntuarioPage1Page() {
 
   useEffect(() => {
     if (isTokensLoaded && !isLoggedDoctor) {
-      router.push("/login/doctor");
+      router.push(ROUTES.LOGIN_DOCTOR);
     }
   }, [isTokensLoaded]);
 
@@ -47,7 +48,7 @@ export default function ProntuarioPage1Page() {
         <button
           className="btn btn-primary"
           onClick={() => {
-            router.push("/prontuario/pag2");
+            router.push(ROUTES.PRONTUARIO_PAG2);
           }}
         >
           Enviar

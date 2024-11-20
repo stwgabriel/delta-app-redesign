@@ -2,6 +2,7 @@
 
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
+import { ROUTES } from "@/utils/hosts";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -15,7 +16,7 @@ export default function OverviewDoctorPage() {
   useEffect(() => {
     if (isTokensLoaded && !isLoggedDoctor) {
       console.log("Back to main page");
-      router.push("/");
+      router.push(ROUTES.HOME);
     }
     if (isTokensLoaded) onLoaded();
     console.log("hey");
@@ -43,7 +44,7 @@ export default function OverviewDoctorPage() {
       <section>
         <button
           className="btn btn-primary"
-          onClick={() => router.push("/prontuario/pag1")}
+          onClick={() => router.push(ROUTES.PRONTUARIO_PAG1)}
         >
           Novo atendimento
         </button>

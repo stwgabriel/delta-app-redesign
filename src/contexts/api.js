@@ -1,12 +1,13 @@
 "use client";
 
 import { decodeJWT } from "@/utils/funcs";
+import { get_api_host } from "@/utils/hosts";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const APIContext = createContext();
 
 export const APIContextProvider = ({ children }) => {
-  const baseUrl = "http://localhost:8000";
+  const baseUrl = get_api_host();
 
   const [tokens, _setTokens] = useState({});
   const [isTokensLoaded, setIsTokensLoaded] = useState(false);
@@ -18,6 +19,10 @@ export const APIContextProvider = ({ children }) => {
     _setTokens(savedTokens);
     setIsTokensLoaded(true);
   }, []);
+
+  useEffect(() => {
+    console.log("Tokens changed");
+  }, [tokens]);
 
   function setToken(scope, token) {
     _setTokens((old) => {
@@ -43,7 +48,7 @@ export const APIContextProvider = ({ children }) => {
       let token = tokens[scope];
       if (token === undefined) reject("No token");
       let decodedToken = decodeJWT(token);
-      let valid_to = new Date(decodedToken.valid_to) - 60 * 1000 * 15;
+      let valid_to = new Date(decodedToken.valid_to).getTime() - 60 * 1000 * 1;
       if (valid_to > new Date()) {
         // More than one minute to expire token
         resolve(token);
@@ -230,9 +235,18 @@ export const APIContextProvider = ({ children }) => {
     return decodedToken["user_id"];
   }
 
+  function get_charts_by_status(status) {
+    const url = `/v1/chart/charts_by_status?status=${status}`;
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+    });
+  }
+
   return (
     <APIContext.Provider
       value={{
+        tokens,
         login_consultor,
         login_hospital,
         login_doctor,
@@ -249,6 +263,7 @@ export const APIContextProvider = ({ children }) => {
         get_chart_chat,
         post_chart_chat_message,
         _getValidUserToken,
+        get_charts_by_status,
       }}
     >
       {children}

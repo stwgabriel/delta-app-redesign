@@ -1,5 +1,6 @@
 "use client";
 import { useAPIContext } from "@/contexts/api";
+import { ROUTES } from "@/utils/hosts";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 export default function Home() {
@@ -10,9 +11,9 @@ export default function Home() {
   useEffect(() => {
     if (isTokensLoaded) {
       if (isLoggedConsultor) {
-        router.push("/overview/consultor");
+        router.push(ROUTES.LANDING_PAGE_CONSULTOR);
       } else if (isLoggedDoctor) {
-        router.push("/overview/doctor");
+        router.push(ROUTES.LANDING_PAGE_DOCTOR);
       }
     }
   }, [isTokensLoaded]);

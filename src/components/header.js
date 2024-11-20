@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Spinner from "./spinner";
+import { ROUTES } from "@/utils/hosts";
 
 export default function Header() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function Header() {
   return (
     <nav className="navbar bg-secondary p-3">
       <div>
-        <Link className="text-dark" href={"/"}>
+        <Link className="text-dark" href={ROUTES.HOME}>
           <Image
             src={"/delta_stroke_icon.webp"}
             width={80}
@@ -67,7 +68,7 @@ export default function Header() {
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={() => router.push("/login/doctor")}
+              onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}
             >
               Entrar Doctor
             </button>
@@ -77,14 +78,14 @@ export default function Header() {
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={() => router.push("/login/hospital")}
+              onClick={() => router.push(ROUTES.LOGIN_HOSPITAL)}
             >
               Entrar Hospital
             </button>{" "}
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={() => router.push("/login/consultor")}
+              onClick={() => router.push(ROUTES.LOGIN_CONSULTOR)}
             >
               Entrar Consultor
             </button>

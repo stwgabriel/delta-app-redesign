@@ -22,10 +22,6 @@ export default function OverviewDoctorPage() {
     console.log("hey");
   }, [isTokensLoaded, isLoggedDoctor]);
 
-  useEffect(() => {
-    console.log(myCharts);
-  }, [myCharts]);
-
   function onLoaded() {
     console.log("hey");
     get_my_charts().then(setMyCharts).catch(console.error);
@@ -58,7 +54,7 @@ export default function OverviewDoctorPage() {
             <div
               key={chart.id}
               className={`card p-3 my-2 ${
-                activeId === chart.id ? "bg-warning" : ""
+                activeId === chart.id ? "bg-secondary" : ""
               }`}
               onMouseEnter={() => setActiveElementOnHover(chart.id)}
               onMouseLeave={resetActiveElementOnLeave}

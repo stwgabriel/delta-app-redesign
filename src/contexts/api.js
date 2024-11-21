@@ -194,14 +194,6 @@ export const APIContextProvider = ({ children }) => {
     popToken("DOCTOR");
   }
 
-  function get_my_charts() {
-    const url = "/v1/chart/my";
-    const configs = {};
-    return new Promise((resolve, reject) => {
-      _get(url, configs, "DOCTOR").then(resolve).catch(reject);
-    });
-  }
-
   function get_chart(chart_id) {
     const url = `/v1/chart?chart_id=${chart_id}`;
     const configs = {};
@@ -237,6 +229,14 @@ export const APIContextProvider = ({ children }) => {
 
   function get_charts_by_status(status) {
     const url = `/v1/chart/charts_by_status?status=${status}`;
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+    });
+  }
+
+  function get_my_charts() {
+    const url = `/v1/chart/my`;
     const configs = {};
     return new Promise((resolve, reject) => {
       _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);

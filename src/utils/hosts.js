@@ -10,8 +10,8 @@ export const ROUTES = {
   HOME: "/",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
-  LOGIN_DOCTOR: "/",
-  LOGIN_CONSULTOR: "/",
+  LOGIN_DOCTOR: "/login/doctor",
+  LOGIN_CONSULTOR: "/login/consultor",
   //Landing pages
   LANDING_PAGE_DOCTOR: "/overview/doctor",
   LANDING_PAGE_CONSULTOR: "/overview/consultor",

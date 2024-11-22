@@ -1,7 +1,7 @@
 "use client";
 
 import { decodeJWT } from "@/utils/funcs";
-import { get_api_host } from "@/utils/hosts";
+import { API_ROUTES, get_api_host } from "@/utils/hosts";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const APIContext = createContext();
@@ -9,78 +9,66 @@ const APIContext = createContext();
 export const APIContextProvider = ({ children }) => {
   const baseUrl = get_api_host();
 
-  const [tokens, _setTokens] = useState({});
-  const [isTokensLoaded, setIsTokensLoaded] = useState(false);
+  const [_token, _setToken] = useState(null);
+  const [isTokenLoaded, setIsTokenLoaded] = useState(false);
 
   useEffect(() => {
-    let savedTokens = localStorage.getItem("tokens");
-    if (savedTokens === null || savedTokens === undefined) savedTokens = {};
-    else savedTokens = JSON.parse(savedTokens);
-    _setTokens(savedTokens);
-    setIsTokensLoaded(true);
+    let savedToken = localStorage.getItem("token");
+    if (savedToken === null || savedToken === undefined) savedToken = null;
+    _setToken(savedToken);
+    setIsTokenLoaded(true);
   }, []);
 
   useEffect(() => {
-    console.log("Tokens changed");
-  }, [tokens]);
+    console.log("Token changed");
+  }, [_token]);
 
-  function setToken(scope, token) {
-    _setTokens((old) => {
-      let newTokens = { ...old, [scope]: token };
-      localStorage.setItem("tokens", JSON.stringify(newTokens));
-      return newTokens;
-    });
+  function setToken(token) {
+    _setToken(token);
+    localStorage.setItem("token", token);
   }
 
-  function popToken(scope) {
-    _setTokens((old) => {
-      let newTokens = { ...old };
-      if (scope in newTokens) {
-        delete newTokens[scope];
-      }
-      localStorage.setItem("tokens", JSON.stringify(newTokens));
-      return newTokens;
-    });
+  function popToken() {
+    localStorage.removeItem("token");
+    _setToken(null);
   }
 
-  function _getValidToken(scope) {
+  function getFromToken(itm) {
+    if (!_token) return null;
+    const decodedToken = decodeJWT(_token);
+    return decodedToken[itm];
+  }
+
+  function get_my_user_id() {
+    return getFromToken("user_id");
+  }
+
+  function _getValidToken() {
     return new Promise((resolve, reject) => {
-      let token = tokens[scope];
-      if (token === undefined) reject("No token");
-      let decodedToken = decodeJWT(token);
+      if (_token === null) reject("No token");
+      let decodedToken = decodeJWT(_token);
       let valid_to = new Date(decodedToken.valid_to).getTime() - 60 * 1000 * 1;
       if (valid_to > new Date()) {
         // More than one minute to expire token
-        resolve(token);
+        resolve(_token);
       } else {
         // Less than one minute to expire token
         // Refresh token
-        const url = "/v1/token/refresh";
+        const url = API_ROUTES.REFRESH_TOKEN;
         const configs = {
           method: "POST",
           headers: {
-            authorization: `Bearer ${token}`,
+            authorization: `Bearer ${_token}`,
           },
         };
         _request(url, configs)
           .then((r) => {
-            setToken(scope, r["token"]);
+            setToken(r["token"]);
             resolve(r["token"]);
           })
           .catch(reject);
       }
     });
-  }
-
-  function _getValidUserScope() {
-    if ("CONSULTOR" in tokens) return "CONSULTOR";
-    if ("DOCTOR" in tokens) return "DOCTOR";
-
-    return null;
-  }
-
-  function _getValidUserToken() {
-    return _getValidToken(_getValidUserScope());
   }
 
   function _request(_url, configs) {
@@ -103,46 +91,41 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
-  function _authorized_request(_url, configs = {}, scope = null) {
+  function _authorized_request(_url, configs = {}) {
     return new Promise((resolve, reject) => {
-      if (scope !== null) {
-        _getValidToken(scope)
-          .then((token) => {
-            let headers = configs["headers"] || {};
-
-            headers["authorization"] =
-              headers["authorization"] || `Bearer ${token}`;
-
-            configs["headers"] = headers;
-            _request(_url, configs).then(resolve).catch(reject);
-          })
-          .catch(reject);
-      } else {
-        _request(_url, configs).then(resolve).catch(reject);
-      }
+      console.log("teste");
+      _getValidToken()
+        .then((token) => {
+          let headers = configs["headers"] || {};
+          headers["authorization"] = `Bearer ${token}`;
+          configs["headers"] = headers;
+          _request(_url, configs).then(resolve).catch(reject);
+        })
+        .catch(reject);
     });
   }
 
-  function _get(_url, configs = {}, scope = null) {
+  function _get(_url, configs = {}) {
     configs["method"] = "GET";
-    return _authorized_request(_url, configs, scope);
+    return _authorized_request(_url, configs);
   }
 
-  function _post(_url, configs = {}, scope = null) {
+  function _post(_url, configs = {}) {
+    console.log("teste");
     configs["method"] = "POST";
-    return _authorized_request(_url, configs, scope);
+    return _authorized_request(_url, configs);
   }
 
   function login_consultor(username, password) {
-    logout_hospital();
-    const url = "/v1/login/consultor";
+    console.log(username);
+    const url = API_ROUTES.LOGIN_CONSULTOR;
     const body = JSON.stringify({ username, password });
-    const configs = { body };
+    const configs = { body, method: "POST" };
 
     return new Promise((resolve, reject) => {
-      _post(url, configs)
+      _request(url, configs)
         .then((r) => {
-          setToken("CONSULTOR", r["token"]);
+          setToken(r["token"]);
           resolve();
         })
         .catch(reject);
@@ -150,15 +133,14 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function login_hospital(username, password) {
-    logout_consultor();
-    const url = "/v1/login/hospital";
+    const url = API_ROUTES.LOGIN_HOSPITAL;
     const body = JSON.stringify({ username, password });
-    const configs = { body };
+    const configs = { body, method: "POST" };
 
     return new Promise((resolve, reject) => {
-      _post(url, configs)
+      _request(url, configs)
         .then((r) => {
-          setToken("HOSPITAL", r["token"]);
+          setToken(r["token"]);
           resolve();
         })
         .catch(reject);
@@ -166,39 +148,46 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function login_doctor(cpf, crm_number, crm_state) {
-    logout_consultor();
-    const url = "/v1/login/doctor";
+    const url = API_ROUTES.LOGIN_DOCTOR;
     const body = JSON.stringify({ cpf, crm_state, crm_number });
     const configs = { body };
 
     return new Promise((resolve, reject) => {
-      _post(url, configs, "HOSPITAL")
+      _post(url, configs)
         .then((r) => {
-          setToken("DOCTOR", r["token"]);
+          setToken(r["token"]);
           resolve();
         })
         .catch(reject);
     });
   }
 
-  function logout_consultor() {
-    popToken("CONSULTOR");
+  function _logout_doctor() {
+    const url = API_ROUTES.LOGOUT_DOCTOR;
+    const configs = {};
+    return new Promise((resolve, reject) => {
+      _post(url, configs)
+        .then((r) => {
+          setToken(r["token"]);
+          resolve();
+        })
+        .catch(reject);
+    });
   }
 
-  function logout_hospital() {
-    popToken("DOCTOR");
-    popToken("HOSPITAL");
-  }
-
-  function logout_doctor() {
-    popToken("DOCTOR");
+  function logout() {
+    if (_token === null) return;
+    const decodedToken = decodeJWT(_token);
+    const scope = decodedToken["scope"];
+    if (scope !== "DOCTOR") return popToken();
+    return _logout_doctor();
   }
 
   function get_chart(chart_id) {
     const url = `/v1/chart?chart_id=${chart_id}`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+      _get(url, configs).then(resolve).catch(reject);
     });
   }
 
@@ -206,7 +195,7 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart/chat?chart_id=${chart_id}`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+      _get(url, configs).then(resolve).catch(reject);
     });
   }
 
@@ -214,24 +203,15 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart/chat/message?chart_id=${chart_id}`;
     const configs = { body: JSON.stringify({ message }) };
     return new Promise((resolve, reject) => {
-      _post(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+      _post(url, configs).then(resolve).catch(reject);
     });
-  }
-
-  function get_my_user_id() {
-    let scope = _getValidUserScope();
-    let token = tokens[scope];
-    if (token === undefined) return null;
-    let decodedToken = decodeJWT(token);
-
-    return decodedToken["user_id"];
   }
 
   function get_charts_by_status(status) {
     const url = `/v1/chart/charts_by_status?status=${status}`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+      _get(url, configs).then(resolve).catch(reject);
     });
   }
 
@@ -239,30 +219,28 @@ export const APIContextProvider = ({ children }) => {
     const url = `/v1/chart/my`;
     const configs = {};
     return new Promise((resolve, reject) => {
-      _get(url, configs, _getValidUserScope()).then(resolve).catch(reject);
+      _get(url, configs).then(resolve).catch(reject);
     });
   }
 
   return (
     <APIContext.Provider
       value={{
-        tokens,
+        _token,
+        _getValidToken,
         login_consultor,
         login_hospital,
         login_doctor,
-        logout_consultor,
-        logout_hospital,
-        logout_doctor,
-        isLoggedConsultor: tokens["CONSULTOR"] !== undefined,
-        isLoggedHospital: tokens["HOSPITAL"] !== undefined,
-        isLoggedDoctor: tokens["DOCTOR"] !== undefined,
-        isTokensLoaded,
+        logout,
+        isLoggedConsultor: getFromToken("scope") === "CONSULTOR",
+        isLoggedHospital: getFromToken("scope") === "HOSPITAL",
+        isLoggedDoctor: getFromToken("scope") === "DOCTOR",
+        isTokenLoaded,
         get_my_user_id,
         get_my_charts,
         get_chart,
         get_chart_chat,
         post_chart_chat_message,
-        _getValidUserToken,
         get_charts_by_status,
       }}
     >

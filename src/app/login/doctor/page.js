@@ -9,7 +9,7 @@ import { ROUTES } from "@/utils/hosts";
 
 export default function LoginDoctorPage() {
   const router = useRouter();
-  const { login_doctor, isLoggedHospital, isLoggedDoctor, isTokensLoaded } =
+  const { login_doctor, isLoggedHospital, isLoggedDoctor, isTokenLoaded } =
     useAPIContext();
 
   const [CPF, setCPF] = useState("");
@@ -20,7 +20,7 @@ export default function LoginDoctorPage() {
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedHospital) {
+    if (isTokenLoaded && !isLoggedHospital) {
       router.push(ROUTES.LOGIN_HOSPITAL);
     }
   }, [isLoggedHospital]);
@@ -37,7 +37,7 @@ export default function LoginDoctorPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded && isLoggedDoctor)
+    if (isTokenLoaded && isLoggedDoctor)
       router.push(ROUTES.LANDING_PAGE_DOCTOR);
   }, [isLoggedDoctor]);
 

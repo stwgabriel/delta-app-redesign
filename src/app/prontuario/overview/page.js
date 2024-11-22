@@ -18,7 +18,7 @@ export default function ProntuarioPage() {
   const chatMessagesRef = useRef(null);
 
   const {
-    isTokensLoaded,
+    isTokenLoaded,
     isLoggedDoctor,
     isLoggedConsultor,
     get_chart,
@@ -30,12 +30,12 @@ export default function ProntuarioPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedDoctor && !isLoggedConsultor) {
+    if (isTokenLoaded && !isLoggedDoctor && !isLoggedConsultor) {
       router.push(ROUTES.HOME);
       return;
     }
-    if (isTokensLoaded) onLoaded();
-  }, [isTokensLoaded, isLoggedDoctor, isLoggedConsultor]);
+    if (isTokenLoaded) onLoaded();
+  }, [isTokenLoaded, isLoggedDoctor, isLoggedConsultor]);
 
   function onLoaded() {
     get_chart(chart_id).then(setChart).catch(console.error);
@@ -67,13 +67,13 @@ export default function ProntuarioPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded) {
+    if (isTokenLoaded) {
       const interval = setInterval(() => {
         get_chart_chat(chart_id).then(setChartChat).catch(console.error);
       }, 5000);
       return () => clearInterval(interval);
     }
-  }, [isTokensLoaded]);
+  }, [isTokenLoaded]);
 
   return (
     <div className="container pt-5 justify-content-center flex-column">

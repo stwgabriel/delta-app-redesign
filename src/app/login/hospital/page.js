@@ -10,7 +10,7 @@ import { ROUTES } from "@/utils/hosts";
 export default function LoginHospitalPage() {
   const router = useRouter();
 
-  const { login_hospital, isLoggedHospital, isTokensLoaded } = useAPIContext();
+  const { login_hospital, isLoggedHospital, isTokenLoaded } = useAPIContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function LoginHospitalPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded && isLoggedHospital) router.push(ROUTES.LOGIN_DOCTOR);
+    if (isTokenLoaded && isLoggedHospital) router.push(ROUTES.LOGIN_DOCTOR);
   }, [isLoggedHospital]);
 
   return (

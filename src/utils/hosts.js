@@ -6,7 +6,7 @@ export function get_socket_host() {
 }
 
 export const ROUTES = {
-  //Home
+  // Home
   HOME: "/",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
@@ -20,4 +20,13 @@ export const ROUTES = {
   PRONTUARIO_PAG1: "/prontuario/pag1",
   PRONTUARIO_PAG2: "/prontuario/pag2",
   PRONTUARIO_PAG3: "/prontuario/pag3",
+};
+
+export const API_ROUTES = {
+  // Auth
+  REFRESH_TOKEN: "/v1/auth/refresh_token",
+  LOGIN_CONSULTOR: "/v1/auth/login/consultor",
+  LOGIN_HOSPITAL: "/v1/auth/login/hospital",
+  LOGIN_DOCTOR: "/v1/auth/login/doctor",
+  LOGOUT_DOCTOR: "/v1/auth/logout/doctor",
 };

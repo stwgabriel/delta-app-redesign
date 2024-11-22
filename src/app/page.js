@@ -6,17 +6,17 @@ import React, { useEffect, useState } from "react";
 export default function Home() {
   const router = useRouter();
 
-  const { isLoggedConsultor, isLoggedDoctor, isTokensLoaded } = useAPIContext();
+  const { isLoggedConsultor, isLoggedDoctor, isTokenLoaded } = useAPIContext();
 
   useEffect(() => {
-    if (isTokensLoaded) {
+    if (isTokenLoaded) {
       if (isLoggedConsultor) {
         router.push(ROUTES.LANDING_PAGE_CONSULTOR);
       } else if (isLoggedDoctor) {
         router.push(ROUTES.LANDING_PAGE_DOCTOR);
       }
     }
-  }, [isTokensLoaded]);
+  }, [isTokenLoaded]);
 
   return (
     <>

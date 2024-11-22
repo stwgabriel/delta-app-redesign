@@ -13,7 +13,7 @@ import { ROUTES } from "@/utils/hosts";
 
 export default function ProntuarioPage1Page() {
   const router = useRouter();
-  const { isLoggedDoctor, isTokensLoaded } = useAPIContext();
+  const { isLoggedDoctor, isTokenLoaded } = useAPIContext();
 
   // ---------------------------------------------------------------------------
 
@@ -22,10 +22,10 @@ export default function ProntuarioPage1Page() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedDoctor) {
+    if (isTokenLoaded && !isLoggedDoctor) {
       router.push(ROUTES.LOGIN_DOCTOR);
     }
-  }, [isTokensLoaded]);
+  }, [isTokenLoaded]);
 
   return (
     <>

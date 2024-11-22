@@ -7,20 +7,20 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function OverviewDoctorPage() {
-  const { isTokensLoaded, isLoggedDoctor, get_my_charts } = useAPIContext();
+  const { isTokenLoaded, isLoggedDoctor, get_my_charts } = useAPIContext();
   const router = useRouter();
 
   const [myCharts, setMyCharts] = useState(null);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedDoctor) {
+    if (isTokenLoaded && !isLoggedDoctor) {
       console.log("Back to main page");
       router.push(ROUTES.HOME);
     }
-    if (isTokensLoaded) onLoaded();
+    if (isTokenLoaded) onLoaded();
     console.log("hey");
-  }, [isTokensLoaded, isLoggedDoctor]);
+  }, [isTokenLoaded, isLoggedDoctor]);
 
   function onLoaded() {
     console.log("hey");

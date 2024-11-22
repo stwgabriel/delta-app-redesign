@@ -10,13 +10,11 @@ import { ROUTES } from "@/utils/hosts";
 export default function Header() {
   const router = useRouter();
   const {
-    isTokensLoaded,
+    isTokenLoaded,
     isLoggedConsultor,
     isLoggedHospital,
     isLoggedDoctor,
-    logout_consultor,
-    logout_hospital,
-    logout_doctor,
+    logout,
   } = useAPIContext();
 
   return (
@@ -34,14 +32,14 @@ export default function Header() {
         </Link>
       </div>
       <div className="flex-column me-5">
-        {!isTokensLoaded ? (
+        {!isTokenLoaded ? (
           <Spinner />
         ) : isLoggedConsultor ? (
           <div>
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={logout_consultor}
+              onClick={logout}
             >
               Sair Consultor
             </button>
@@ -51,7 +49,7 @@ export default function Header() {
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={logout_doctor}
+              onClick={logout}
             >
               Sair Doctor
             </button>
@@ -61,7 +59,7 @@ export default function Header() {
             <button
               type="button"
               className="btn btn-primary my-2"
-              onClick={logout_hospital}
+              onClick={logout}
             >
               Sair Hospital
             </button>{" "}

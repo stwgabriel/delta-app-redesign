@@ -10,7 +10,7 @@ let response_waitings = {};
 let ws;
 
 export const WebSocketContextProvider = ({ children }) => {
-  const { isTokensLoaded, _getValidUserToken, tokens } = useAPIContext();
+  const { isTokenLoaded, _getValidToken, _token } = useAPIContext();
 
   const [isReady, setIsReady] = useState(false);
 
@@ -34,13 +34,13 @@ export const WebSocketContextProvider = ({ children }) => {
   useEffect(() => {
     // Login in / change login whenever token changed
     if (!isReady) return;
-    if (!isTokensLoaded) return;
+    if (!isTokenLoaded) return;
     login().catch(console.warn);
-  }, [isReady, isTokensLoaded, tokens]);
+  }, [isReady, isTokenLoaded, _token]);
 
   function login() {
     return new Promise((resolve, reject) => {
-      _getValidUserToken()
+      _getValidToken()
         .then((token) => {
           emit("login", { token });
           console.log("Logging in socket");
@@ -81,7 +81,7 @@ export const WebSocketContextProvider = ({ children }) => {
   function emit(action, content, configs = {}) {
     console.log("Sockets sending message...");
     // console.log(action, content)
-    _getValidUserToken()
+    _getValidToken()
       .then((token) =>
         ws.send(
           JSON.stringify({

@@ -35,7 +35,7 @@ function ChartsList({ charts }) {
 }
 
 export default function ConsultorOverviewPage() {
-  const { isTokensLoaded, isLoggedConsultor, get_charts_by_status } =
+  const { isTokenLoaded, isLoggedConsultor, get_charts_by_status } =
     useAPIContext();
   const router = useRouter();
 
@@ -46,13 +46,13 @@ export default function ConsultorOverviewPage() {
   const [chartsEmStandBy, setChartsEmStandBy] = useState(null);
 
   useEffect(() => {
-    if (isTokensLoaded && !isLoggedConsultor) router.push(ROUTES.HOME);
+    if (isTokenLoaded && !isLoggedConsultor) router.push(ROUTES.HOME);
   }, [isLoggedConsultor]);
 
   useEffect(() => {
-    if (!isTokensLoaded) return;
+    if (!isTokenLoaded) return;
     atualizar_lists();
-  }, [isTokensLoaded]);
+  }, [isTokenLoaded]);
 
   function atualizar_lists() {
     get_charts_by_status("INICIADO").then((results) => {

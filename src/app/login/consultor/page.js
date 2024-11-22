@@ -9,8 +9,7 @@ import { ROUTES } from "@/utils/hosts";
 
 export default function LoginConsultorPage() {
   const router = useRouter();
-  const { login_consultor, isLoggedConsultor, isTokensLoaded } =
-    useAPIContext();
+  const { login_consultor, isLoggedConsultor, isTokenLoaded } = useAPIContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,7 @@ export default function LoginConsultorPage() {
   }
 
   useEffect(() => {
-    if (isTokensLoaded && isLoggedConsultor)
+    if (isTokenLoaded && isLoggedConsultor)
       router.push(ROUTES.LANDING_PAGE_CONSULTOR);
   }, [isLoggedConsultor]);
 

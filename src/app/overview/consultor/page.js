@@ -1,7 +1,7 @@
 "use client";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 

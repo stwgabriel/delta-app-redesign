@@ -2,7 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAPIContext } from "./api";
 import { uuidv4 } from "@/utils/funcs";
-import { get_socket_host } from "@/utils/hosts";
+import { get_socket_host } from "@/utils/variables";
 const WebSocketContext = createContext();
 
 let listeners = {};

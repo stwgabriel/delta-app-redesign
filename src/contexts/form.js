@@ -9,22 +9,22 @@ export function useForm(initialValues = {}) {
 
   useEffect(() => {
     console.log(values);
-
     console.log(JSON.stringify(values));
   }, [values]);
 
   const setFormValueElement = (e) => {
-    const eTargetType = e.target.type;
-    let newVal = undefined;
-    if (eTargetType === "checkbox") {
-      newVal = e.target.checked;
-    } else {
-      newVal = e.target.value;
-    }
-
-    setValues({
-      ...values,
-      [e.target.name]: newVal,
+    setValues((old) => {
+      const eTargetType = e.target.type;
+      let newVal = undefined;
+      if (eTargetType === "checkbox") {
+        newVal = e.target.checked;
+      } else {
+        newVal = e.target.value;
+      }
+      return {
+        ...old,
+        [e.target.name]: newVal,
+      };
     });
   };
 
@@ -60,16 +60,20 @@ export function useForm(initialValues = {}) {
   };
 
   const setFormValue = (name, value) => {
-    setValues({
-      ...values,
-      [name]: value,
+    setValues((oldValues) => {
+      return {
+        ...oldValues,
+        [name]: value,
+      };
     });
   };
 
   const setMultipleFormValue = (dict) => {
-    setValues({
-      ...values,
-      ...dict,
+    setValues((old) => {
+      return {
+        ...old,
+        ...dict,
+      };
     });
   };
 

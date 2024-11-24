@@ -1,29 +1,22 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/contexts/auth";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import { interpolateColour } from "@/utils/colorf";
 import { nih_template } from "@/utils/templates";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 
 export default function ProntuarioPage2Page() {
   const router = useRouter();
-  const {
-    authInstituicao,
-    authUsuario,
-    loadedAuthUsuario,
-    loadedAuthInstituicao,
-  } = useAuthContext();
   const [NIHResponses, _setNIHResponses] = useState({});
 
-  useEffect(() => {
-    if (loadedAuthInstituicao && authInstituicao === null) {
-      router.push(ROUTES.LOGIN_HOSPITAL);
-    }
-    if (loadedAuthUsuario && authUsuario === null) {
-      router.push(ROUTES.LOGIN_DOCTOR);
-    }
-  }, [loadedAuthUsuario, loadedAuthInstituicao]);
+  // useEffect(() => {
+  //   if (loadedAuthInstituicao && authInstituicao === null) {
+  //     router.push(ROUTES.LOGIN_HOSPITAL);
+  //   }
+  //   if (loadedAuthUsuario && authUsuario === null) {
+  //     router.push(ROUTES.LOGIN_DOCTOR);
+  //   }
+  // }, [loadedAuthUsuario, loadedAuthInstituicao]);
 
   function setNIHResponses(section, question) {
     const newNIHResponses = JSON.parse(JSON.stringify(NIHResponses));

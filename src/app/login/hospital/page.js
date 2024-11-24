@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 
 export default function LoginHospitalPage() {
   const router = useRouter();

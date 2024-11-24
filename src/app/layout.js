@@ -1,8 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../global.css";
 import Header from "../components/header";
-import { AuthContextProvider } from "@/contexts/auth";
-import { DataContextProvider } from "@/contexts/data";
+import { StateContextProvider } from "@/contexts/state";
 import { WebSocketContextProvider } from "@/contexts/ws";
 import { APIContextProvider } from "@/contexts/api";
 export const metadata = {
@@ -14,14 +13,12 @@ export default function RootLayout({ children }) {
     <html lang="pt-BR">
       <body className="flex-column flex-fill" style={{ minHeight: "100vh" }}>
         <APIContextProvider>
-          <AuthContextProvider>
-            <DataContextProvider>
-              <WebSocketContextProvider>
-                <Header />
-                <main className="container">{children}</main>
-              </WebSocketContextProvider>
-            </DataContextProvider>
-          </AuthContextProvider>
+          <StateContextProvider>
+            <WebSocketContextProvider>
+              <Header />
+              <main className="container">{children}</main>
+            </WebSocketContextProvider>
+          </StateContextProvider>
         </APIContextProvider>
       </body>
     </html>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Spinner from "./spinner";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 
 export default function Header() {
   const router = useRouter();

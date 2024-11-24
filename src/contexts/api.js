@@ -1,7 +1,7 @@
 "use client";
 
 import { decodeJWT } from "@/utils/funcs";
-import { API_ROUTES, get_api_host } from "@/utils/hosts";
+import { API_ROUTES, get_api_host } from "@/utils/variables";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const APIContext = createContext();
@@ -186,41 +186,43 @@ export const APIContextProvider = ({ children }) => {
   function get_chart(chart_id) {
     const url = `/v1/chart?chart_id=${chart_id}`;
     const configs = {};
-    return new Promise((resolve, reject) => {
-      _get(url, configs).then(resolve).catch(reject);
-    });
+    return _get(url, configs);
   }
 
   function get_chart_chat(chart_id) {
     const url = `/v1/chart/chat?chart_id=${chart_id}`;
     const configs = {};
-    return new Promise((resolve, reject) => {
-      _get(url, configs).then(resolve).catch(reject);
-    });
+    return _get(url, configs);
   }
 
   function post_chart_chat_message(chart_id, message) {
     const url = `/v1/chart/chat/message?chart_id=${chart_id}`;
     const configs = { body: JSON.stringify({ message }) };
-    return new Promise((resolve, reject) => {
-      _post(url, configs).then(resolve).catch(reject);
-    });
+    return _post(url, configs);
   }
 
   function get_charts_by_status(status) {
     const url = `/v1/chart/charts_by_status?status=${status}`;
     const configs = {};
-    return new Promise((resolve, reject) => {
-      _get(url, configs).then(resolve).catch(reject);
-    });
+    return _get(url, configs);
   }
 
   function get_my_charts() {
     const url = `/v1/chart/my`;
     const configs = {};
-    return new Promise((resolve, reject) => {
-      _get(url, configs).then(resolve).catch(reject);
-    });
+    return _get(url, configs);
+  }
+
+  function chart_update_attributes(chart_id, attributes) {
+    const url = `/v1/chart/form/update_attributes?chart_id=${chart_id}`;
+    const configs = { body: JSON.stringify(attributes) };
+    return _post(url, configs);
+  }
+
+  function create_chart() {
+    const url = `/v1/chart/create`;
+    const configs = {};
+    return _post(url, configs);
   }
 
   return (
@@ -242,6 +244,8 @@ export const APIContextProvider = ({ children }) => {
         get_chart_chat,
         post_chart_chat_message,
         get_charts_by_status,
+        chart_update_attributes,
+        create_chart,
       }}
     >
       {children}

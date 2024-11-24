@@ -1,46 +1,92 @@
+export const criterio_protocolo_avc = [
+  "Paresia ou hipoestesia unilaterais",
+  "Dificuldade repentina de falar ou compreender",
+  "Perda visual súbita, epscialmente se unilateral",
+  "Perda súbita do equilíbrio ou coordenação motora",
+  "Rebaixamento súbito do nível de consciência",
+  "Cefaleia súbita (intensidade máxima da cor atingida em menos de 1 minuto)",
+];
+
+export const rankin_template = [
+  {
+    score: 0,
+    name: "Assintomático",
+    help: "Regressão dos sintomas",
+  },
+  {
+    score: 1,
+    name: "Sintomas sem incapacidade",
+    help: "Capaz de realizar suas tarefas e atividades habituaveis prévias",
+  },
+  {
+    score: 2,
+    name: "Incapacidade leve",
+    help: "Incapaz de realizar todas suas atividades habituais prévias, mas capaz de realizar suas necessidades pessoais sem ajuda",
+  },
+  {
+    score: 3,
+    name: "Incapacidade moderada",
+    help: "Requer alguma ajuda para as suas atividades, mas é capaz de andar sem ajuda de outra pessoa",
+  },
+  {
+    score: 4,
+    name: "Incapacidade moderada a grave",
+    help: "Incapacidade de andar sem ajuda, incapacidade de realizar suas atividades sem ajuda",
+  },
+  {
+    score: 5,
+    name: "Incapacidade grave",
+    help: "Limitado a cama, incontinência, requer cuidados de enfermeiros e atenção constante",
+  },
+  {
+    score: 6,
+    name: "Óbito",
+    help: "",
+  },
+];
+
 export const medicines_anticoagulant_template = [
   {
     text: "Marevan (warfarina)",
     should_collect_inr: true,
-    dbname: "anticoagulant_marevan",
-    dbname_timestamp: "anticoagulant_marevan_taken_at",
+    field: "aco_marevan",
+    field_timestamp: "aco_marevan_taken_at",
   },
   {
     text: "Rivaroxabana (xarelto)",
-    dbname: "anticoagulant_rivaroxabana",
-    dbname_timestamp: "anticoagulant_rivaroxabana_taken_at",
+    field: "aco_rivaroxabana",
+    field_timestamp: "aco_rivaroxabana_taken_at",
   },
   {
     text: "Apixabana",
-    dbname: "anticoagulant_apixabana",
-    dbname_timestamp: "anticoagulant_apixabana_taken_at",
+    field: "aco_apixabana",
+    field_timestamp: "aco_apixabana_taken_at",
   },
   {
     text: "Dabigatrana",
-    dbname: "anticoagulant_dabigatrana",
-    dbname_timestamp: "anticoagulant_dabigatrana_taken_at",
+    field: "aco_dabigatrana",
+    field_timestamp: "aco_dabigatrana_taken_at",
   },
   {
     text: "Foundaparinux",
-    dbname: "anticoagulant_foundaparinux",
-    dbname_timestamp: "anticoagulant_foundaparinux_taken_at",
+    field: "aco_foundaparinux",
+    field_timestamp: "aco_foundaparinux_taken_at",
   },
   {
     text: "Heparina não fracionada plena",
-    dbname: "anticoagulant_full_unfractionated_heparin",
-    dbname_timestamp: "anticoagulant_full_unfractionated_heparin_taken_at",
+    field: "aco_unfractionated_heparin",
+    field_timestamp: "aco_unfractionated_heparin_taken_at",
   },
   {
     text: "Heparina de baixo peso molecular plena",
-    dbname: "anticoagulant_full_low_molecular_weight_heparin",
-    dbname_timestamp:
-      "anticoagulant_full_low_molecular_weight_heparin_taken_at",
+    field: "aco_low_molecular_weight_heparin",
+    field_timestamp: "aco_low_molecular_weight_heparin_taken_at",
   },
   {
     text: "Outros",
     text_input: true,
-    dbname: "anticoagulant_others",
-    dbname_timestamp: "anticoagulant_others_taken_at",
+    field: "aco_others",
+    field_timestamp: "aco_others_taken_at",
   },
 ];
 
@@ -94,35 +140,36 @@ export const rankin = [
 export const absolute_contraindication_template = [
   {
     text: "O paciente sofreu traumatismo cranioencefálico grave nos últimos 3 meses?",
-    dbname: "ac_severe_head_trauma_last_3_months",
+    field: "ac_severe_head_trauma_last_3_months",
   },
   {
     text: "O paciente tem qualquer relato de sangramento intracraniano ou meníngeo?",
-    dbname: "ac_intracranial_or_meningeal_bleeding",
+    field: "ac_intracranial_or_meningeal_bleeding",
   },
   {
     text: "O paciente possui história de sangramento intestinal ativo no momento?",
-    dbname: "ac_active_intestinal_bleeding",
+    field: "ac_active_intestinal_bleeding",
   },
   {
     text: "O paciente possui história de febre, petéquias, infecção de corrente sanguínea ou lesão valvar prévia?",
-    dbname: "ac_fever_petechiae_blood_infection_valve_damage",
+    field: "ac_fever_petechiae_blood_infection_valve_damage",
   },
   {
     text: "O paciente possui história de Neurocirurgia nos últimos 3 meses?",
-    dbname: "ac_neurosurgery_last_3_months",
+    field: "ac_neurosurgery_last_3_months",
   },
   {
     text: "O paciente possui história de AVC isquêmico nos últimos 3 meses?",
-    dbname: "ac_ischemic_stroke_last_3_months",
+    field: "ac_ischemic_stroke_last_3_months",
   },
   {
     text: "O paciente possui neoplasia?",
-    dbname: "ac_neoplasia",
+    field: "ac_neoplasia",
     case_yes: [
       {
         text: "Qual sistema?",
-        dbname: "ac_neoplasia_system",
+        field: "ac_neoplasia_system",
+        field_other: "ac_neoplasia_system_other",
         options: [
           {
             text: "Cérebro",
@@ -135,13 +182,12 @@ export const absolute_contraindication_template = [
           },
           {
             text: "Outro",
-            text_input: true,
           },
         ],
       },
       {
         text: "Em tratamento?",
-        dbname: "ac_neoplasia_treatment",
+        field: "ac_neoplasia_treatment",
         options: [
           {
             text: "Sim",

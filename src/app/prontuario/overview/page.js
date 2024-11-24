@@ -7,7 +7,7 @@ import { useAPIContext } from "@/contexts/api";
 import { useRouter } from "next/navigation";
 import { calculateAge } from "@/utils/funcs";
 import ChatMessage from "@/components/chat/chat_message";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 
 export default function ProntuarioPage() {
   const searchParams = useSearchParams();

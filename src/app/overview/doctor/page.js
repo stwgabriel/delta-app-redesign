@@ -2,12 +2,13 @@
 
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import { ROUTES } from "@/utils/hosts";
+import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function OverviewDoctorPage() {
-  const { isTokenLoaded, isLoggedDoctor, get_my_charts } = useAPIContext();
+  const { isTokenLoaded, isLoggedDoctor, get_my_charts, create_chart } =
+    useAPIContext();
   const router = useRouter();
 
   const [myCharts, setMyCharts] = useState(null);
@@ -40,9 +41,15 @@ export default function OverviewDoctorPage() {
       <section>
         <button
           className="btn btn-primary"
-          onClick={() => router.push(ROUTES.PRONTUARIO_PAG1)}
+          onClick={() => {
+            create_chart()
+              .then((r) => {
+                router.push(`${ROUTES.PRONTUARIO_PAG0}?chart_id=${r.id}`);
+              })
+              .catch((e) => setErrorMessage(e.message));
+          }}
         >
-          Novo atendimento
+          Iniciar novo protocolo de AVC
         </button>
       </section>
       <section className="flex-column mt-5">

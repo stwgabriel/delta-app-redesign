@@ -16,10 +16,11 @@ export const ROUTES = {
   LANDING_PAGE_DOCTOR: "/overview/doctor",
   LANDING_PAGE_CONSULTOR: "/overview/consultor",
   // Prontuário
-  PRONTUARIO: "/prontuario/pag1",
-  PRONTUARIO_PAG1: "/prontuario/pag1",
-  PRONTUARIO_PAG2: "/prontuario/pag2",
-  PRONTUARIO_PAG3: "/prontuario/pag3",
+  PRONTUARIO: "/prontuario/overview",
+  PRONTUARIO_PAG0: "/doctor/form/pag0",
+  PRONTUARIO_PAG1: "/doctor/form/pag1",
+  PRONTUARIO_PAG2: "/doctor/form/pag2",
+  PRONTUARIO_PAG3: "/doctor/form/pag3",
 };
 
 export const API_ROUTES = {

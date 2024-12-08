@@ -7,6 +7,17 @@ export function useForm(initialValues = {}) {
     return field in values ? values[field] : _default;
   };
 
+  const popFormValue = (field) => {
+    setValues((old) => {
+      if (Object.hasOwn(old, field)) {
+        const newVals = { ...old };
+        delete newVals[field];
+        return newVals;
+      }
+      return old;
+    });
+  };
+
   useEffect(() => {
     console.log(values);
     console.log(JSON.stringify(values));
@@ -85,5 +96,6 @@ export function useForm(initialValues = {}) {
     setIDListValue,
     getIDListValue,
     setMultipleFormValue,
+    popFormValue,
   };
 }

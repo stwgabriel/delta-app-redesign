@@ -74,7 +74,7 @@ export default function OverviewDoctorPage() {
               <span>
                 Criado em: {new Date(chart.logged_at).toLocaleString()}
               </span>
-              <span>Nome: {chart.name}</span>
+              <span>Nome: {chart.name?.value}</span>
             </div>
           ))
         )}

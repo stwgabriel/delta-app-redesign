@@ -16,6 +16,7 @@ export const APIContextProvider = ({ children }) => {
     let savedToken = localStorage.getItem("token");
     if (savedToken === null || savedToken === undefined) savedToken = null;
     _setToken(savedToken);
+    console.log("Token loaded. Exists?", savedToken ? "yes" : "no");
     setIsTokenLoaded(true);
   }, []);
 
@@ -225,6 +226,37 @@ export const APIContextProvider = ({ children }) => {
     return _post(url, configs);
   }
 
+  function get_nih_template() {
+    const url = `/v1/templates/nih`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function create_chart_file(chart_id, fname, ftype) {
+    const url = `/v1/file/chart/create_chart_file?chart_id=${chart_id}`;
+    const configs = { body: JSON.stringify({ fname, ftype }) };
+    console.log(configs);
+    return _post(url, configs);
+  }
+
+  function complete_file(file_id) {
+    const url = `/v1/file/complete_file?file_id=${file_id}`;
+    const configs = {};
+    return _post(url, configs);
+  }
+
+  function get_file(file_id) {
+    const url = `/v1/file/get_file?file_id=${file_id}`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function list_chart_files(chart_id) {
+    const url = `/v1/file/chart/list_files?chart_id=${chart_id}`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -246,6 +278,11 @@ export const APIContextProvider = ({ children }) => {
         get_charts_by_status,
         chart_update_attributes,
         create_chart,
+        get_nih_template,
+        create_chart_file,
+        complete_file,
+        get_file,
+        list_chart_files,
       }}
     >
       {children}

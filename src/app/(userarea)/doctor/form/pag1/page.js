@@ -44,17 +44,12 @@ export default function ProntuarioPage1Page() {
         <Spinner />
       ) : (
         <React.Fragment>
-          {/* <SectionInformacoesBasicas myForm={myForm} /> */}
-          {/* <SectionContraindicacoesAbsolutas myForm={myForm} /> */}
-
-          {/* <SectionRankin myForm={myForm} /> */}
-
+          <SectionInformacoesBasicas myForm={myForm} />
+          <SectionContraindicacoesAbsolutas myForm={myForm} />
+          <SectionRankin myForm={myForm} />
           <SectionMedicamentosAnticoagulantes myForm={myForm} />
-
-          {/* <SectionMedicamentos myForm={myForm} /> */}
-
-          {/* <SectionComorbidades myForm={myForm} /> */}
-
+          <SectionMedicamentos myForm={myForm} />
+          <SectionComorbidades myForm={myForm} />
           <section className="flex-column mb-5">
             <button className="btn btn-primary" onClick={send_form}>
               Enviar

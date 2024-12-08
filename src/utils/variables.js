@@ -1,5 +1,6 @@
 export function get_api_host() {
   return "http://localhost:8000";
+  // return "http://mylocaldbalex.duckdns.org:8000";
 }
 export function get_socket_host() {
   return "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";
@@ -13,7 +14,7 @@ export const ROUTES = {
   LOGIN_DOCTOR: "/login/doctor",
   LOGIN_CONSULTOR: "/login/consultor",
   //Landing pages
-  LANDING_PAGE_DOCTOR: "/overview/doctor",
+  LANDING_PAGE_DOCTOR: "/doctor/overview",
   LANDING_PAGE_CONSULTOR: "/overview/consultor",
   // Prontuário
   PRONTUARIO: "/prontuario/overview",

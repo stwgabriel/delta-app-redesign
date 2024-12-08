@@ -12,13 +12,15 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
+    console.log("Checking auth:", isAuthenticated);
     if (isAuthenticated) {
+      console.log("Authorized");
       refreshChart();
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
-    console.log("Chart changed");
+    console.log("Chart changed", chart);
     if (chart) {
       console.log("Chart ready");
       onLoad();

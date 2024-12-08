@@ -1,14 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function Anticoagulants({ medicine, i, setResponses }) {
-  const [response, setResponse] = useState({});
-
-  useEffect(() => {
-    setResponses((old) => {
-      return { ...old, [medicine.id]: response };
-    });
-  }, [response]);
-
+export default function Anticoagulants({ medicine, i, myForm }) {
   return (
     <div className="input-group">
       {/* <div className="form-control flex-row d-flex">
@@ -26,21 +18,21 @@ export default function Anticoagulants({ medicine, i, setResponses }) {
       >
         <div className="flex justify-content-around">
           <span className="d-flex align-items-center pb-1">
-            {medicine.name}
+            {medicine.text}
           </span>
         </div>
         <div className="flex justify-content-around">
-          {medicine.is_free_text === true ? (
+          {medicine.text_input === true ? (
             <input
               type="text"
               className="form-control"
-              // placeholder={medicine.name}
-              onChange={(x) =>
-                setResponse({
-                  anticoagulant_template_id: medicine.id,
-                  response: x.target.value,
-                })
-              }
+              onChange={(x) => {
+                let newVal = {
+                  [medicine.field]: x.target.value,
+                  // [medicine.field_timestamp]: null,
+                };
+                myForm.setMultipleFormValue(newVal);
+              }}
             />
           ) : (
             ["Sim", "Não", "Não sei"].map((op, j) => (
@@ -48,21 +40,23 @@ export default function Anticoagulants({ medicine, i, setResponses }) {
                 <input
                   type="radio"
                   className="btn-check"
-                  name={medicine.id}
+                  name={`aco-${i}`}
                   autoComplete="off"
-                  id={`ma-${i}-${j}`}
-                  onChange={(x) =>
-                    setResponse({
-                      anticoagulant_template_id: medicine.id,
-                      response: op,
-                    })
-                  }
+                  id={`aco-${i}-${j}`}
+                  onChange={(x) => {
+                    console.log(myForm.getFormValue(medicine.field));
+                    console.log(myForm.getFormValue(medicine.field) === "Sim");
+                    let newVal = {
+                      [medicine.field]: op,
+                      [medicine.field_timestamp]: null,
+                    };
+                    myForm.setMultipleFormValue(newVal);
+                  }}
                 />
 
                 <label
                   className="btn btn-outline-primary"
-                  htmlFor={`ma-${i}-${j}`}
-                  key={`macl-${i}-${j}`}
+                  htmlFor={`aco-${i}-${j}`}
                 >
                   {op}
                 </label>
@@ -71,24 +65,20 @@ export default function Anticoagulants({ medicine, i, setResponses }) {
           )}
         </div>
       </div>
-
-      <div className="form-control">
-        Última aplicação/ingestão
-        <input
-          type="datetime-local"
-          className="form-control"
-          disabled={!(response["response"] === "Sim")}
-          value={response.taken_at || ""}
-          onChange={(x) =>
-            setResponse((old) => {
-              return {
-                ...old,
-                taken_at: x.target.value,
-              };
-            })
-          }
-        />
-      </div>
+      {medicine.text_input !== true && (
+        <div className="form-control">
+          Última aplicação/ingestão
+          <input
+            type="datetime-local"
+            className="form-control"
+            disabled={myForm.getFormValue(medicine.field) !== "Sim"}
+            value={myForm.getFormValue(medicine.field_timestamp) || ""}
+            onChange={(x) =>
+              myForm.setFormValue(medicine.field_timestamp, x.target.value)
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }

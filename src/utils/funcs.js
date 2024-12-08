@@ -1,3 +1,37 @@
+/**
+ * Format bytes as human-readable text.
+ *
+ * @param bytes Number of bytes.
+ * @param si True to use metric (SI) units, aka powers of 1000. False to use
+ *           binary (IEC), aka powers of 1024.
+ * @param dp Number of decimal places to display.
+ *
+ * @return Formatted string.
+ */
+export function humanFileSize(bytes, si = true, dp = 1) {
+  const thresh = si ? 1000 : 1024;
+
+  if (Math.abs(bytes) < thresh) {
+    return bytes + " B";
+  }
+
+  const units = si
+    ? ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    : ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"];
+  let u = -1;
+  const r = 10 ** dp;
+
+  do {
+    bytes /= thresh;
+    ++u;
+  } while (
+    Math.round(Math.abs(bytes) * r) / r >= thresh &&
+    u < units.length - 1
+  );
+
+  return bytes.toFixed(dp) + " " + units[u];
+}
+
 export function isBlank(val) {
   return val == undefined || val == null || val == "";
 }
@@ -41,4 +75,38 @@ export function uuidv4() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   );
+}
+
+export function getValueFromFormObj(obj, _default = "NÃO INFORMADO") {
+  if (obj === null || obj === undefined) return _default;
+  if (obj.value === null) return _default;
+
+  // console.log(obj);
+
+  switch (obj.value_column) {
+    case "value_text":
+      return obj.value;
+    case "value_int":
+      return obj.value;
+    case "value_bool":
+      return obj.value ? "Sim" : "Não";
+    case "value_timestamptz":
+      return new Date(obj.value).toLocaleString();
+    case "value_timestamp":
+      return new Date(obj.value).toLocaleString();
+    case "value_date":
+      console.log(obj.value);
+      return new Date(obj.value).toLocaleDateString();
+    default:
+      console.warn("Value column Input not expected", obj.value_column);
+      return "N/A";
+  }
+}
+
+export function getMaxNIHCount(template) {
+  let maxScore = template.reduce(
+    (acc, section) => acc + Math.max(...section.items.map((q) => q.score)),
+    0
+  );
+  return maxScore;
 }

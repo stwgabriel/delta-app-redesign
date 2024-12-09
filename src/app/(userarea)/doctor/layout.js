@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { ROUTES } from "@/utils/variables";
 
 export default function DoctorLayout({ children }) {
-  const { isLoggedDoctor, isTokenLoaded } = useAPIContext();
+  const { isLoggedDoctor, isTokenLoaded, _token } = useAPIContext();
   const { setIsAuthenticated } = useStateContext();
   const router = useRouter();
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function DoctorLayout({ children }) {
         router.push(ROUTES.LOGIN_DOCTOR);
       }
     }
-  }, [isTokenLoaded]);
+  }, [isTokenLoaded, _token]);
 
   return <React.Fragment>{children}</React.Fragment>;
 }

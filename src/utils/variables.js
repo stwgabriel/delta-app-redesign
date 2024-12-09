@@ -15,10 +15,9 @@ export const ROUTES = {
   LOGIN_CONSULTOR: "/login/consultor",
   //Landing pages
   LANDING_PAGE_DOCTOR: "/doctor/overview",
-  LANDING_PAGE_CONSULTOR: "/overview/consultor",
+  LANDING_PAGE_CONSULTOR: "/consultor/overview",
   // Prontuário
   PRONTUARIO: "/prontuario/overview",
-  PRONTUARIO_PAG0: "/doctor/form/pag0",
   PRONTUARIO_PAG1: "/doctor/form/pag1",
   PRONTUARIO_PAG2: "/doctor/form/pag2",
   PRONTUARIO_PAG3: "/doctor/form/pag3",

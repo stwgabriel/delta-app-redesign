@@ -1,16 +1,11 @@
 "use client";
-import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "@/contexts/form";
-import SectionInformacoesBasicas from "./section_informacoes_basicas";
-import SectionContraindicacoesAbsolutas from "./section_contraindicacoes_absolutas";
-import SectionRankin from "./section_rankin";
-import SectionComorbidades from "./section_comorbidades";
-import SectionMedicamentosAnticoagulantes from "./section_medicamentos_anticoagulantes";
-import SectionMedicamentos from "./section_medicamentos";
 import { useAPIContext } from "@/contexts/api";
-import { useChart } from "@/contexts/chart";
+import { useSearchParams } from "next/navigation";
+import { criterio_protocolo_avc } from "@/utils/templates";
 import Spinner from "@/components/spinner";
+import { useChart } from "@/contexts/chart";
 
 export default function ProntuarioPage1Page() {
   const searchParams = useSearchParams();
@@ -28,9 +23,7 @@ export default function ProntuarioPage1Page() {
   function send_form() {
     setErrorMessage(null);
     chart_update_attributes(chart_id, myForm.values)
-      .then(() => {
-        refreshChart();
-      })
+      .then(refreshChart)
       .catch((e) => setErrorMessage(e.message));
   }
 
@@ -44,13 +37,23 @@ export default function ProntuarioPage1Page() {
         <Spinner />
       ) : (
         <React.Fragment>
-          <SectionInformacoesBasicas myForm={myForm} />
-          <SectionContraindicacoesAbsolutas myForm={myForm} />
-          <SectionRankin myForm={myForm} />
-          <SectionMedicamentosAnticoagulantes myForm={myForm} />
-          <SectionMedicamentos myForm={myForm} />
-          <SectionComorbidades myForm={myForm} />
-          <section className="flex-column mb-5">
+          <h1 className="fs-4 my-1">
+            Motivo de ter iniciado o protocolo de AVC
+          </h1>
+          <select
+            className="form-control"
+            onChange={(x) => {
+              myForm.setFormValue("open_reason", x.target.value);
+            }}
+            defaultValue={"Selecione o motivo"}
+          >
+            <option disabled>Selecione o motivo</option>
+            {criterio_protocolo_avc.map((itm, i) => (
+              <option key={`opt-${i}`}>{itm}</option>
+            ))}
+          </select>
+
+          <section className="flex-column my-5">
             <button className="btn btn-primary" onClick={send_form}>
               Enviar
             </button>

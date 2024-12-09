@@ -2,31 +2,24 @@
 
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
+import { useStateContext } from "@/contexts/state";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function OverviewDoctorPage() {
-  const { isTokenLoaded, isLoggedDoctor, get_my_charts, create_chart } =
-    useAPIContext();
+  const { get_my_charts, create_chart } = useAPIContext();
   const router = useRouter();
+  const { isAuthenticated } = useStateContext();
 
   const [myCharts, setMyCharts] = useState(null);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    if (isTokenLoaded && !isLoggedDoctor) {
-      console.log("Back to main page");
-      router.push(ROUTES.HOME);
+    if (isAuthenticated) {
+      get_my_charts().then(setMyCharts).catch(console.error);
     }
-    if (isTokenLoaded) onLoaded();
-    console.log("hey");
-  }, [isTokenLoaded, isLoggedDoctor]);
-
-  function onLoaded() {
-    console.log("hey");
-    get_my_charts().then(setMyCharts).catch(console.error);
-  }
+  }, [isAuthenticated]);
 
   const setActiveElementOnHover = (id) => {
     setActiveId(id);
@@ -44,7 +37,7 @@ export default function OverviewDoctorPage() {
           onClick={() => {
             create_chart()
               .then((r) => {
-                router.push(`${ROUTES.PRONTUARIO_PAG0}?chart_id=${r.id}`);
+                router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${r.id}`);
               })
               .catch((e) => setErrorMessage(e.message));
           }}

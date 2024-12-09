@@ -75,6 +75,7 @@ export const APIContextProvider = ({ children }) => {
   function _request(_url, configs) {
     configs["headers"] = {
       "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*",
       ...configs["headers"],
     };
     const url = `${baseUrl}${_url}`;
@@ -94,7 +95,6 @@ export const APIContextProvider = ({ children }) => {
 
   function _authorized_request(_url, configs = {}) {
     return new Promise((resolve, reject) => {
-      console.log("teste");
       _getValidToken()
         .then((token) => {
           let headers = configs["headers"] || {};
@@ -112,7 +112,6 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function _post(_url, configs = {}) {
-    console.log("teste");
     configs["method"] = "POST";
     return _authorized_request(_url, configs);
   }
@@ -257,6 +256,23 @@ export const APIContextProvider = ({ children }) => {
     return _get(url, configs);
   }
 
+  function create_chart_call(chart_id) {
+    const url = `/v1/meeting/create?chart_id=${chart_id}`;
+    const configs = {};
+    return _post(url, configs);
+  }
+
+  function add_meeting_attendee(meeting_id) {
+    const url = `/v1/meeting/add_attendee?meeting_id=${meeting_id}`;
+    const configs = {};
+    return _post(url, configs);
+  }
+
+  function get_ongoing_meetings(chart_id) {
+    const url = `/v1/meeting/get_ongoing_meetings?chart_id=${chart_id}`;
+    const configs = {};
+    return _get(url, configs);
+  }
   return (
     <APIContext.Provider
       value={{
@@ -283,6 +299,9 @@ export const APIContextProvider = ({ children }) => {
         complete_file,
         get_file,
         list_chart_files,
+        create_chart_call,
+        add_meeting_attendee,
+        get_ongoing_meetings,
       }}
     >
       {children}

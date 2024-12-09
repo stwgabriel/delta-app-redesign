@@ -77,7 +77,7 @@ export function uuidv4() {
   );
 }
 
-export function getValueFromFormObj(obj, _default = "NÃO INFORMADO") {
+export function getValueFromObj(obj, _default = "NÃO INFORMADO") {
   if (obj === null || obj === undefined) return _default;
   if (obj.value === null) return _default;
 
@@ -104,6 +104,7 @@ export function getValueFromFormObj(obj, _default = "NÃO INFORMADO") {
 }
 
 export function getMaxNIHCount(template) {
+  if (!template) return 1;
   let maxScore = template.reduce(
     (acc, section) => acc + Math.max(...section.items.map((q) => q.score)),
     0

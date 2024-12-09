@@ -30,14 +30,14 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
   function onLoad() {
     if (redirectToFormSequencePageFlag) {
       let newUrl = null;
-      if (chart.page0_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.PRONTUARIO_PAG0;
-      } else if (chart.page1_status?.value !== "COMPLETO") {
+      if (chart.page1_status?.value !== "COMPLETO") {
         newUrl = ROUTES.PRONTUARIO_PAG1;
       } else if (chart.page2_status?.value !== "COMPLETO") {
         newUrl = ROUTES.PRONTUARIO_PAG2;
       } else if (chart.page3_status?.value !== "COMPLETO") {
         newUrl = ROUTES.PRONTUARIO_PAG3;
+      } else {
+        newUrl = ROUTES.PRONTUARIO;
       }
       if (newUrl && newUrl !== pathname) {
         newUrl = `${newUrl}?chart_id=${chart_id}`;

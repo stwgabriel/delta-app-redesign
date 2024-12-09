@@ -1,16 +1,21 @@
 "use client";
-import { useAPIContext } from "@/contexts/api";
-import { useChart } from "@/contexts/chart";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { interpolateColour } from "@/utils/colorf";
 import { useForm } from "@/contexts/form";
-import { ROUTES } from "@/utils/variables";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useChart } from "@/contexts/chart";
+import { useAPIContext } from "@/contexts/api";
+import Spinner from "@/components/spinner";
+import { useStateContext } from "@/contexts/state";
+import { getMaxNIHCount } from "@/utils/funcs";
+
 export default function ProntuarioPage3Page() {
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
-  const { chart_update_attributes } = useAPIContext();
+  const { chart_update_attributes, get_nih_template } = useAPIContext();
   const [errorMessage, setErrorMessage] = useState(null);
-  const router = useRouter();
+  const [template, setTemplate] = useState(null);
+  const { isAuthenticated } = useStateContext();
   // ---------------------------------------------------------------------------
 
   const myForm = useForm({ page3_status: "COMPLETO" });
@@ -18,68 +23,197 @@ export default function ProntuarioPage3Page() {
 
   // ---------------------------------------------------------------------------
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      get_nih_template().then(setTemplate).catch(console.error);
+    }
+  }, [isAuthenticated]);
+
   function send_form() {
     setErrorMessage(null);
     chart_update_attributes(chart_id, myForm.values)
-      .then(() => {
-        // refreshChart();
-        router.push(`${ROUTES.PRONTUARIO}?chart_id=${chart_id}`);
-      })
+      .then(refreshChart)
       .catch((e) => setErrorMessage(e.message));
+  }
+
+  function getNIHCount() {
+    let cnt = 0;
+    for (const section of template) {
+      const itemId = myForm.getFormValue(section.field);
+      for (const item of section.items) {
+        if (item.id == itemId) {
+          console.log(item.description, item.score);
+          cnt += item.score;
+        }
+      }
+    }
+    return cnt;
   }
 
   return (
     <>
       <section className="flex-column my-4 align-items-center">
-        <span className="fs-1">Prontuário: Exames</span>
+        <span className="fs-1">Prontuário: Beira-leito</span>
       </section>
 
-      <section className="container flex-column mb-3">
-        <div className="form-control">
-          <label htmlFor="formFileMultiple" className="form-label">
-            Tomografia
-          </label>
+      <section className="flex-column mb-4">
+        <span className="fw-bold fs-4 mb-2">NIH</span>
+        {template === null ? (
+          <Spinner />
+        ) : (
+          <div className="flex-column">
+            <div className="input-group mb-2">
+              <span className="input-group-text ">NIH</span>
+              <span
+                className="input-group-text "
+                style={{
+                  backgroundColor: interpolateColour(
+                    "#198754",
+                    "#dc3545",
+                    getNIHCount() / getMaxNIHCount(template)
+                  ),
+                }}
+              >
+                {getNIHCount()} pontos
+              </span>
+            </div>
+            {template.map((section, i) => (
+              <div key={`sc-${i}`} className="flex-column mb-3">
+                <span className="fw-bold">{section.description}</span>
+                {section.items.map((item, j) => (
+                  <div key={`qst-${j}`} className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      id={`sc-${i}-qst-${j}`}
+                      name={`sc-${i}`}
+                      checked={myForm.getFormValue(section.field) === item.id}
+                      onChange={() => {
+                        console.log("Popping", `${section.field}_other`);
+                        myForm.popFormValue(`${section.field}_other`);
+                        myForm.setFormValue(section.field, item.id);
+                      }}
+                    />
+                    <label
+                      className="form-check-label mt-1"
+                      htmlFor={`sc-${i}-qst-${j}`}
+                    >
+                      {item.description} ({item.score} pontos)
+                    </label>
+
+                    {item.require_text_input === true && (
+                      <div
+                        className="form-floating"
+                        id={`sc-${i}-qst-${j}-txt`}
+                      >
+                        <input
+                          type="text"
+                          className="form-control"
+                          id={`sc-${i}-qst-${j}-txt`}
+                          placeholder="Explique"
+                          value={
+                            myForm.getFormValue(`${section.field}_other`) || ""
+                          }
+                          onChange={(e) => {
+                            const newVal = {
+                              [section.field]: item.id,
+                              [`${section.field}_other`]: e.target.value,
+                            };
+                            myForm.setMultipleFormValue(newVal);
+                          }}
+                        />
+                        <label htmlFor={`sc-${i}-qst-${j}-txt`}>Explique</label>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="flex-column mb-4">
+        <span className="fw-bold fs-4 mb-2">Sinais vitais e Outros</span>
+
+        <div className="input-group mb-2 mt-2">
+          <span className="input-group-text">Peso aproximado (kg)</span>
           <input
-            className="form-control"
-            type="file"
-            id="formFileMultiple"
-            multiple
-          />
-        </div>
-        <div className="form-control mt-3">
-          <label htmlFor="formFileMultiple" className="form-label">
-            Outros exames
-          </label>
-          <input
-            className="form-control"
-            type="file"
-            id="formFileMultiple"
-            multiple
-          />
-        </div>
-        <div className="form-control mt-3">
-          <label htmlFor="formFileMultiple" className="form-label">
-            INR
-          </label>
-          <input
-            className="form-control"
             type="number"
-            value={myForm.getFormValue("inr") || ""}
+            className="form-control"
+            value={myForm.getFormValue("weight") || ""}
+            onChange={(e) => myForm.setFormValue("weight", e.target.value)}
+          />
+        </div>
+
+        <div className="input-group mb-2">
+          <span className="input-group-text">Pressão arterial</span>
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Sistólica"
+            value={myForm.getFormValue("blood_pressure_systolic") || ""}
             onChange={(e) =>
-              myForm.setFormValue(
-                "inr",
-                e.target.value === "" ? null : e.target.value
-              )
+              myForm.setFormValue("blood_pressure_systolic", e.target.value)
             }
+          />
+          <input
+            type="number"
+            className="form-control"
+            placeholder="Diastólica"
+            value={myForm.getFormValue("blood_pressure_diastolic") || ""}
+            onChange={(e) =>
+              myForm.setFormValue("blood_pressure_diastolic", e.target.value)
+            }
+          />
+        </div>
+        <div className="input-group mb-2">
+          <span className="input-group-text">Dextro</span>
+          <input
+            type="text"
+            className="form-control"
+            value={myForm.getFormValue("dextro") || ""}
+            onChange={(e) => myForm.setFormValue("dextro", e.target.value)}
+          />
+        </div>
+
+        <div className="input-group mb-2">
+          <span className="input-group-text">Saturação O2</span>
+          <input
+            type="number"
+            className="form-control"
+            value={myForm.getFormValue("saturation") || ""}
+            onChange={(e) => myForm.setFormValue("saturation", e.target.value)}
+          />
+        </div>
+
+        <div className="input-group mb-2">
+          <span className="input-group-text">Frequência cardíaca</span>
+          <input
+            type="number"
+            className="form-control"
+            value={myForm.getFormValue("heart_rate") || ""}
+            onChange={(e) => myForm.setFormValue("heart_rate", e.target.value)}
+          />
+        </div>
+
+        <div className="input-group mb-2">
+          <span className="input-group-text">INR</span>
+          <input
+            type="number"
+            className="form-control"
+            value={myForm.getFormValue("inr") || ""}
+            onChange={(e) => myForm.setFormValue("inr", e.target.value)}
           />
         </div>
       </section>
 
       <section className="flex-column mb-5">
         <button className="btn btn-primary" onClick={send_form}>
-          Chamar atendente
+          Enviar
         </button>
       </section>
+      <p className="text-danger">{errorMessage}</p>
     </>
   );
 }

@@ -5,19 +5,46 @@ import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-function FilledCard({ detail }) {
+function ChartCard({ detail }) {
   const router = useRouter();
-  const { id, name } = detail;
+  const {
+    id,
+    name,
+    status,
+    page1_status,
+    page2_status,
+    page3_status,
+    open_reason,
+  } = detail;
 
   return (
     <div
-      className="card m-2"
+      className="card my-1"
       onClick={() => router.push(`/prontuario/overview?chart_id=${id}`)}
       style={{ cursor: "pointer" }}
     >
       <div className="card-body flex-column">
-        <p className="card-text">{name?.value}</p>
-        <p className="card-text">{id}</p>
+        <p className="card-text">Paciente: {name?.value}</p>
+        <p className="card-text">Motivo: {open_reason?.value}</p>
+
+        <div className="mt-1">
+          <span className="badge bg-primary me-1">{status?.value}</span>
+          {page1_status?.value && (
+            <span className="badge bg-primary mx-1">
+              Página 1: {page1_status?.value}
+            </span>
+          )}
+          {page2_status?.value && (
+            <span className="badge bg-primary mx-1">
+              Página 2: {page2_status?.value}
+            </span>
+          )}
+          {page3_status?.value && (
+            <span className="badge bg-primary mx-1">
+              Página 3: {page3_status?.value}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -28,7 +55,7 @@ function ChartsList({ charts }) {
   return (
     <div className="flex-column">
       {charts.map((itm, i) => (
-        <FilledCard key={`cd-${i}`} detail={itm} />
+        <ChartCard key={`cd-${i}`} detail={itm} />
       ))}
     </div>
   );
@@ -51,7 +78,10 @@ export default function ConsultorOverviewPage() {
 
   useEffect(() => {
     if (!isTokenLoaded) return;
+
     atualizar_lists();
+    const intervalId = setInterval(atualizar_lists, 5000);
+    return () => clearInterval(intervalId);
   }, [isTokenLoaded]);
 
   function atualizar_lists() {

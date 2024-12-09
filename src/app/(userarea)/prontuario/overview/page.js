@@ -3,11 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import {
-  calculateAge,
-  getMaxNIHCount,
-  getValueFromFormObj,
-} from "@/utils/funcs";
+import { calculateAge, getMaxNIHCount, getValueFromObj } from "@/utils/funcs";
 import ChatMessage from "@/components/chat/chat_message";
 import { useChart } from "@/contexts/chart";
 import FormDisplay from "@/components/prontuario/display";
@@ -20,6 +16,7 @@ import { useStateContext } from "@/contexts/state";
 import { useFileUpload } from "@/contexts/fileupload";
 import FileUploadComponent from "@/components/chart/file_upload";
 import AvailableFiles from "@/components/chart/available_files";
+import VideoChatComponent from "@/components/prontuario/video_chat";
 
 export default function ProntuarioPage() {
   const searchParams = useSearchParams();
@@ -84,6 +81,7 @@ export default function ProntuarioPage() {
   }
 
   function getNIHAnswerCount() {
+    if (!nihTemplate) return 0;
     let count = 0;
     for (const section of nihTemplate) {
       const answer = chart[section.field];
@@ -95,18 +93,20 @@ export default function ProntuarioPage() {
   }
 
   return (
-    <div className="container pt-5 justify-content-center flex-column">
+    <div className="container justify-content-center flex-column">
+      <VideoChatComponent chart_id={chart_id} />
+
       {chart === null ? (
         <Spinner />
       ) : (
         <section className="flex list-group">
           <div className="list-group-item">
             <div className="d-flex input-group justify-content-around">
-              <FormDisplay name="Name" text={getValueFromFormObj(chart.name)} />
-              <FormDisplay name="CPF" text={getValueFromFormObj(chart.cpf)} />
+              <FormDisplay name="Name" text={getValueFromObj(chart.name)} />
+              <FormDisplay name="CPF" text={getValueFromObj(chart.cpf)} />
               <FormDisplay
                 name="Data de nascimento"
-                text={getValueFromFormObj(chart.birth_date)}
+                text={getValueFromObj(chart.birth_date)}
               />
               <FormDisplay
                 name="Idade"
@@ -122,23 +122,24 @@ export default function ProntuarioPage() {
             <div className="d-flex input-group justify-content-around">
               <FormDisplay
                 name="Tempo de evento conhecido?"
-                text={getValueFromFormObj(chart.known_event_time)}
+                text={getValueFromObj(chart.known_event_time)}
               />
-              <FormDisplay
-                name="ICTUS"
-                text={getValueFromFormObj(chart.ictus)}
-              />
+              <FormDisplay name="ICTUS" text={getValueFromObj(chart.ictus)} />
             </div>
           </div>
 
           <div className="list-group-item">
             <FormDisplay
+              name="Motivo"
+              text={getValueFromObj(chart.open_reason)}
+            />
+            <FormDisplay
               name="História coletada com"
-              text={getValueFromFormObj(chart.history_collected_with)}
+              text={getValueFromObj(chart.history_collected_with)}
             />
             <FormDisplay
               name="História"
-              text={getValueFromFormObj(chart.history)}
+              text={getValueFromObj(chart.history)}
             />
           </div>
 
@@ -146,11 +147,11 @@ export default function ProntuarioPage() {
             <div className="d-flex input-group justify-content-around">
               <FormDisplay
                 name="Rankin Score"
-                text={getValueFromFormObj(chart.rankin_score)}
+                text={getValueFromObj(chart.rankin_score)}
               />
               <FormDisplay
                 name="Rankin"
-                text={getValueFromFormObj(chart.rankin_description)}
+                text={getValueFromObj(chart.rankin_description)}
               />
             </div>
           </div>
@@ -175,10 +176,10 @@ export default function ProntuarioPage() {
                   <tr key={`aco-${i}`}>
                     <td className="px-3">{template.text}</td>
                     <td className="px-3 text-center">
-                      {getValueFromFormObj(chart[template.field])}
+                      {getValueFromObj(chart[template.field])}
                     </td>
                     <td className="px-3 text-center">
-                      {getValueFromFormObj(chart[template.field_taken_at])}
+                      {getValueFromObj(chart[template.field_taken_at])}
                     </td>
                   </tr>
                 ))}
@@ -187,7 +188,7 @@ export default function ProntuarioPage() {
 
             <FormDisplay
               name="Outros Medicamentos"
-              text={getValueFromFormObj(chart.other_medicines)}
+              text={getValueFromObj(chart.other_medicines)}
               align_label_center={false}
               align_value_center={false}
             />
@@ -210,7 +211,7 @@ export default function ProntuarioPage() {
                   <tr key={`ac-${i}`}>
                     <td className="px-3">{template.text}</td>
                     <td className="px-3 text-center">
-                      {getValueFromFormObj(chart[template.field])}
+                      {getValueFromObj(chart[template.field])}
                       <div className="">
                         {template.case_yes &&
                           template.case_yes.map((subtemplate, j) => (
@@ -220,11 +221,11 @@ export default function ProntuarioPage() {
                             >
                               <span>{subtemplate.text}</span>
                               <span>
-                                {getValueFromFormObj(chart[subtemplate.field])}
+                                {getValueFromObj(chart[subtemplate.field])}
                               </span>
                               <span>
                                 {subtemplate.field_other
-                                  ? getValueFromFormObj(
+                                  ? getValueFromObj(
                                       chart[subtemplate.field_other]
                                     )
                                   : ""}
@@ -254,7 +255,7 @@ export default function ProntuarioPage() {
                   <tr key={`cmo-${i}`}>
                     <td className="px-3">{template.text}</td>
                     <td className="px-3 text-center">
-                      {getValueFromFormObj(chart[template.field])}
+                      {getValueFromObj(chart[template.field])}
                     </td>
                   </tr>
                 ))}
@@ -263,7 +264,7 @@ export default function ProntuarioPage() {
           </div>
 
           <div className="list-group-item">
-            {nihTemplate === null ? (
+            {!nihTemplate ? (
               <Spinner />
             ) : (
               <table className="table table-striped">

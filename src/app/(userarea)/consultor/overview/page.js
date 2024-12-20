@@ -27,20 +27,20 @@ function ChartCard({ detail }) {
         <p className="card-text">Paciente: {name?.value}</p>
         <p className="card-text">Motivo: {open_reason?.value}</p>
 
-        <div className="mt-1">
-          <span className="badge bg-primary me-1">{status?.value}</span>
+        <div className="flex-wrap">
+          <span className="badge bg-primary me-2 mt-1">{status?.value}</span>
           {page1_status?.value && (
-            <span className="badge bg-primary mx-1">
+            <span className="badge bg-primary me-2 mt-1">
               Página 1: {page1_status?.value}
             </span>
           )}
           {page2_status?.value && (
-            <span className="badge bg-primary mx-1">
+            <span className="badge bg-primary me-2 mt-1">
               Página 2: {page2_status?.value}
             </span>
           )}
           {page3_status?.value && (
-            <span className="badge bg-primary mx-1">
+            <span className="badge bg-primary mt-1">
               Página 3: {page3_status?.value}
             </span>
           )}
@@ -53,7 +53,7 @@ function ChartCard({ detail }) {
 function ChartsList({ charts }) {
   if (charts === null || charts === undefined) return <Spinner />;
   return (
-    <div className="flex-column">
+    <div className="flex-column mt-2">
       {charts.map((itm, i) => (
         <ChartCard key={`cd-${i}`} detail={itm} />
       ))}
@@ -101,12 +101,6 @@ export default function ConsultorOverviewPage() {
 
   return (
     <React.Fragment>
-      <section>
-        <button className="btn btn-primary" onClick={atualizar_lists}>
-          Atualizar
-        </button>
-      </section>
-
       {[
         {
           title: "Iniciado",
@@ -131,11 +125,19 @@ export default function ConsultorOverviewPage() {
       ].map((itm, i) => (
         <section key={`list-${i}`} className="flex-column">
           <span className="mt-5 fs-3">{itm.title}</span>
-          <span className="pt-1 text-secondary">
-            Última atualização:{" "}
-            {itm.last_update && itm.last_update.toLocaleString()}
-          </span>
+          <div className="align-items-center">
+            <span className="pt-1 text-secondary">
+              Última atualização:{" "}
+              {itm.last_update && itm.last_update.toLocaleString()}
+            </span>
 
+            <button
+              className="btn btn-sm btn-secondary ms-2"
+              onClick={atualizar_lists}
+            >
+              Atualizar
+            </button>
+          </div>
           <ChartsList charts={itm.results} />
         </section>
       ))}

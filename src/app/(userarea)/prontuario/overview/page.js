@@ -3,20 +3,15 @@ import { useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import { calculateAge, getMaxNIHCount, getValueFromObj } from "@/utils/funcs";
 import ChatMessage from "@/components/chat/chat_message";
 import { useChart } from "@/contexts/chart";
-import FormDisplay from "@/components/prontuario/display";
-import {
-  absolute_contraindication_template,
-  comorbidities_template,
-  medicines_anticoagulant_template,
-} from "@/utils/templates";
-import { useStateContext } from "@/contexts/state";
 import { useFileUpload } from "@/contexts/fileupload";
 import FileUploadComponent from "@/components/chart/file_upload";
 import AvailableFiles from "@/components/chart/available_files";
 import VideoChatComponent from "@/components/prontuario/video_chat";
+import ChartAttributes from "@/components/prontuario/chart_attributes";
+import { useStateContext } from "@/contexts/state";
+import ConductComponent from "@/components/prontuario/conduct";
 
 export default function ProntuarioPage() {
   const searchParams = useSearchParams();
@@ -25,25 +20,19 @@ export default function ProntuarioPage() {
   const [chartChat, setChartChat] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
   const chatMessagesRef = useRef(null);
-  const [nihTemplate, setNihTemplate] = useState(null);
   const { isAuthenticated } = useStateContext();
-
-  const { uploadingFiles, upload_file, countCompleted } =
-    useFileUpload(chart_id);
-
-  const {
-    get_chart_chat,
-    get_my_user_id,
-    post_chart_chat_message,
-    get_nih_template,
-  } = useAPIContext();
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
     reloadMessages();
-    get_nih_template().then(setNihTemplate).catch(console.error);
   }, [isAuthenticated]);
+
+  const { uploadingFiles, upload_file, countCompleted } =
+    useFileUpload(chart_id);
+
+  const { get_chart_chat, get_my_user_id, post_chart_chat_message } =
+    useAPIContext();
 
   function reloadMessages() {
     get_chart_chat(chart_id)
@@ -69,259 +58,13 @@ export default function ProntuarioPage() {
     }
   }
 
-  function getNIHScore() {
-    let score = 0;
-    if (nihTemplate === null) return 0;
-    for (const section of nihTemplate) {
-      const answer = chart[section.field];
-      if (!answer) continue;
-      score += answer.value.score;
-    }
-    return score;
-  }
-
-  function getNIHAnswerCount() {
-    if (!nihTemplate) return 0;
-    let count = 0;
-    for (const section of nihTemplate) {
-      const answer = chart[section.field];
-      if (answer) {
-        count += 1;
-      }
-    }
-    return count;
-  }
-
   return (
     <div className="container justify-content-center flex-column">
-      <VideoChatComponent chart_id={chart_id} />
+      {/* <VideoChatComponent chart_id={chart_id} /> */}
 
-      {chart === null ? (
-        <Spinner />
-      ) : (
-        <section className="flex list-group">
-          <div className="list-group-item">
-            <div className="d-flex input-group justify-content-around">
-              <FormDisplay name="Name" text={getValueFromObj(chart.name)} />
-              <FormDisplay name="CPF" text={getValueFromObj(chart.cpf)} />
-              <FormDisplay
-                name="Data de nascimento"
-                text={getValueFromObj(chart.birth_date)}
-              />
-              <FormDisplay
-                name="Idade"
-                text={
-                  chart.birth_date === null
-                    ? chart.age?.value || ""
-                    : calculateAge(chart.birth_date.value)
-                }
-              />
-            </div>
-          </div>
-          <div className="list-group-item">
-            <div className="d-flex input-group justify-content-around">
-              <FormDisplay
-                name="Tempo de evento conhecido?"
-                text={getValueFromObj(chart.known_event_time)}
-              />
-              <FormDisplay name="ICTUS" text={getValueFromObj(chart.ictus)} />
-            </div>
-          </div>
+      {/* {chart === null ? <Spinner /> : <ChartAttributes chart={chart} />} */}
 
-          <div className="list-group-item">
-            <FormDisplay
-              name="Motivo"
-              text={getValueFromObj(chart.open_reason)}
-            />
-            <FormDisplay
-              name="História coletada com"
-              text={getValueFromObj(chart.history_collected_with)}
-            />
-            <FormDisplay
-              name="História"
-              text={getValueFromObj(chart.history)}
-            />
-          </div>
-
-          <div className="list-group-item">
-            <div className="d-flex input-group justify-content-around">
-              <FormDisplay
-                name="Rankin Score"
-                text={getValueFromObj(chart.rankin_score)}
-              />
-              <FormDisplay
-                name="Rankin"
-                text={getValueFromObj(chart.rankin_description)}
-              />
-            </div>
-          </div>
-
-          <div className="list-group-item">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th className="px-3" scope="col">
-                    Anticoagulante
-                  </th>
-                  <th className="px-3 text-center" scope="col">
-                    Tomado?
-                  </th>
-                  <th className="px-3 text-center" scope="col">
-                    Horário
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {medicines_anticoagulant_template.map((template, i) => (
-                  <tr key={`aco-${i}`}>
-                    <td className="px-3">{template.text}</td>
-                    <td className="px-3 text-center">
-                      {getValueFromObj(chart[template.field])}
-                    </td>
-                    <td className="px-3 text-center">
-                      {getValueFromObj(chart[template.field_taken_at])}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-            <FormDisplay
-              name="Outros Medicamentos"
-              text={getValueFromObj(chart.other_medicines)}
-              align_label_center={false}
-              align_value_center={false}
-            />
-          </div>
-
-          <div className="list-group-item">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th className="px-3" scope="col">
-                    Contraindicações absolutas
-                  </th>
-                  <th className="px-3 text-center" scope="col">
-                    Resposta
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {absolute_contraindication_template.map((template, i) => (
-                  <tr key={`ac-${i}`}>
-                    <td className="px-3">{template.text}</td>
-                    <td className="px-3 text-center">
-                      {getValueFromObj(chart[template.field])}
-                      <div className="">
-                        {template.case_yes &&
-                          template.case_yes.map((subtemplate, j) => (
-                            <div
-                              key={`ac-sub-${j}`}
-                              className="flex-column px-1"
-                            >
-                              <span>{subtemplate.text}</span>
-                              <span>
-                                {getValueFromObj(chart[subtemplate.field])}
-                              </span>
-                              <span>
-                                {subtemplate.field_other
-                                  ? getValueFromObj(
-                                      chart[subtemplate.field_other]
-                                    )
-                                  : ""}
-                              </span>
-                            </div>
-                          ))}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="list-group-item">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th className="px-3" scope="col">
-                    Comorbidades
-                  </th>
-                  <th className="px-3 text-center" scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {comorbidities_template.map((template, i) => (
-                  <tr key={`cmo-${i}`}>
-                    <td className="px-3">{template.text}</td>
-                    <td className="px-3 text-center">
-                      {getValueFromObj(chart[template.field])}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="list-group-item">
-            {!nihTemplate ? (
-              <Spinner />
-            ) : (
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th className="px-3" scope="col">
-                      Item NIHSS
-                    </th>
-                    <th className="px-3 text-center" scope="col">
-                      Resposta
-                    </th>
-                    <th className="px-3 text-center" scope="col">
-                      Explicação
-                    </th>
-                    <th className="px-3 text-center" scope="col">
-                      Pontuação
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {nihTemplate.map((template, i) => (
-                    <tr key={`nih-${i}`}>
-                      <td className="px-3">{template.description}</td>
-                      <td className="px-3">
-                        {chart[template.field]
-                          ? chart[template.field]?.value.description
-                          : ""}
-                      </td>
-                      <td className="px-3">
-                        {chart[template.field]
-                          ? chart[`${template.field}_other`]?.value
-                          : ""}
-                      </td>
-                      <td className="px-3">
-                        {chart[template.field]
-                          ? chart[template.field]?.value.score
-                          : ""}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-
-            <div className="flex-column align-items-center">
-              <span className="py-1">
-                Pontuação NIHSS: {getNIHScore()} de{" "}
-                {getMaxNIHCount(nihTemplate)}
-              </span>
-              <span className="py-1">
-                Respondidas {getNIHAnswerCount()} de {nihTemplate.length} (
-                {Math.round((100 * getNIHAnswerCount()) / nihTemplate.length)}%)
-              </span>
-            </div>
-          </div>
-        </section>
-      )}
+      <ConductComponent chart={chart} />
 
       <section className="mt-4 flex-column">
         <span className="fs-5 mb-3">Arquivos</span>

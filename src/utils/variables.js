@@ -1,5 +1,5 @@
 export function get_api_host() {
-  return "http://localhost:8000";
+  return "https://3l03puaz4j.execute-api.sa-east-1.amazonaws.com/dev";
   // return "http://mylocaldbalex.duckdns.org:8000";
 }
 export function get_socket_host() {

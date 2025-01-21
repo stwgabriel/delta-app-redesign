@@ -116,6 +116,16 @@ export const APIContextProvider = ({ children }) => {
     return _authorized_request(_url, configs);
   }
 
+  function signup_consultor(userData) {
+    const url = API_ROUTES.SIGNUP_CONSULTOR;
+    const body = JSON.stringify(userData);
+    const configs = { body, method: "POST" };
+
+    return new Promise((resolve, reject) => {
+      _request(url, configs).then(resolve).catch(reject);
+    });
+  }
+
   function login_consultor(username, password) {
     console.log(username);
     const url = API_ROUTES.LOGIN_CONSULTOR;
@@ -278,6 +288,7 @@ export const APIContextProvider = ({ children }) => {
       value={{
         _token,
         _getValidToken,
+        signup_consultor,
         login_consultor,
         login_hospital,
         login_doctor,

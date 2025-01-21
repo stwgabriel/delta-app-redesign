@@ -1,6 +1,7 @@
 export function get_api_host() {
-  return "https://3l03puaz4j.execute-api.sa-east-1.amazonaws.com/dev";
+  // return "https://3l03puaz4j.execute-api.sa-east-1.amazonaws.com/dev";
   // return "http://mylocaldbalex.duckdns.org:8000";
+  return "http://localhost:8000";
 }
 export function get_socket_host() {
   return "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";
@@ -9,6 +10,9 @@ export function get_socket_host() {
 export const ROUTES = {
   // Home
   HOME: "/",
+  // Signup
+  SIGNUP_CONSULTOR: "/signup/consultor",
+  SIGNUP_HOSPITAL: "/signup/hospital",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
   LOGIN_DOCTOR: "/login/doctor",
@@ -26,6 +30,7 @@ export const ROUTES = {
 export const API_ROUTES = {
   // Auth
   REFRESH_TOKEN: "/v1/auth/refresh_token",
+  SIGNUP_CONSULTOR: "/v1/auth/signup/consultor",
   LOGIN_CONSULTOR: "/v1/auth/login/consultor",
   LOGIN_HOSPITAL: "/v1/auth/login/hospital",
   LOGIN_DOCTOR: "/v1/auth/login/doctor",

@@ -8,17 +8,13 @@ import {
 import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "../spinner";
-import { useStateContext } from "@/contexts/state";
 
 export default function ChartAttributes({ chart }) {
   const [nihTemplate, setNihTemplate] = useState(null);
-  const { isAuthenticated } = useStateContext();
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-
     get_nih_template().then(setNihTemplate).catch(console.error);
-  }, [isAuthenticated]);
+  }, []);
 
   const { get_nih_template } = useAPIContext();
 
@@ -51,49 +47,30 @@ export default function ChartAttributes({ chart }) {
         <div className="d-flex input-group justify-content-around">
           <FormDisplay name="Name" text={getValueFromObj(chart.name)} />
           <FormDisplay name="CPF" text={getValueFromObj(chart.cpf)} />
-          <FormDisplay
-            name="Data de nascimento"
-            text={getValueFromObj(chart.birth_date)}
-          />
+          <FormDisplay name="Data de nascimento" text={getValueFromObj(chart.birth_date)} />
           <FormDisplay
             name="Idade"
-            text={
-              chart.birth_date === null
-                ? chart.age?.value || ""
-                : calculateAge(chart.birth_date.value)
-            }
+            text={chart.birth_date === null ? chart.age?.value || "" : calculateAge(chart.birth_date.value)}
           />
         </div>
       </div>
       <div className="list-group-item">
         <div className="d-flex input-group justify-content-around">
-          <FormDisplay
-            name="Tempo de evento conhecido?"
-            text={getValueFromObj(chart.known_event_time)}
-          />
+          <FormDisplay name="Tempo de evento conhecido?" text={getValueFromObj(chart.known_event_time)} />
           <FormDisplay name="ICTUS" text={getValueFromObj(chart.ictus)} />
         </div>
       </div>
 
       <div className="list-group-item">
         <FormDisplay name="Motivo" text={getValueFromObj(chart.open_reason)} />
-        <FormDisplay
-          name="História coletada com"
-          text={getValueFromObj(chart.history_collected_with)}
-        />
+        <FormDisplay name="História coletada com" text={getValueFromObj(chart.history_collected_with)} />
         <FormDisplay name="História" text={getValueFromObj(chart.history)} />
       </div>
 
       <div className="list-group-item">
         <div className="d-flex input-group justify-content-around">
-          <FormDisplay
-            name="Rankin Score"
-            text={getValueFromObj(chart.rankin_score)}
-          />
-          <FormDisplay
-            name="Rankin"
-            text={getValueFromObj(chart.rankin_description)}
-          />
+          <FormDisplay name="Rankin Score" text={getValueFromObj(chart.rankin_score)} />
+          <FormDisplay name="Rankin" text={getValueFromObj(chart.rankin_description)} />
         </div>
       </div>
 
@@ -116,12 +93,8 @@ export default function ChartAttributes({ chart }) {
             {medicines_anticoagulant_template.map((template, i) => (
               <tr key={`aco-${i}`}>
                 <td className="px-3">{template.text}</td>
-                <td className="px-3 text-center">
-                  {getValueFromObj(chart[template.field])}
-                </td>
-                <td className="px-3 text-center">
-                  {getValueFromObj(chart[template.field_taken_at])}
-                </td>
+                <td className="px-3 text-center">{getValueFromObj(chart[template.field])}</td>
+                <td className="px-3 text-center">{getValueFromObj(chart[template.field_taken_at])}</td>
               </tr>
             ))}
           </tbody>
@@ -158,14 +131,8 @@ export default function ChartAttributes({ chart }) {
                       template.case_yes.map((subtemplate, j) => (
                         <div key={`ac-sub-${j}`} className="flex-column px-1">
                           <span>{subtemplate.text}</span>
-                          <span>
-                            {getValueFromObj(chart[subtemplate.field])}
-                          </span>
-                          <span>
-                            {subtemplate.field_other
-                              ? getValueFromObj(chart[subtemplate.field_other])
-                              : ""}
-                          </span>
+                          <span>{getValueFromObj(chart[subtemplate.field])}</span>
+                          <span>{subtemplate.field_other ? getValueFromObj(chart[subtemplate.field_other]) : ""}</span>
                         </div>
                       ))}
                   </div>
@@ -190,9 +157,7 @@ export default function ChartAttributes({ chart }) {
             {comorbidities_template.map((template, i) => (
               <tr key={`cmo-${i}`}>
                 <td className="px-3">{template.text}</td>
-                <td className="px-3 text-center">
-                  {getValueFromObj(chart[template.field])}
-                </td>
+                <td className="px-3 text-center">{getValueFromObj(chart[template.field])}</td>
               </tr>
             ))}
           </tbody>
@@ -224,21 +189,9 @@ export default function ChartAttributes({ chart }) {
               {nihTemplate.map((template, i) => (
                 <tr key={`nih-${i}`}>
                   <td className="px-3">{template.description}</td>
-                  <td className="px-3">
-                    {chart[template.field]
-                      ? chart[template.field]?.value.description
-                      : ""}
-                  </td>
-                  <td className="px-3">
-                    {chart[template.field]
-                      ? chart[`${template.field}_other`]?.value
-                      : ""}
-                  </td>
-                  <td className="px-3">
-                    {chart[template.field]
-                      ? chart[template.field]?.value.score
-                      : ""}
-                  </td>
+                  <td className="px-3">{chart[template.field] ? chart[template.field]?.value.description : ""}</td>
+                  <td className="px-3">{chart[template.field] ? chart[`${template.field}_other`]?.value : ""}</td>
+                  <td className="px-3">{chart[template.field] ? chart[template.field]?.value.score : ""}</td>
                 </tr>
               ))}
             </tbody>

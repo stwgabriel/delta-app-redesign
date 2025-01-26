@@ -9,18 +9,12 @@ import { ROUTES } from "@/utils/variables";
 
 export default function Header() {
   const router = useRouter();
-  const {
-    isTokenLoaded,
-    isLoggedConsultor,
-    isLoggedHospital,
-    isLoggedDoctor,
-    logout,
-  } = useAPIContext();
+  const { isTokenLoaded, isLoggedConsultor, isLoggedHospital, isLoggedDoctor, logout } = useAPIContext();
 
   return (
-    <nav className="navbar bg-secondary p-3">
-      <div>
-        <Link className="text-dark" href={ROUTES.HOME}>
+    <nav className="navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
+      <div className="justify-content-center">
+        <Link className="text-dark align-items-center text-decoration-none" href={ROUTES.HOME}>
           <Image
             src={"/delta_stroke_icon.webp"}
             width={80}
@@ -29,62 +23,53 @@ export default function Header() {
             priority={100}
             alt="Logo"
           />
+          <span className="fs-1 ps-2">Delta Stroke</span>
         </Link>
       </div>
       <div className="flex-column me-5">
         {!isTokenLoaded ? (
           <Spinner />
         ) : isLoggedConsultor ? (
-          <div>
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={logout}
-            >
-              Sair Consultor
-            </button>
+          <div className="align-items-center">
+            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
           </div>
         ) : isLoggedDoctor ? (
-          <div>
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={logout}
+          <div className="align-items-center">
+            <span
+              className="material-icons fs-1"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push(ROUTES.SETTINGS_PAGE_USER)}
             >
-              Sair Doctor
-            </button>
+              settings
+            </span>
+            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
           </div>
         ) : isLoggedHospital ? (
-          <div>
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={logout}
-            >
-              Sair Hospital
-            </button>{" "}
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}
-            >
-              Entrar Doctor
+          <div className="align-items-center">
+            <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}>
+              Entrar Médico
             </button>
+            <span
+              className="material-icons fs-1"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push(ROUTES.SETTINGS_PAGE_HOSPITAL)}
+            >
+              settings
+            </span>
+            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
           </div>
         ) : (
-          <div>
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={() => router.push(ROUTES.LOGIN_HOSPITAL)}
-            >
+          <div className="align-items-center">
+            <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_HOSPITAL)}>
               Entrar Hospital
-            </button>{" "}
-            <button
-              type="button"
-              className="btn btn-primary my-2"
-              onClick={() => router.push(ROUTES.LOGIN_CONSULTOR)}
-            >
+            </button>
+            <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_CONSULTOR)}>
               Entrar Consultor
             </button>
           </div>

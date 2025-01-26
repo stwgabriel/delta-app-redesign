@@ -2,7 +2,6 @@
 
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import { useStateContext } from "@/contexts/state";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -10,16 +9,13 @@ import React, { useEffect, useState } from "react";
 export default function OverviewDoctorPage() {
   const { get_my_charts, create_chart } = useAPIContext();
   const router = useRouter();
-  const { isAuthenticated } = useStateContext();
 
   const [myCharts, setMyCharts] = useState(null);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      get_my_charts().then(setMyCharts).catch(console.error);
-    }
-  }, [isAuthenticated]);
+    get_my_charts().then(setMyCharts).catch(console.error);
+  }, []);
 
   const setActiveElementOnHover = (id) => {
     setActiveId(id);
@@ -31,7 +27,7 @@ export default function OverviewDoctorPage() {
 
   return (
     <React.Fragment>
-      <section>
+      <section className="mt-5 justify-content-center">
         <button
           className="btn btn-primary"
           onClick={() => {
@@ -53,20 +49,14 @@ export default function OverviewDoctorPage() {
           myCharts.map((chart, i) => (
             <div
               key={chart.id}
-              className={`card p-3 my-2 ${
-                activeId === chart.id ? "bg-secondary" : ""
-              }`}
+              className={`card p-3 my-2 ${activeId === chart.id ? "bg-secondary" : ""}`}
               onMouseEnter={() => setActiveElementOnHover(chart.id)}
               onMouseLeave={resetActiveElementOnLeave}
-              onClick={() =>
-                router.push(`/prontuario/overview?chart_id=${chart.id}`)
-              }
+              onClick={() => router.push(`/prontuario/overview?chart_id=${chart.id}`)}
               style={{ cursor: "pointer" }}
             >
               <span>ID: {chart.id}</span>
-              <span>
-                Criado em: {new Date(chart.logged_at).toLocaleString()}
-              </span>
+              <span>Criado em: {new Date(chart.logged_at).toLocaleString()}</span>
               <span>Nome: {chart.name?.value}</span>
             </div>
           ))

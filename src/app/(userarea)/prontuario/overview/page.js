@@ -10,7 +10,6 @@ import FileUploadComponent from "@/components/chart/file_upload";
 import AvailableFiles from "@/components/chart/available_files";
 import VideoChatComponent from "@/components/prontuario/video_chat";
 import ChartAttributes from "@/components/prontuario/chart_attributes";
-import { useStateContext } from "@/contexts/state";
 import ConductComponent from "@/components/prontuario/conduct";
 
 export default function ProntuarioPage() {
@@ -20,19 +19,14 @@ export default function ProntuarioPage() {
   const [chartChat, setChartChat] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
   const chatMessagesRef = useRef(null);
-  const { isAuthenticated } = useStateContext();
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-
     reloadMessages();
-  }, [isAuthenticated]);
+  }, []);
 
-  const { uploadingFiles, upload_file, countCompleted } =
-    useFileUpload(chart_id);
+  const { uploadingFiles, upload_file, countCompleted } = useFileUpload(chart_id);
 
-  const { get_chart_chat, get_my_user_id, post_chart_chat_message } =
-    useAPIContext();
+  const { get_chart_chat, get_my_user_id, post_chart_chat_message } = useAPIContext();
 
   function reloadMessages() {
     get_chart_chat(chart_id)
@@ -62,7 +56,9 @@ export default function ProntuarioPage() {
     <div className="container justify-content-center flex-column">
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
-      {/* {chart === null ? <Spinner /> : <ChartAttributes chart={chart} />} */}
+      <span className="fs-1 my-3">Prontuário</span>
+
+      {chart === null ? <Spinner /> : <ChartAttributes chart={chart} />}
 
       <ConductComponent chart={chart} />
 
@@ -72,10 +68,7 @@ export default function ProntuarioPage() {
         <AvailableFiles chart_id={chart_id} countCompleted={countCompleted} />
 
         <div className="flex-column">
-          <label
-            className="custom-file-upload align-items-center align-self-center my-3"
-            style={{ cursor: "pointer" }}
-          >
+          <label className="custom-file-upload align-items-center align-self-center my-3" style={{ cursor: "pointer" }}>
             <input
               type="file"
               multiple
@@ -106,20 +99,12 @@ export default function ProntuarioPage() {
         >
           {chartChat !== null &&
             chartChat.map((msg) => (
-              <ChatMessage
-                key={msg.id}
-                msg={msg}
-                isCurrentUser={get_my_user_id() === msg.user_id}
-              />
+              <ChatMessage key={msg.id} msg={msg} isCurrentUser={get_my_user_id() === msg.user_id} />
             ))}
         </div>
 
         <div className="input-group mb-3 mt-1">
-          <input
-            className="form-control"
-            value={inputMessage}
-            onChange={(x) => setInputMessage(x.target.value)}
-          />
+          <input className="form-control" value={inputMessage} onChange={(x) => setInputMessage(x.target.value)} />
           <span className="btn input-group-text border" onClick={sendMessage}>
             Enviar
           </span>

@@ -46,7 +46,10 @@ export const APIContextProvider = ({ children }) => {
 
   function _getValidToken() {
     return new Promise((resolve, reject) => {
-      if (_token === null) reject("No token");
+      if (_token === null) {
+        console.warn("No token");
+        return reject({ message: "No token" });
+      }
       let decodedToken = decodeJWT(_token);
       let valid_to = new Date(decodedToken.valid_to).getTime() - 60 * 1000 * 1;
       if (valid_to > new Date()) {
@@ -111,6 +114,10 @@ export const APIContextProvider = ({ children }) => {
     return _authorized_request(_url, configs);
   }
 
+  function _put(_url, configs = {}) {
+    configs["method"] = "PUT";
+    return _authorized_request(_url, configs);
+  }
   function _post(_url, configs = {}) {
     configs["method"] = "POST";
     return _authorized_request(_url, configs);
@@ -126,10 +133,9 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
-  function login_consultor(username, password) {
-    console.log(username);
+  function login_consultor(email, password) {
     const url = API_ROUTES.LOGIN_CONSULTOR;
-    const body = JSON.stringify({ username, password });
+    const body = JSON.stringify({ email, password });
     const configs = { body, method: "POST" };
 
     return new Promise((resolve, reject) => {
@@ -244,7 +250,6 @@ export const APIContextProvider = ({ children }) => {
   function create_chart_file(chart_id, fname, ftype) {
     const url = `/v1/file/chart/create_chart_file?chart_id=${chart_id}`;
     const configs = { body: JSON.stringify({ fname, ftype }) };
-    console.log(configs);
     return _post(url, configs);
   }
 
@@ -283,6 +288,55 @@ export const APIContextProvider = ({ children }) => {
     const configs = {};
     return _get(url, configs);
   }
+
+  function list_hospitals() {
+    const url = `/v1/admin/list_hospital`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function change_hospital(hospitalChanges) {
+    const url = `/v1/admin/change_hospital`;
+    const configs = { body: JSON.stringify(hospitalChanges) };
+    return _put(url, configs);
+  }
+
+  function list_users() {
+    const url = `/v1/admin/list_user`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function change_user(data) {
+    const url = `/v1/admin/change_user`;
+    const configs = { body: JSON.stringify(data) };
+    return _put(url, configs);
+  }
+
+  function get_me() {
+    const url = `/v1/user/me`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function put_me(data) {
+    const url = `/v1/user/me`;
+    const configs = { body: JSON.stringify(data) };
+    return _put(url, configs);
+  }
+
+  function get_hospital() {
+    const url = `/v1/hospital/me`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function put_hospital(data) {
+    const url = `/v1/hospital/me`;
+    const configs = { body: JSON.stringify(data) };
+    return _put(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -313,6 +367,14 @@ export const APIContextProvider = ({ children }) => {
         create_chart_call,
         add_meeting_attendee,
         get_ongoing_meetings,
+        list_hospitals,
+        change_hospital,
+        list_users,
+        change_user,
+        get_me,
+        put_me,
+        get_hospital,
+        put_hospital,
       }}
     >
       {children}

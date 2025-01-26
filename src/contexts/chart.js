@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useStateContext } from "./state";
 import { useAPIContext } from "./api";
 import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/variables";
@@ -7,17 +6,12 @@ import { ROUTES } from "@/utils/variables";
 export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
   const pathname = usePathname();
   const router = useRouter();
-  const { isAuthenticated } = useStateContext();
   const { get_chart } = useAPIContext();
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
-    console.log("Checking auth:", isAuthenticated);
-    if (isAuthenticated) {
-      console.log("Authorized");
-      refreshChart();
-    }
-  }, [isAuthenticated]);
+    refreshChart();
+  }, []);
 
   useEffect(() => {
     console.log("Chart changed", chart);

@@ -10,7 +10,7 @@ import { ROUTES } from "@/utils/variables";
 export default function LoginConsultorPage() {
   const router = useRouter();
   const { login_consultor, isLoggedConsultor, isTokenLoaded } = useAPIContext();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,7 +18,7 @@ export default function LoginConsultorPage() {
   function do_login() {
     setLoading(true);
     setErrorMessage(null);
-    login_consultor(username, password)
+    login_consultor(email, password)
       .then(() => setErrorMessage(null))
       .catch((e) => setErrorMessage(e.message || "Erro desconhecido"))
       .finally(() => {
@@ -46,13 +46,13 @@ export default function LoginConsultorPage() {
         <h2 className="fs-4 my-5">Login do Consultor</h2>
         <div className="flex-column my-5">
           <div className="input-group">
-            <span className="input-group-text">Username</span>
+            <span className="input-group-text">Email</span>
             <input
               type="text"
               className="form-control"
               placeholder="deltastroke"
-              value={username}
-              onChange={(x) => setUsername(x.target.value)}
+              value={email}
+              onChange={(x) => setEmail(x.target.value)}
             />
           </div>
           <div className="input-group">

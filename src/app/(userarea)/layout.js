@@ -1,36 +1,47 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAPIContext } from "@/contexts/api";
-import { useStateContext } from "@/contexts/state";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ROUTES } from "@/utils/variables";
+import LoadingPage from "@/components/loadingPage";
 
 export default function UserLoggedAreaLayout({ children }) {
-  const {
-    isLoggedDoctor,
-    isTokenLoaded,
-    isLoggedHospital,
-    isLoggedConsultor,
-    _token,
-  } = useAPIContext();
-  const { setIsAuthenticated } = useStateContext();
+  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor, _token } = useAPIContext();
+
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
   const router = useRouter();
+  const pathname = usePathname();
+
   useEffect(() => {
     if (isTokenLoaded) {
       if (isLoggedDoctor || isLoggedConsultor) {
         setIsAuthenticated(true);
       } else {
         if (isLoggedHospital) {
-          console.log("Sending back to doctor login page");
-          router.push(ROUTES.LOGIN_DOCTOR);
+          if (pathname.toLowerCase() !== ROUTES.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
+            console.log("Sending back to doctor login page");
+            router.push(ROUTES.LOGIN_DOCTOR);
+            setIsAuthenticated(false);
+          } else {
+            setIsAuthenticated(true);
+          }
         } else {
           console.log("Sending back to home page");
           router.push(ROUTES.HOME);
+          setIsAuthenticated(false);
         }
-        setIsAuthenticated(false);
       }
     }
   }, [isTokenLoaded, _token]);
 
-  return <React.Fragment>{children}</React.Fragment>;
+  if (isAuthenticated) {
+    return <React.Fragment>{children}</React.Fragment>;
+  } else {
+    return (
+      <React.Fragment>
+        <LoadingPage />
+      </React.Fragment>
+    );
+  }
 }

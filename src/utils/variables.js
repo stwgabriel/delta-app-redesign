@@ -20,6 +20,9 @@ export const ROUTES = {
   //Landing pages
   LANDING_PAGE_DOCTOR: "/doctor/overview",
   LANDING_PAGE_CONSULTOR: "/consultor/overview",
+  //Settings pages
+  SETTINGS_PAGE_USER: "/user/settings",
+  SETTINGS_PAGE_HOSPITAL: "/hospital/settings",
   // Prontuário
   PRONTUARIO: "/prontuario/overview",
   PRONTUARIO_PAG1: "/doctor/form/pag1",

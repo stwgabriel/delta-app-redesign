@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
 import { ROUTES } from "@/utils/variables";
+import { STATES } from "@/utils/generic";
 
 export default function SignupConsultorPage() {
   const router = useRouter();
-  const { signup_consultor, isLoggedConsultor, isTokenLoaded } =
-    useAPIContext();
+  const { signup_consultor, isLoggedConsultor, isTokenLoaded } = useAPIContext();
 
   // ---------------- form states ----------------
 
@@ -32,6 +32,7 @@ export default function SignupConsultorPage() {
 
   function do_signup() {
     setLoading(true);
+    setErrorMessage(null);
 
     if (password != confirmPassword) {
       setErrorMessage("As senhas não coincidem.");
@@ -50,28 +51,21 @@ export default function SignupConsultorPage() {
       password,
     };
 
-    console.log(userData);
-
-    signup_consultor(userData).finally(() => {
-      setLoading(false);
-    });
+    signup_consultor(userData)
+      .catch((e) => setErrorMessage(e.message))
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   useEffect(() => {
-    if (isTokenLoaded && isLoggedConsultor)
-      router.push(ROUTES.LANDING_PAGE_CONSULTOR);
+    if (isTokenLoaded && isLoggedConsultor) router.push(ROUTES.LANDING_PAGE_CONSULTOR);
   }, [isLoggedConsultor]);
 
   return (
     <>
       <section className="flex-column align-items-center mt-5">
-        <Image
-          src={"/logo.png"}
-          width={200}
-          height={200}
-          priority={100}
-          alt="Logo"
-        />
+        <Image src={"/logo.png"} width={200} height={200} priority={100} alt="Logo" />
         <h2 className="fs-1 fw-bold my-3">Delta Stroke Inc</h2>
         <h2 className="fs-4 my-3">Cadastro do Consultor</h2>
 
@@ -162,33 +156,11 @@ export default function SignupConsultorPage() {
               onChange={(e) => setCrmState(e.target.value)}
             >
               <option disabled>Estado CRM</option>
-              <option value={"AC"}>AC</option>
-              <option value={"AL"}>AL</option>
-              <option value={"AP"}>AP</option>
-              <option value={"AM"}>AM</option>
-              <option value={"BA"}>BA</option>
-              <option value={"CE"}>CE</option>
-              <option value={"DF"}>DF</option>
-              <option value={"ES"}>ES</option>
-              <option value={"GO"}>GO</option>
-              <option value={"MA"}>MA</option>
-              <option value={"MS"}>MS</option>
-              <option value={"MT"}>MT</option>
-              <option value={"MG"}>MG</option>
-              <option value={"PA"}>PA</option>
-              <option value={"PB"}>PB</option>
-              <option value={"PR"}>PR</option>
-              <option value={"PE"}>PE</option>
-              <option value={"PI"}>PI</option>
-              <option value={"RJ"}>RJ</option>
-              <option value={"RN"}>RN</option>
-              <option value={"RS"}>RS</option>
-              <option value={"RO"}>RO</option>
-              <option value={"RR"}>RR</option>
-              <option value={"SC"}>SC</option>
-              <option value={"SP"}>SP</option>
-              <option value={"SE"}>SE</option>
-              <option value={"TO"}>TO</option>
+              {Object.entries(STATES).map(([state_letter, state_name]) => (
+                <option key={state_letter} value={state_letter}>
+                  {state_name}
+                </option>
+              ))}
             </select>
             <input
               className="form-control"
@@ -234,11 +206,7 @@ export default function SignupConsultorPage() {
           {loading ? (
             <Spinner />
           ) : (
-            <button
-              type="button"
-              className="btn btn-dark mt-3"
-              onClick={do_signup}
-            >
+            <button type="button" className="btn btn-dark mt-3" onClick={do_signup}>
               Criar consultor
             </button>
           )}

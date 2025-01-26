@@ -16,11 +16,11 @@ export const WebSocketContextProvider = ({ children }) => {
 
   useEffect(() => {
     if (ws) return;
-    ws = new WebSocket(get_socket_host());
+    // ws = new WebSocket(get_socket_host());
 
-    ws.addEventListener("open", handleOpenConnection);
-    ws.addEventListener("message", handleIncomingMessage);
-    ws.addEventListener("error", console.error);
+    // ws.addEventListener("open", handleOpenConnection);
+    // ws.addEventListener("message", handleIncomingMessage);
+    // ws.addEventListener("error", console.error);
   }, []);
 
   function handleOpenConnection(event) {
@@ -80,7 +80,6 @@ export const WebSocketContextProvider = ({ children }) => {
 
   function emit(action, content, configs = {}) {
     console.log("Sockets sending message...");
-    // console.log(action, content)
     _getValidToken()
       .then((token) =>
         ws.send(
@@ -112,9 +111,7 @@ export const WebSocketContextProvider = ({ children }) => {
   }
 
   return (
-    <WebSocketContext.Provider
-      value={{ isReady, emit, addEventListener, emitAwait }}
-    >
+    <WebSocketContext.Provider value={{ isReady, emit, addEventListener, emitAwait }}>
       {children}
     </WebSocketContext.Provider>
   );

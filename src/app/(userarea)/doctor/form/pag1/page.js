@@ -15,7 +15,7 @@ export default function ProntuarioPage1Page() {
 
   // ---------------------------------------------------------------------------
 
-  const myForm = useForm({ page1_status: "COMPLETO" });
+  const myForm = useForm({ page1_status: "COMPLETO", clock_form_start: new Date().toISOString() });
   const { chart, refreshChart } = useChart(chart_id, true);
 
   // ---------------------------------------------------------------------------
@@ -37,9 +37,7 @@ export default function ProntuarioPage1Page() {
         <Spinner />
       ) : (
         <React.Fragment>
-          <h1 className="fs-4 my-1">
-            Motivo de ter iniciado o protocolo de AVC
-          </h1>
+          <h1 className="fs-4 my-1">Motivo de ter iniciado o protocolo de AVC</h1>
           <select
             className="form-control"
             onChange={(x) => {

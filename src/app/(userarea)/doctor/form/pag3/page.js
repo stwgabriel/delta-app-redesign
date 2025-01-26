@@ -6,7 +6,6 @@ import { useForm } from "@/contexts/form";
 import { useChart } from "@/contexts/chart";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
-import { useStateContext } from "@/contexts/state";
 import { getMaxNIHCount } from "@/utils/funcs";
 
 export default function ProntuarioPage3Page() {
@@ -15,7 +14,6 @@ export default function ProntuarioPage3Page() {
   const { chart_update_attributes, get_nih_template } = useAPIContext();
   const [errorMessage, setErrorMessage] = useState(null);
   const [template, setTemplate] = useState(null);
-  const { isAuthenticated } = useStateContext();
   // ---------------------------------------------------------------------------
 
   const myForm = useForm({ page3_status: "COMPLETO" });
@@ -24,14 +22,13 @@ export default function ProntuarioPage3Page() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    if (isAuthenticated) {
-      get_nih_template().then(setTemplate).catch(console.error);
-    }
-  }, [isAuthenticated]);
+    get_nih_template().then(setTemplate).catch(console.error);
+  }, []);
 
   function send_form() {
     setErrorMessage(null);
-    chart_update_attributes(chart_id, myForm.values)
+
+    chart_update_attributes(chart_id, { ...myForm.values, clock_form_end: new Date().toISOString() })
       .then(refreshChart)
       .catch((e) => setErrorMessage(e.message));
   }
@@ -67,11 +64,7 @@ export default function ProntuarioPage3Page() {
               <span
                 className="input-group-text "
                 style={{
-                  backgroundColor: interpolateColour(
-                    "#198754",
-                    "#dc3545",
-                    getNIHCount() / getMaxNIHCount(template)
-                  ),
+                  backgroundColor: interpolateColour("#198754", "#dc3545", getNIHCount() / getMaxNIHCount(template)),
                 }}
               >
                 {getNIHCount()} pontos
@@ -94,26 +87,18 @@ export default function ProntuarioPage3Page() {
                         myForm.setFormValue(section.field, item.id);
                       }}
                     />
-                    <label
-                      className="form-check-label mt-1"
-                      htmlFor={`sc-${i}-qst-${j}`}
-                    >
+                    <label className="form-check-label mt-1" htmlFor={`sc-${i}-qst-${j}`}>
                       {item.description} ({item.score} pontos)
                     </label>
 
                     {item.require_text_input === true && (
-                      <div
-                        className="form-floating"
-                        id={`sc-${i}-qst-${j}-txt`}
-                      >
+                      <div className="form-floating" id={`sc-${i}-qst-${j}-txt`}>
                         <input
                           type="text"
                           className="form-control"
                           id={`sc-${i}-qst-${j}-txt`}
                           placeholder="Explique"
-                          value={
-                            myForm.getFormValue(`${section.field}_other`) || ""
-                          }
+                          value={myForm.getFormValue(`${section.field}_other`) || ""}
                           onChange={(e) => {
                             const newVal = {
                               [section.field]: item.id,
@@ -153,18 +138,14 @@ export default function ProntuarioPage3Page() {
             className="form-control"
             placeholder="Sistólica"
             value={myForm.getFormValue("blood_pressure_systolic") || ""}
-            onChange={(e) =>
-              myForm.setFormValue("blood_pressure_systolic", e.target.value)
-            }
+            onChange={(e) => myForm.setFormValue("blood_pressure_systolic", e.target.value)}
           />
           <input
             type="number"
             className="form-control"
             placeholder="Diastólica"
             value={myForm.getFormValue("blood_pressure_diastolic") || ""}
-            onChange={(e) =>
-              myForm.setFormValue("blood_pressure_diastolic", e.target.value)
-            }
+            onChange={(e) => myForm.setFormValue("blood_pressure_diastolic", e.target.value)}
           />
         </div>
         <div className="input-group mb-2">

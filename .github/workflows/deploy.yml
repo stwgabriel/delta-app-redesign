@@ -47,7 +47,7 @@ jobs:
           aws-region: sa-east-1
 
       - name: Deploy to S3
-        run: aws s3 sync ./out s3://dev-webapp-deltastroke
+        run: aws s3 sync ./out s3://${ENVIRONMENT}-webapp-deltastroke
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

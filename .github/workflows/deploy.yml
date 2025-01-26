@@ -36,9 +36,14 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Build
+      - name: Is env here?
         run: |
           cat .env
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_TESTE: Nossa veio daqui
+        run: |
           yarn build
 
       - name: Configure AWS credentials

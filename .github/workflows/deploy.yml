@@ -31,6 +31,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Build
+        env:
+          NEXT_PUBLIC_API_ENDPOINT: https://3l03puaz4j.execute-api.sa-east-1.amazonaws.com/dev
+          NEXT_PUBLIC_WS_ENDPOINT: wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production
         run: |
           yarn build
 

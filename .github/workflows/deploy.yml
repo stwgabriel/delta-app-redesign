@@ -19,12 +19,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up env file
-        run: |
-          touch .env
-          echo NEXT_PUBLIC_TESTE=Testando
-          cat .env
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -36,13 +30,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Is env here?
-        run: |
-          cat .env
-
       - name: Build
-        env:
-          NEXT_PUBLIC_TESTE: Nossa veio daqui
         run: |
           yarn build
 

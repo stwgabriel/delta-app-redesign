@@ -21,8 +21,8 @@ export default function HospitalSettingsPage() {
 
   function set_change(field, newValue) {
     setHospitalChanges((oldHospital) => {
-      const newHospital = { ...oldHospital, [field]: newValue.trim() };
-      if (newHospital[field] === hospital[field] || newHospital[field] === "") {
+      const newHospital = { ...oldHospital, [field]: newValue };
+      if (newHospital[field] === hospital[field].trim() || newHospital[field].trim() === "") {
         delete newHospital[field];
       }
       return newHospital;

@@ -23,7 +23,7 @@ export default function Home() {
     <>
       <section className="flex-column align-items-center mt-5"></section>
       <section className="flex-column mt-5">
-        <span className="fs-3 mb-2">Sobre nós: {process.env.NEXT_PUBLIC_TESTE}</span>
+        <span className="fs-3 mb-2">Sobre nós</span>
         <span className="text-justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet elit purus. Donec mauris ante,
           consequat a aliquet et, vehicula malesuada libero. Vivamus eget magna id quam semper auctor vel vitae nisi.

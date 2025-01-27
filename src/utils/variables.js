@@ -5,7 +5,7 @@ export function get_api_host() {
 }
 export function get_socket_host() {
   return process.env.NEXT_PUBLIC_WS_ENDPOINT || "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";
-  return "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";
+  // return "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";
 }
 
 export const ROUTES = {

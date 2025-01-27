@@ -22,8 +22,8 @@ export default function UserSettingsPage() {
 
   function set_change(field, newValue) {
     setUserChanges((oldUser) => {
-      const newUser = { ...oldUser, [field]: newValue.trim() };
-      if (newUser[field] === user[field] || newUser[field] === "") {
+      const newUser = { ...oldUser, [field]: newValue };
+      if (newUser[field] === user[field].trim() || newUser[field].trim() === "") {
         delete newUser[field];
       }
       return newUser;

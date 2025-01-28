@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
 import { ROUTES } from "@/utils/variables";
+import Link from "next/link";
 
 export default function LoginConsultorPage() {
   const router = useRouter();
@@ -27,20 +28,13 @@ export default function LoginConsultorPage() {
   }
 
   useEffect(() => {
-    if (isTokenLoaded && isLoggedConsultor)
-      router.push(ROUTES.LANDING_PAGE_CONSULTOR);
+    if (isTokenLoaded && isLoggedConsultor) router.push(ROUTES.LANDING_PAGE_CONSULTOR);
   }, [isLoggedConsultor]);
 
   return (
     <>
       <section className="flex-column align-items-center mt-5">
-        <Image
-          src={"/logo.png"}
-          width={200}
-          height={200}
-          priority={100}
-          alt="Logo"
-        />
+        <Image src={"/logo.png"} width={200} height={200} priority={100} alt="Logo" />
         <h2 className="fs-1 fw-bold my-5">Delta Stroke Inc</h2>
 
         <h2 className="fs-4 my-5">Login do Consultor</h2>
@@ -55,6 +49,7 @@ export default function LoginConsultorPage() {
               onChange={(x) => setEmail(x.target.value)}
             />
           </div>
+
           <div className="input-group">
             <span className="input-group-text">Senha</span>
             <input
@@ -64,15 +59,17 @@ export default function LoginConsultorPage() {
               onChange={(x) => setPassword(x.target.value)}
             />
           </div>
+
+          <div className="mt-2 align-self-end">
+            <Link href={ROUTES.SIGNUP_CONSULTOR} className="text-decoration-none">
+              Cadastre-se
+            </Link>
+          </div>
           <p className="text-danger">{errorMessage}</p>
           {loading ? (
             <Spinner />
           ) : (
-            <button
-              type="button"
-              className="btn btn-dark mt-3"
-              onClick={do_login}
-            >
+            <button type="button" className="btn btn-dark mt-3" onClick={do_login}>
               Entrar
             </button>
           )}

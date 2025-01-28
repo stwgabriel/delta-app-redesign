@@ -1,6 +1,7 @@
 "use client";
 import { useAPIContext } from "@/contexts/api";
 import { ROUTES } from "@/utils/variables";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -21,7 +22,11 @@ export default function Home() {
 
   return (
     <>
-      <section className="flex-column align-items-center mt-5"></section>
+      <section className="flex-column align-items-center mt-5">
+        {/* <Link className="text-dark align-items-center text-decoration-none" href={ROUTES.SIGNUP_HOSPITAL}>
+          Cadastrar hospital
+        </Link> */}
+      </section>
       <section className="flex-column mt-5">
         <span className="fs-3 mb-2">Sobre nós</span>
         <span className="text-justify">

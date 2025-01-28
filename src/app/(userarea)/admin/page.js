@@ -7,6 +7,7 @@ import React from "react";
 export default function AdminOverviewPage() {
   return (
     <React.Fragment>
+      <div className="mt-3"></div>
       <AdminHospitaisComponent />
       <AdminUserComponent />
     </React.Fragment>

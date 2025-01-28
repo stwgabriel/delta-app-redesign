@@ -31,6 +31,13 @@ export default function Header() {
           <Spinner />
         ) : isLoggedConsultor ? (
           <div className="align-items-center">
+            <Link
+              className="material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.ADMIN_PAGE}
+            >
+              admin_panel_settings
+            </Link>
             <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
             </span>

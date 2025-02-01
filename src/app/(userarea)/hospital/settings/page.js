@@ -1,22 +1,24 @@
 "use client";
-
+import { useClientNotificationContext } from "@/contexts/client_notification";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
 import { isEmpty } from "@/utils/funcs";
 import React, { useEffect, useState } from "react";
 
 export default function HospitalSettingsPage() {
+  const { notifyError } = useClientNotificationContext();
   const { get_hospital, put_hospital } = useAPIContext();
+  const [loadingHospital, setLoadingHospital] = useState(false);
   const [hospital, setHospital] = useState(null);
-  const [error, setError] = useState(null);
   const [hospitalChanges, setHospitalChanges] = useState({});
   const [hospitalChangesLoading, setHospitalChangesLoading] = useState(false);
 
   useEffect(() => {
-    setError(null);
+    setLoadingHospital(true);
     get_hospital()
       .then(setHospital)
-      .catch((e) => setError(e.message));
+      .catch((e) => notifyError(e.message))
+      .finally(() => setLoadingHospital(false));
   }, []);
 
   function set_change(field, newValue) {
@@ -31,24 +33,22 @@ export default function HospitalSettingsPage() {
 
   function send_changes() {
     setHospitalChangesLoading(true);
-    setError(null);
     put_hospital(hospitalChanges)
       .then((u) => {
         setHospital(u);
         setHospitalChanges({});
       })
-      .catch((e) => setError(e.message))
+      .catch((e) => notifyError(e.message))
       .finally(() => setHospitalChangesLoading(false));
   }
 
   return (
     <React.Fragment>
       <section className="mt-5 justify-content-center">
-        {hospital === null ? (
-          <>
-            <span className="text-danger my-3">{error}</span>
-            <Spinner />
-          </>
+        {loadingHospital ? (
+          <Spinner />
+        ) : hospital === null ? (
+          <span className="text-danger">Erro ao carregar dados, tente novamente mais tarde!</span>
         ) : (
           <div className="flex-column justify-content-center align-items-center">
             <span className="align-self-start fs-3 my-2">Perfil do Hospital</span>
@@ -87,8 +87,6 @@ export default function HospitalSettingsPage() {
                 onChange={(e) => set_change("new_password", e.target.value)}
               />
             </div>
-
-            <span className="text-danger">{error}</span>
 
             {!isEmpty(hospitalChanges) && (
               <div className="align-self-end">

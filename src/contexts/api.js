@@ -230,7 +230,7 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function chart_update_attributes(chart_id, attributes) {
-    const url = `/v1/chart/form/update_attributes?chart_id=${chart_id}`;
+    const url = `/v1/chart/update_attributes?chart_id=${chart_id}`;
     const configs = { body: JSON.stringify(attributes) };
     return _post(url, configs);
   }

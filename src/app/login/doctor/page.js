@@ -6,6 +6,8 @@ import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
 import { ROUTES } from "@/utils/variables";
 import { useClientNotificationContext } from "@/contexts/client_notification";
+import { formatCPF } from "@/utils/funcs";
+import { STATES } from "@/utils/generic";
 
 export default function LoginDoctorPage() {
   const { notifyError } = useClientNotificationContext();
@@ -13,9 +15,8 @@ export default function LoginDoctorPage() {
   const { login_doctor, isLoggedHospital, isLoggedDoctor, isTokenLoaded } = useAPIContext();
 
   const [CPF, setCPF] = useState("");
-  const [CRMUF, setCRMUF] = useState("");
+  const [CRMState, setCRMState] = useState("");
   const [CRMNumber, setCRMNumber] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function LoginDoctorPage() {
 
   function do_login() {
     setLoading(true);
-    login_doctor(CPF, CRMNumber, CRMUF)
+    login_doctor(CPF, CRMNumber, CRMState)
       .catch((e) => notifyError(e.message || "Erro desconhecido"))
       .finally(() => {
         setLoading(false);
@@ -39,27 +40,40 @@ export default function LoginDoctorPage() {
 
   return (
     <section className="flex-column align-items-center my-auto">
-      <h1 className="fs-4">Login do usuário</h1>
+      <h1 className="fs-4">Login do médico</h1>
       <div className="flex-column my-5">
         <div className="input-group">
           <span className="input-group-text">CPF</span>
           <input
             type="text"
             className="form-control"
-            placeholder="Médico"
+            placeholder="CPF do Médico"
             value={CPF}
-            onChange={(x) => setCPF(x.target.value)}
+            onChange={(x) => setCPF(formatCPF(x.target.value))}
           />
         </div>
         <div className="input-group">
           <span className="input-group-text">CRM</span>
-          <input
+          {/* <input
             type="text"
             className="form-control"
             placeholder="UF"
             value={CRMUF}
             onChange={(x) => setCRMUF(x.target.value)}
-          />
+          /> */}
+          <select
+            className="form-select"
+            defaultValue="Estado CRM"
+            style={{ maxWidth: "150px" }}
+            onChange={(e) => setCRMState(e.target.value)}
+          >
+            <option disabled>Estado CRM</option>
+            {Object.entries(STATES).map(([state_letter, state_name]) => (
+              <option key={state_letter} value={state_letter}>
+                {state_name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             className="form-control"

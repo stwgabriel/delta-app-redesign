@@ -24,12 +24,20 @@ export function humanFileSize(bytes, si = true, dp = 1) {
   do {
     bytes /= thresh;
     ++u;
-  } while (
-    Math.round(Math.abs(bytes) * r) / r >= thresh &&
-    u < units.length - 1
-  );
+  } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
 
   return bytes.toFixed(dp) + " " + units[u];
+}
+
+export function formatCPF(value) {
+  let newValue = value.replace(/\D/g, "");
+  if (newValue.length > 11) {
+    newValue = newValue.slice(0, 11); // Limita a 11 dígitos
+  }
+  newValue = newValue.replace(/(\d{3})(\d)/, "$1.$2");
+  newValue = newValue.replace(/(\d{3})(\d)/, "$1.$2");
+  newValue = newValue.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return newValue;
 }
 
 export function isBlank(val) {
@@ -70,10 +78,7 @@ export function decodeJWT(token) {
 
 export function uuidv4() {
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (c) =>
-    (
-      +c ^
-      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
-    ).toString(16)
+    (+c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))).toString(16)
   );
 }
 
@@ -105,9 +110,6 @@ export function getValueFromObj(obj, _default = "NÃO INFORMADO") {
 
 export function getMaxNIHCount(template) {
   if (!template) return 1;
-  let maxScore = template.reduce(
-    (acc, section) => acc + Math.max(...section.items.map((q) => q.score)),
-    0
-  );
+  let maxScore = template.reduce((acc, section) => acc + Math.max(...section.items.map((q) => q.score)), 0);
   return maxScore;
 }

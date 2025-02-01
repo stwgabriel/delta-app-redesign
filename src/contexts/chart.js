@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 import { useAPIContext } from "./api";
 import { usePathname, useRouter } from "next/navigation";
 import { ROUTES } from "@/utils/variables";
+import { useClientNotificationContext } from "./client_notification";
 
 export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
+  const { notifyInfo, notifyError } = useClientNotificationContext();
   const pathname = usePathname();
   const router = useRouter();
   const { get_chart } = useAPIContext();
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
-    refreshChart();
+    refreshChart(false);
   }, []);
 
   useEffect(() => {
@@ -41,8 +43,15 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
     }
   }
 
-  function refreshChart() {
-    get_chart(chart_id).then(setChart).catch(console.error);
+  function refreshChart(notify = true) {
+    get_chart(chart_id)
+      .then((c) => {
+        setChart(c);
+        if (notify) {
+          notifyInfo("Prontuário atualizado");
+        }
+      })
+      .catch((e) => notifyError(e.message));
   }
 
   return {

@@ -209,6 +209,15 @@ export default function ChartAttributes({ chart }) {
           </span>
         </div>
       </div>
+
+      <div className="list-group-item">
+        <FormDisplay
+          name="Conduta"
+          text={getValueFromObj(chart.conduct)}
+          align_label_center={false}
+          align_value_center={false}
+        />
+      </div>
     </section>
   );
 }

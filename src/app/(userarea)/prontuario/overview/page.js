@@ -15,7 +15,7 @@ import ConductComponent from "@/components/prontuario/conduct";
 export default function ProntuarioPage() {
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
-  const { chart } = useChart(chart_id);
+  const { chart, refreshChart } = useChart(chart_id);
   const [chartChat, setChartChat] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
   const chatMessagesRef = useRef(null);
@@ -60,7 +60,7 @@ export default function ProntuarioPage() {
 
       {chart === null ? <Spinner /> : <ChartAttributes chart={chart} />}
 
-      <ConductComponent chart={chart} />
+      <ConductComponent chart={chart} refreshChart={refreshChart} />
 
       <section className="mt-4 flex-column">
         <span className="fs-5 mb-3">Arquivos</span>

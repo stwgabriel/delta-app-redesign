@@ -1,7 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import Spinner from "../spinner";
+import { useAPIContext } from "@/contexts/api";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
-export default function ConductComponent({ chart }) {
-  const [conduct, setConduct] = useState("");
+export default function ConductComponent({ chart, refreshChart }) {
+  const { notifySuccess, notifyError } = useClientNotificationContext();
+  const [conduct, setConduct] = useState(chart === null ? "" : chart.conduct.value || "");
+  const [loading, setLoading] = useState(false);
+  const { chart_update_attributes } = useAPIContext();
 
   const weight = chart?.weight?.value ? chart.weight.value : null;
 
@@ -32,16 +38,38 @@ export default function ConductComponent({ chart }) {
     },
   ];
 
+  function change_conduct() {
+    setLoading(true);
+
+    chart_update_attributes(chart.id, { conduct })
+      .then(() => {
+        notifySuccess("Conduta alterada com sucesso!");
+        refreshChart();
+      })
+      .catch((e) => notifyError(e.message))
+      .finally(() => setLoading(false));
+  }
+
   return (
     <section className="flex list-group my-3">
       <div className="list-group-item">
-        <span className="fs-3">Conduta(s)</span>
+        <span className="fs-3">Alterar conduta</span>
+        <span className="fs-6 text-secondary mt-1">Ao clicar em salvar você irá alterar a conduta anterior</span>
         <textarea
-          className="form-control mt-4"
+          className="d-flex form-control mt-4"
           value={conduct}
           rows={4}
           onChange={(e) => setConduct(e.target.value)}
         />
+        <div className="d-flex justify-content-end mt-2">
+          {loading ? (
+            <Spinner />
+          ) : (
+            <button className="btn btn-success d-flex" onClick={change_conduct}>
+              Salvar
+            </button>
+          )}
+        </div>
         {condutas_template.map((ctx, i) => (
           <React.Fragment key={`cdt-${i}`}>
             <span className="mt-4 fs-5">{ctx.title}</span>

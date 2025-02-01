@@ -7,8 +7,10 @@ import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
 import { ROUTES } from "@/utils/variables";
 import { STATES } from "@/utils/generic";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function SignupConsultorPage() {
+  const { notifyError } = useClientNotificationContext();
   const router = useRouter();
   const { signup_consultor, isLoggedConsultor, isTokenLoaded } = useAPIContext();
 
@@ -28,14 +30,12 @@ export default function SignupConsultorPage() {
   // ---------------------------------------------
 
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   function do_signup() {
     setLoading(true);
-    setErrorMessage(null);
 
     if (password != confirmPassword) {
-      setErrorMessage("As senhas não coincidem.");
+      notifyError("As senhas não coincidem.");
       setLoading(false);
       return;
     }
@@ -52,7 +52,7 @@ export default function SignupConsultorPage() {
     };
 
     signup_consultor(userData)
-      .catch((e) => setErrorMessage(e.message))
+      .catch((e) => notifyError(e.message))
       .finally(() => {
         setLoading(false);
       });
@@ -199,7 +199,6 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <p className="text-danger my-2">{errorMessage}</p>
         {loading ? (
           <Spinner />
         ) : (

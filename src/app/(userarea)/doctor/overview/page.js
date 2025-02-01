@@ -5,8 +5,10 @@ import { useAPIContext } from "@/contexts/api";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function OverviewDoctorPage() {
+  const { notifyError } = useClientNotificationContext();
   const { get_my_charts, create_chart } = useAPIContext();
   const router = useRouter();
 
@@ -35,7 +37,7 @@ export default function OverviewDoctorPage() {
               .then((r) => {
                 router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${r.id}`);
               })
-              .catch((e) => setErrorMessage(e.message));
+              .catch((e) => notifyError(e.message));
           }}
         >
           Iniciar novo protocolo de AVC

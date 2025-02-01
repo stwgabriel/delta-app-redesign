@@ -1,17 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "@/contexts/form";
 import { useAPIContext } from "@/contexts/api";
 import { useSearchParams } from "next/navigation";
 import { criterio_protocolo_avc } from "@/utils/templates";
 import Spinner from "@/components/spinner";
 import { useChart } from "@/contexts/chart";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function ProntuarioPage1Page() {
+  const { notifyError } = useClientNotificationContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes } = useAPIContext();
-  const [errorMessage, setErrorMessage] = useState(null);
 
   // ---------------------------------------------------------------------------
 
@@ -21,10 +22,9 @@ export default function ProntuarioPage1Page() {
   // ---------------------------------------------------------------------------
 
   function send_form() {
-    setErrorMessage(null);
     chart_update_attributes(chart_id, myForm.values)
       .then(refreshChart)
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   return (
@@ -56,7 +56,6 @@ export default function ProntuarioPage1Page() {
               Enviar
             </button>
           </section>
-          <p className="text-danger">{errorMessage}</p>
         </React.Fragment>
       )}
     </>

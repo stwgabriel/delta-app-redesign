@@ -7,12 +7,12 @@ import { useChart } from "@/contexts/chart";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "@/components/spinner";
 import { getMaxNIHCount } from "@/utils/funcs";
-
+import { useClientNotificationContext } from "@/contexts/client_notification";
 export default function ProntuarioPage3Page() {
+  const { notifyError } = useClientNotificationContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes, get_nih_template } = useAPIContext();
-  const [errorMessage, setErrorMessage] = useState(null);
   const [template, setTemplate] = useState(null);
   // ---------------------------------------------------------------------------
 
@@ -26,11 +26,9 @@ export default function ProntuarioPage3Page() {
   }, []);
 
   function send_form() {
-    setErrorMessage(null);
-
     chart_update_attributes(chart_id, { ...myForm.values, clock_form_end: new Date().toISOString() })
       .then(refreshChart)
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   function getNIHCount() {
@@ -194,7 +192,6 @@ export default function ProntuarioPage3Page() {
           Enviar
         </button>
       </section>
-      <p className="text-danger">{errorMessage}</p>
     </>
   );
 }

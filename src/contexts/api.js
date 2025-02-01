@@ -16,12 +16,12 @@ export const APIContextProvider = ({ children }) => {
     let savedToken = localStorage.getItem("token");
     if (savedToken === null || savedToken === undefined) savedToken = null;
     _setToken(savedToken);
-    console.log("Token loaded. Exists?", savedToken ? "yes" : "no");
+    console.debug("Token loaded. Exists?", savedToken ? "yes" : "no");
     setIsTokenLoaded(true);
   }, []);
 
   useEffect(() => {
-    console.log("Token changed");
+    console.debug("Token changed");
   }, [_token]);
 
   function setToken(token) {
@@ -360,6 +360,7 @@ export const APIContextProvider = ({ children }) => {
         isLoggedConsultor: getFromToken("scope") === "CONSULTOR",
         isLoggedHospital: getFromToken("scope") === "HOSPITAL",
         isLoggedDoctor: getFromToken("scope") === "DOCTOR",
+        isAdmin: getFromToken("is_admin"),
         isTokenLoaded,
         get_my_user_id,
         get_my_charts,

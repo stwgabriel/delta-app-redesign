@@ -9,7 +9,7 @@ import { ROUTES } from "@/utils/variables";
 
 export default function Header() {
   const router = useRouter();
-  const { isTokenLoaded, isLoggedConsultor, isLoggedHospital, isLoggedDoctor, logout } = useAPIContext();
+  const { isTokenLoaded, isLoggedConsultor, isLoggedHospital, isLoggedDoctor, logout, isAdmin } = useAPIContext();
 
   return (
     <nav className="navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
@@ -31,12 +31,21 @@ export default function Header() {
           <Spinner />
         ) : isLoggedConsultor ? (
           <div className="align-items-center">
+            {isAdmin && (
+              <Link
+                className="material-icons fs-1 text-decoration-none text-body"
+                style={{ cursor: "pointer" }}
+                href={ROUTES.ADMIN_PAGE}
+              >
+                admin_panel_settings
+              </Link>
+            )}
             <Link
               className="material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
-              href={ROUTES.ADMIN_PAGE}
+              href={ROUTES.SETTINGS_PAGE_USER}
             >
-              admin_panel_settings
+              settings
             </Link>
             <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
@@ -44,13 +53,13 @@ export default function Header() {
           </div>
         ) : isLoggedDoctor ? (
           <div className="align-items-center">
-            <span
-              className="material-icons fs-1"
+            <Link
+              className="material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
-              onClick={() => router.push(ROUTES.SETTINGS_PAGE_USER)}
+              href={ROUTES.SETTINGS_PAGE_USER}
             >
               settings
-            </span>
+            </Link>
             <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
             </span>

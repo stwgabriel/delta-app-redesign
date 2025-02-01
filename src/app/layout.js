@@ -5,6 +5,7 @@ import { WebSocketContextProvider } from "@/contexts/ws";
 import { APIContextProvider } from "@/contexts/api";
 import { Suspense } from "react";
 import Footer from "@/components/footer";
+import { ClientNotificationContextProvider } from "@/contexts/client_notification";
 export const metadata = {
   title: "Delta Stroke Inc",
 };
@@ -19,9 +20,11 @@ export default function RootLayout({ children }) {
         <Suspense>
           <APIContextProvider>
             <WebSocketContextProvider>
-              <Header />
-              <main className="container d-flex flex-column flex-fill">{children}</main>
-              <Footer />
+              <ClientNotificationContextProvider>
+                <Header />
+                <main className="container d-flex flex-column flex-fill">{children}</main>
+                <Footer />
+              </ClientNotificationContextProvider>
             </WebSocketContextProvider>
           </APIContextProvider>
         </Suspense>

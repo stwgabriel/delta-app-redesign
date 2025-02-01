@@ -6,9 +6,7 @@ import React, { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-
   const { isLoggedConsultor, isLoggedDoctor, isTokenLoaded } = useAPIContext();
-
   useEffect(() => {
     if (isTokenLoaded) {
       if (isLoggedConsultor) {

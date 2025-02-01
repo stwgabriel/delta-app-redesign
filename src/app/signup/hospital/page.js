@@ -1,5 +1,6 @@
 "use client";
-import Image from "next/image";
+
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import Spinner from "@/components/spinner";
 import { ROUTES } from "@/utils/variables";
 
 export default function SignupConsultorPage() {
+  const { notifyError } = useClientNotificationContext();
   const router = useRouter();
   const { signup_hospital, isLoggedConsultor, isTokenLoaded } = useAPIContext();
 
@@ -21,14 +23,12 @@ export default function SignupConsultorPage() {
   // ---------------------------------------------
 
   const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   function do_signup() {
     setLoading(true);
-    setErrorMessage(null);
 
     if (password != confirmPassword) {
-      setErrorMessage("As senhas não coincidem.");
+      notifyError("As senhas não coincidem.");
       setLoading(false);
       return;
     }
@@ -43,7 +43,7 @@ export default function SignupConsultorPage() {
       .then(() => {
         router.push(ROUTES.HOME);
       })
-      .catch((e) => setErrorMessage(e.message))
+      .catch((e) => notifyError(e.message))
       .finally(() => {
         setLoading(false);
       });
@@ -118,7 +118,6 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <p className="text-danger my-2">{errorMessage}</p>
         {loading ? (
           <Spinner />
         ) : (

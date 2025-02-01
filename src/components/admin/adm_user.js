@@ -3,10 +3,12 @@
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
 import React, { useEffect, useState } from "react";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function AdminUserComponent() {
+  const { notifyError } = useClientNotificationContext();
+
   const [users, setUsers] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
   const { list_users, change_user } = useAPIContext();
 
   useEffect(() => {
@@ -16,16 +18,15 @@ export default function AdminUserComponent() {
   function refreshUsers() {
     list_users()
       .then(setUsers)
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   function _change_user(data) {
-    setErrorMessage(null);
     change_user(data)
       .then(() => {
         refreshUsers();
       })
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   return (
@@ -114,7 +115,6 @@ export default function AdminUserComponent() {
           </table>
         )}
       </div>
-      <span className="text-danger">{errorMessage}</span>
     </section>
   );
 }

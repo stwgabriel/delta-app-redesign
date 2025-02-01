@@ -3,16 +3,17 @@
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
 import React, { useEffect, useState } from "react";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function AdminHospitaisComponent() {
+  const { notifyError } = useClientNotificationContext();
   const [hospitais, setHospitais] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
   const { list_hospitals, change_hospital } = useAPIContext();
 
   function refreshHospitals() {
     list_hospitals()
       .then(setHospitais)
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function AdminHospitaisComponent() {
       .then(() => {
         refreshHospitals();
       })
-      .catch((e) => setErrorMessage(e.message));
+      .catch((e) => notifyError(e.message));
   }
 
   return (
@@ -73,7 +74,6 @@ export default function AdminHospitaisComponent() {
           </table>
         )}
       </div>
-      <span className="text-danger">{errorMessage}</span>
     </section>
   );
 }

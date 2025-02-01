@@ -337,6 +337,16 @@ export const APIContextProvider = ({ children }) => {
     return _put(url, configs);
   }
 
+  function signup_hospital(data) {
+    const url = API_ROUTES.SIGNUP_HOSPITAL;
+    const body = JSON.stringify(data);
+    const configs = { body, method: "POST" };
+
+    return new Promise((resolve, reject) => {
+      _request(url, configs).then(resolve).catch(reject);
+    });
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -375,6 +385,7 @@ export const APIContextProvider = ({ children }) => {
         put_me,
         get_hospital,
         put_hospital,
+        signup_hospital,
       }}
     >
       {children}

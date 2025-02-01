@@ -37,6 +37,7 @@ export const API_ROUTES = {
   // Auth
   REFRESH_TOKEN: "/v1/auth/refresh_token",
   SIGNUP_CONSULTOR: "/v1/auth/signup/consultor",
+  SIGNUP_HOSPITAL: "/v1/auth/signup/hospital",
   LOGIN_CONSULTOR: "/v1/auth/login/consultor",
   LOGIN_HOSPITAL: "/v1/auth/login/hospital",
   LOGIN_DOCTOR: "/v1/auth/login/doctor",

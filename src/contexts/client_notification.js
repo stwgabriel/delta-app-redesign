@@ -26,7 +26,7 @@ export const ClientNotificationContextProvider = ({ children }) => {
 
   return (
     <ClientNotificationContext.Provider value={{ notifyInfo, notifySuccess, notifyWarn, notifyError, notify }}>
-      <ToastContainer />
+      <ToastContainer stacked />
       {children}
     </ClientNotificationContext.Provider>
   );

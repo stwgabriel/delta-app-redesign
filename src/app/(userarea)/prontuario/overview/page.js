@@ -10,9 +10,11 @@ import FileUploadComponent from "@/components/chart/file_upload";
 import AvailableFiles from "@/components/chart/available_files";
 import VideoChatComponent from "@/components/prontuario/video_chat";
 import ChartAttributes from "@/components/prontuario/chart_attributes";
-import ConductComponent from "@/components/prontuario/conduct";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function ProntuarioPage() {
+  const { notifySuccess, notifyError } = useClientNotificationContext();
+  const { chart_update_attributes } = useAPIContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart, refreshChart } = useChart(chart_id);
@@ -52,15 +54,20 @@ export default function ProntuarioPage() {
     }
   }
 
+  function closeCase() {
+    chart_update_attributes(chart_id, { status: "FINALIZADO" })
+      .then(() => notifySuccess("Caso encerrado com sucesso"))
+      .catch((e) => notifyError(`Erro ao encerrar caso: ${e.message}`))
+      .finally(() => refreshChart());
+  }
+
   return (
-    <div className="container justify-content-center flex-column">
+    <div className="justify-content-center flex-column my-2">
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
       <span className="fs-1 my-3">Prontuário</span>
 
-      {chart === null ? <Spinner /> : <ChartAttributes chart={chart} />}
-
-      <ConductComponent chart={chart} refreshChart={refreshChart} />
+      {chart === null ? <Spinner /> : <ChartAttributes chart={chart} refreshChart={refreshChart} />}
 
       <section className="mt-4 flex-column">
         <span className="fs-5 mb-3">Arquivos</span>
@@ -110,6 +117,17 @@ export default function ProntuarioPage() {
           </span>
         </div>
       </section>
+
+      {chart && chart.status?.value !== "FINALIZADO" && (
+        <section>
+          <button
+            className="btn btn-warning"
+            onClick={() => window.confirm("Tem certeza que deseja encerrar o caso?") && closeCase()}
+          >
+            Encerrar atendimento
+          </button>
+        </section>
+      )}
     </div>
   );
 }

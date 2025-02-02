@@ -23,7 +23,7 @@ export default function ProntuarioPage1Page() {
 
   function send_form() {
     chart_update_attributes(chart_id, myForm.values)
-      .then(refreshChart)
+      .then(() => refreshChart(false))
       .catch((e) => notifyError(e.message));
   }
 

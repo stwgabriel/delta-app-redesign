@@ -5,7 +5,7 @@ import { useClientNotificationContext } from "@/contexts/client_notification";
 
 export default function ConductComponent({ chart, refreshChart }) {
   const { notifySuccess, notifyError } = useClientNotificationContext();
-  const [conduct, setConduct] = useState(chart === null ? "" : chart.conduct.value || "");
+  const [conduct, setConduct] = useState(chart === null ? "" : chart.conduct?.value || "");
   const [loading, setLoading] = useState(false);
   const { chart_update_attributes } = useAPIContext();
 

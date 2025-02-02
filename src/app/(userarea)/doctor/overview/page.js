@@ -16,7 +16,9 @@ export default function OverviewDoctorPage() {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    get_my_charts().then(setMyCharts).catch(console.error);
+    get_my_charts("INICIADO,EM_ATENDIMENTO")
+      .then(setMyCharts)
+      .catch((e) => notifyError(e.message));
   }, []);
 
   const setActiveElementOnHover = (id) => {
@@ -48,18 +50,21 @@ export default function OverviewDoctorPage() {
         {myCharts === null ? (
           <Spinner />
         ) : (
-          myCharts.map((chart, i) => (
+          myCharts.map((chart) => (
             <div
               key={chart.id}
               className={`card p-3 my-2 ${activeId === chart.id ? "bg-secondary" : ""}`}
               onMouseEnter={() => setActiveElementOnHover(chart.id)}
               onMouseLeave={resetActiveElementOnLeave}
-              onClick={() => router.push(`/prontuario/overview?chart_id=${chart.id}`)}
+              onClick={() => router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${chart.id}`)}
               style={{ cursor: "pointer" }}
             >
               <span>ID: {chart.id}</span>
               <span>Criado em: {new Date(chart.logged_at).toLocaleString()}</span>
               <span>Nome: {chart.name?.value}</span>
+              <div>
+                <span className="badge bg-primary">Status: {chart.status?.value}</span>
+              </div>
             </div>
           ))
         )}

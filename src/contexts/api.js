@@ -223,8 +223,8 @@ export const APIContextProvider = ({ children }) => {
     return _get(url, configs);
   }
 
-  function get_my_charts() {
-    const url = `/v1/chart/my`;
+  function get_my_charts(status) {
+    const url = `/v1/chart/my?${new URLSearchParams({ status }).toString()}`;
     const configs = {};
     return _get(url, configs);
   }

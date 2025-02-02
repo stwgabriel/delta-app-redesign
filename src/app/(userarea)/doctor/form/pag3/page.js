@@ -27,7 +27,7 @@ export default function ProntuarioPage3Page() {
 
   function send_form() {
     chart_update_attributes(chart_id, { ...myForm.values, clock_form_end: new Date().toISOString() })
-      .then(refreshChart)
+      .then(() => refreshChart(false))
       .catch((e) => notifyError(e.message));
   }
 

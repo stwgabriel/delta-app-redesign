@@ -6,6 +6,7 @@ import { APIContextProvider } from "@/contexts/api";
 import { Suspense } from "react";
 import Footer from "@/components/footer";
 import { ClientNotificationContextProvider } from "@/contexts/client_notification";
+
 export const metadata = {
   title: "Delta Stroke Inc",
 };

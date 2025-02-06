@@ -2,8 +2,8 @@ import { rankin_template } from "@/utils/templates";
 import Image from "next/image";
 export default function SectionRankin({ myForm }) {
   return (
-    <section className="flex-column mb-4">
-      <span className="fw-bold fs-4 mb-2">Funcionalidade prévia e rankin</span>
+    <section className="d-flex flex-column mb-4">
+      <span className="d-flex fw-bold fs-4 mb-2">Funcionalidade prévia e rankin</span>
       <Image
         src="/rankin.png"
         width={4407}
@@ -14,9 +14,9 @@ export default function SectionRankin({ myForm }) {
         }}
         alt="Picture of the author"
       />
-      <div className="list-group">
+      <div className="d-flex list-group">
         {rankin_template.map((question, i) => (
-          <label key={`c-${i}`} className="list-group-item">
+          <label key={`c-${i}`} className="d-flex list-group-item">
             <input
               type="radio"
               className="form-check-input me-1 mt-0"
@@ -28,8 +28,7 @@ export default function SectionRankin({ myForm }) {
                 });
               }}
             />
-            {question.score} - {question.name}{" "}
-            {question.help && ` - ${question.help}`}
+            {question.score} - {question.name} {question.help && ` - ${question.help}`}
           </label>
         ))}
       </div>

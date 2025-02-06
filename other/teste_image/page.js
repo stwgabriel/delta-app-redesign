@@ -37,9 +37,10 @@ export default function DicomViewer() {
   }, []);
 
   return (
-    <div>
-      <h1>DICOM Viewer</h1>
+    <div className="d-flex">
+      <h1 className="d-flex">DICOM Viewer</h1>
       <div
+        className="d-flex"
         ref={cornerstoneElementRef}
         style={{
           width: "512px",

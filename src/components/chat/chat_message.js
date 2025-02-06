@@ -3,18 +3,16 @@
 export default function ChatMessage({ msg, isCurrentUser }) {
   //   console.log(isCurrentUser);
   return (
-    <div>
-      {isCurrentUser && <div className="flex-fill"></div>}
+    <div className="d-flex">
+      {isCurrentUser && <div className="d-flex flex-fill"></div>}
       <div
-        className={`d-flex p-1 mb-1 rounded flex-column ${
-          isCurrentUser ? "bg-success" : "bg-warning"
-        } 
+        className={`d-flex p-1 mb-1 rounded flex-column ${isCurrentUser ? "bg-success" : "bg-warning"} 
       `}
       >
-        {!isCurrentUser && <span className="fs-6 fw-bold">Alex</span>}
-        <span>{msg.message}</span>
+        {!isCurrentUser && <span className="d-flex fs-6 fw-bold">Alex</span>}
+        <span className="d-flex">{msg.message}</span>
       </div>
-      {!isCurrentUser && <div className="flex-fill"></div>}
+      {!isCurrentUser && <div className="d-flex flex-fill"></div>}
     </div>
   );
 }

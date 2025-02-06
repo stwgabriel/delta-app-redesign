@@ -7,10 +7,7 @@ import { useEffect, useState } from "react";
 import { humanFileSize, uuidv4 } from "@/utils/funcs";
 import { useAPIContext } from "@/contexts/api";
 import { ProgressBar } from "react-bootstrap";
-import {
-  CircularProgressbar,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
+import { CircularProgressbar, CircularProgressbarWithChildren } from "react-circular-progressbar";
 
 const presignedPostData = {
   url: "https://deltastroke.s3.amazonaws.com/",
@@ -26,8 +23,7 @@ const presignedPostData = {
 const chart_id = "4a3ba57b-86c1-4f95-8cfb-f32444873ec0";
 
 export default function UploadPage() {
-  const { generate_chart_generate_presigned_url, complete_file } =
-    useAPIContext();
+  const { generate_chart_generate_presigned_url, complete_file } = useAPIContext();
 
   const [uploadingFiles, _setUploadingFiles] = useState({});
 
@@ -54,44 +50,40 @@ export default function UploadPage() {
       progress: 0,
     });
 
-    generate_chart_generate_presigned_url(chart_id).then(
-      (presignedUrlResponse) => {
-        setUploadingFiles(local_id, { presignedUrlResponse });
+    generate_chart_generate_presigned_url(chart_id).then((presignedUrlResponse) => {
+      setUploadingFiles(local_id, { presignedUrlResponse });
 
-        const formData = new FormData();
+      const formData = new FormData();
 
-        // Append all fields from the presigned POST
-        for (const [key, value] of Object.entries(
-          presignedUrlResponse.presigned_data.fields
-        )) {
-          formData.append(key, value);
-        }
-
-        formData.append("file", file);
-
-        const controller = new AbortController();
-        setUploadingFiles(local_id, {
-          controller,
-        });
-
-        axios
-          .post(presignedUrlResponse.presigned_data.url, formData, {
-            onUploadProgress: (status) => {
-              setUploadingFiles(local_id, {
-                progress: status.progress,
-                total: status.total,
-                loaded: status.loaded,
-              });
-            },
-            signal: controller.signal,
-          })
-          .then(() => {
-            complete_file(presignedUrlResponse.file_id).then(() => {
-              setUploadingFiles(local_id, { completed: true });
-            });
-          });
+      // Append all fields from the presigned POST
+      for (const [key, value] of Object.entries(presignedUrlResponse.presigned_data.fields)) {
+        formData.append(key, value);
       }
-    );
+
+      formData.append("file", file);
+
+      const controller = new AbortController();
+      setUploadingFiles(local_id, {
+        controller,
+      });
+
+      axios
+        .post(presignedUrlResponse.presigned_data.url, formData, {
+          onUploadProgress: (status) => {
+            setUploadingFiles(local_id, {
+              progress: status.progress,
+              total: status.total,
+              loaded: status.loaded,
+            });
+          },
+          signal: controller.signal,
+        })
+        .then(() => {
+          complete_file(presignedUrlResponse.file_id).then(() => {
+            setUploadingFiles(local_id, { completed: true });
+          });
+        });
+    });
   }
 
   async function run_upload_files(target) {
@@ -103,49 +95,40 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="flex-column">
-      <div>
+    <div className="d-flex flex-column">
+      <div className="d-flex">
         {/* <Dropzone onDrop={(acceptedFiles) => run_upload_files(acceptedFiles)}>
           {({ getRootProps, getInputProps }) => (
-            <section className="border">
+            <section className="d-flex border">
               <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <p>Drag 'n' drop some files here, or click to select files</p>
+                <p className="d-flex">Drag 'n' drop some files here, or click to select files</p>
               </div>
             </section>
           )}
         </Dropzone> */}
-        <input
-          type="file"
-          multiple
-          onChange={(x) => run_upload_files(x.target)}
-        />
+        <input type="file" multiple onChange={(x) => run_upload_files(x.target)} />
       </div>
 
-      <div className="mt-5 flex-column">
-        <span>Uploading files</span>
+      <div className="d-flex mt-5 flex-column">
+        <span className="d-flex">Uploading files</span>
 
-        <div className="flex-column mt-2">
+        <div className="d-flex flex-column mt-2">
           {Object.values(uploadingFiles).map((obj) => (
-            <div
-              key={`${obj.local_id}`}
-              className="flex-column border rounded my-1 p-2"
-            >
-              <div className="align-items-center justify-content-around">
-                <span className="material-icons fs-1">description</span>
-                <span>{obj.fname}</span>
-                <span>{obj.ftype}</span>
-                <div className="flex-column align-items-center">
-                  <span className="py-1">
-                    {parseInt(obj.progress.toFixed(2) * 100)}%
-                  </span>
-                  <span>
+            <div key={`${obj.local_id}`} className="d-flex flex-column border rounded my-1 p-2">
+              <div className="d-flex align-items-center justify-content-around">
+                <span className="d-flex material-icons fs-1">description</span>
+                <span className="d-flex">{obj.fname}</span>
+                <span className="d-flex">{obj.ftype}</span>
+                <div className="d-flex flex-column align-items-center">
+                  <span className="d-flex py-1">{parseInt(obj.progress.toFixed(2) * 100)}%</span>
+                  <span className="d-flex">
                     {humanFileSize(obj.loaded)} / {humanFileSize(obj.total)}
                   </span>
                 </div>
               </div>
 
-              <div className="flex-column mt-1">
+              <div className="d-flex flex-column mt-1">
                 <ProgressBar
                   className="mt-1"
                   now={obj.progress}

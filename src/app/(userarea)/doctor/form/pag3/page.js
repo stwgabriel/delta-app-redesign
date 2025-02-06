@@ -47,20 +47,20 @@ export default function ProntuarioPage3Page() {
 
   return (
     <>
-      <section className="flex-column my-4 align-items-center">
-        <span className="fs-1">Prontuário: Beira-leito</span>
+      <section className="d-flex flex-column my-4 align-items-center">
+        <span className="d-flex fs-1">Prontuário: Beira-leito</span>
       </section>
 
-      <section className="flex-column mb-4">
-        <span className="fw-bold fs-4 mb-2">NIH</span>
+      <section className="d-flex flex-column mb-4">
+        <span className="d-flex fw-bold fs-4 mb-2">NIH</span>
         {template === null ? (
           <Spinner />
         ) : (
-          <div className="flex-column">
-            <div className="input-group mb-2">
-              <span className="input-group-text ">NIH</span>
+          <div className="d-flex flex-column">
+            <div className="d-flex input-group mb-2">
+              <span className="d-flex input-group-text ">NIH</span>
               <span
-                className="input-group-text "
+                className="d-flex input-group-text "
                 style={{
                   backgroundColor: interpolateColour("#198754", "#dc3545", getNIHCount() / getMaxNIHCount(template)),
                 }}
@@ -69,10 +69,10 @@ export default function ProntuarioPage3Page() {
               </span>
             </div>
             {template.map((section, i) => (
-              <div key={`sc-${i}`} className="flex-column mb-3">
-                <span className="fw-bold">{section.description}</span>
+              <div key={`sc-${i}`} className="d-flex flex-column mb-3">
+                <span className="d-flex fw-bold">{section.description}</span>
                 {section.items.map((item, j) => (
-                  <div key={`qst-${j}`} className="form-check">
+                  <div key={`qst-${j}`} className="d-flex form-check">
                     <input
                       className="form-check-input"
                       type="radio"
@@ -85,12 +85,12 @@ export default function ProntuarioPage3Page() {
                         myForm.setFormValue(section.field, item.id);
                       }}
                     />
-                    <label className="form-check-label mt-1" htmlFor={`sc-${i}-qst-${j}`}>
+                    <label className="d-flex form-check-label mt-1" htmlFor={`sc-${i}-qst-${j}`}>
                       {item.description} ({item.score} pontos)
                     </label>
 
                     {item.require_text_input === true && (
-                      <div className="form-floating" id={`sc-${i}-qst-${j}-txt`}>
+                      <div className="d-flex form-floating" id={`sc-${i}-qst-${j}-txt`}>
                         <input
                           type="text"
                           className="form-control"
@@ -105,7 +105,9 @@ export default function ProntuarioPage3Page() {
                             myForm.setMultipleFormValue(newVal);
                           }}
                         />
-                        <label htmlFor={`sc-${i}-qst-${j}-txt`}>Explique</label>
+                        <label className="d-flex" htmlFor={`sc-${i}-qst-${j}-txt`}>
+                          Explique
+                        </label>
                       </div>
                     )}
                   </div>
@@ -116,11 +118,11 @@ export default function ProntuarioPage3Page() {
         )}
       </section>
 
-      <section className="flex-column mb-4">
-        <span className="fw-bold fs-4 mb-2">Sinais vitais e Outros</span>
+      <section className="d-flex flex-column mb-4">
+        <span className="d-flex fw-bold fs-4 mb-2">Sinais vitais e Outros</span>
 
-        <div className="input-group mb-2 mt-2">
-          <span className="input-group-text">Peso aproximado (kg)</span>
+        <div className="d-flex input-group mb-2 mt-2">
+          <span className="d-flex input-group-text">Peso aproximado (kg)</span>
           <input
             type="number"
             className="form-control"
@@ -129,8 +131,8 @@ export default function ProntuarioPage3Page() {
           />
         </div>
 
-        <div className="input-group mb-2">
-          <span className="input-group-text">Pressão arterial</span>
+        <div className="d-flex input-group mb-2">
+          <span className="d-flex input-group-text">Pressão arterial</span>
           <input
             type="number"
             className="form-control"
@@ -146,8 +148,8 @@ export default function ProntuarioPage3Page() {
             onChange={(e) => myForm.setFormValue("blood_pressure_diastolic", e.target.value)}
           />
         </div>
-        <div className="input-group mb-2">
-          <span className="input-group-text">Dextro</span>
+        <div className="d-flex input-group mb-2">
+          <span className="d-flex input-group-text">Dextro</span>
           <input
             type="text"
             className="form-control"
@@ -156,8 +158,8 @@ export default function ProntuarioPage3Page() {
           />
         </div>
 
-        <div className="input-group mb-2">
-          <span className="input-group-text">Saturação O2</span>
+        <div className="d-flex input-group mb-2">
+          <span className="d-flex input-group-text">Saturação O2</span>
           <input
             type="number"
             className="form-control"
@@ -166,8 +168,8 @@ export default function ProntuarioPage3Page() {
           />
         </div>
 
-        <div className="input-group mb-2">
-          <span className="input-group-text">Frequência cardíaca</span>
+        <div className="d-flex input-group mb-2">
+          <span className="d-flex input-group-text">Frequência cardíaca</span>
           <input
             type="number"
             className="form-control"
@@ -176,8 +178,8 @@ export default function ProntuarioPage3Page() {
           />
         </div>
 
-        <div className="input-group mb-2">
-          <span className="input-group-text">INR</span>
+        <div className="d-flex input-group mb-2">
+          <span className="d-flex input-group-text">INR</span>
           <input
             type="number"
             className="form-control"
@@ -187,7 +189,7 @@ export default function ProntuarioPage3Page() {
         </div>
       </section>
 
-      <section className="flex-column mb-5">
+      <section className="d-flex flex-column mb-5">
         <button className="btn btn-primary" onClick={send_form}>
           Enviar
         </button>

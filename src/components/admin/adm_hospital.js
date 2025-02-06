@@ -32,10 +32,10 @@ export default function AdminHospitaisComponent() {
   }
 
   return (
-    <section className="flex-column flex-fill">
-      <span className="fs-1">Hospitais cadastrados</span>
+    <section className="d-flex flex-column flex-fill">
+      <span className="d-flex fs-1">Hospitais cadastrados</span>
 
-      <div className="justify-content-center mt-4">
+      <div className="d-flex justify-content-center mt-4">
         {hospitais === null ? (
           <Spinner />
         ) : (

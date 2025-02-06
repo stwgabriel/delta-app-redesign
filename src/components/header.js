@@ -12,8 +12,8 @@ export default function Header() {
   const { isTokenLoaded, isLoggedConsultor, isLoggedHospital, isLoggedDoctor, logout, isAdmin } = useAPIContext();
 
   return (
-    <nav className="navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
-      <div className="justify-content-center">
+    <nav className="d-flex navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
+      <div className="d-flex justify-content-center">
         <Link className="text-dark align-items-center text-decoration-none" href={ROUTES.HOME}>
           <Image
             src={"/delta_stroke_icon.webp"}
@@ -23,14 +23,14 @@ export default function Header() {
             priority={100}
             alt="Logo"
           />
-          <span className="fs-1 ps-2">Delta Stroke</span>
+          <span className="d-flex fs-1 ps-2">Delta Stroke</span>
         </Link>
       </div>
-      <div className="flex-column me-5">
+      <div className="d-flex flex-column me-5">
         {!isTokenLoaded ? (
           <Spinner />
         ) : isLoggedConsultor ? (
-          <div className="align-items-center">
+          <div className="d-flex align-items-center">
             {isAdmin && (
               <Link
                 className="material-icons fs-1 text-decoration-none text-body"
@@ -47,12 +47,12 @@ export default function Header() {
             >
               settings
             </Link>
-            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
             </span>
           </div>
         ) : isLoggedDoctor ? (
-          <div className="align-items-center">
+          <div className="d-flex align-items-center">
             <Link
               className="material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
@@ -60,12 +60,12 @@ export default function Header() {
             >
               settings
             </Link>
-            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
             </span>
           </div>
         ) : isLoggedHospital ? (
-          <div className="align-items-center">
+          <div className="d-flex align-items-center">
             <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}>
               Entrar Médico
             </button>
@@ -76,12 +76,12 @@ export default function Header() {
             >
               settings
             </span>
-            <span className="material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
               logout
             </span>
           </div>
         ) : (
-          <div className="align-items-center">
+          <div className="d-flex align-items-center">
             <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_HOSPITAL)}>
               Entrar Hospital
             </button>

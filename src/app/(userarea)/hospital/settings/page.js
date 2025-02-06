@@ -44,17 +44,17 @@ export default function HospitalSettingsPage() {
 
   return (
     <React.Fragment>
-      <section className="mt-5 justify-content-center">
+      <section className="d-flex mt-5 justify-content-center">
         {loadingHospital ? (
           <Spinner />
         ) : hospital === null ? (
-          <span className="text-danger">Erro ao carregar dados, tente novamente mais tarde!</span>
+          <span className="d-flex text-danger">Erro ao carregar dados, tente novamente mais tarde!</span>
         ) : (
-          <div className="flex-column justify-content-center align-items-center">
-            <span className="align-self-start fs-3 my-2">Perfil do Hospital</span>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <span className="d-flex align-self-start fs-3 my-2">Perfil do Hospital</span>
 
-            <div className="input-group my-2">
-              <div className="input-group-text">Nome</div>
+            <div className="d-flex input-group my-2">
+              <div className="d-flex input-group-text">Nome</div>
               <input
                 className="form-control"
                 value={hospitalChanges?.name || hospital.name || ""}
@@ -62,8 +62,8 @@ export default function HospitalSettingsPage() {
               />
             </div>
 
-            <div className="input-group my-2">
-              <div className="input-group-text">Username</div>
+            <div className="d-flex input-group my-2">
+              <div className="d-flex input-group-text">Username</div>
               <input
                 className="form-control"
                 value={hospitalChanges?.username || hospital.username || ""}
@@ -71,16 +71,16 @@ export default function HospitalSettingsPage() {
               />
             </div>
 
-            <div className="input-group mt-2">
-              <div className="input-group-text">Senha atual</div>
+            <div className="d-flex input-group mt-2">
+              <div className="d-flex input-group-text">Senha atual</div>
               <input
                 className="form-control"
                 type="password"
                 onChange={(e) => set_change("old_password", e.target.value)}
               />
             </div>
-            <div className="input-group mb-2">
-              <div className="input-group-text">Senha nova</div>
+            <div className="d-flex input-group mb-2">
+              <div className="d-flex input-group-text">Senha nova</div>
               <input
                 className="form-control"
                 type="password"
@@ -89,7 +89,7 @@ export default function HospitalSettingsPage() {
             </div>
 
             {!isEmpty(hospitalChanges) && (
-              <div className="align-self-end">
+              <div className="d-flex align-self-end">
                 {hospitalChangesLoading ? (
                   <Spinner />
                 ) : (

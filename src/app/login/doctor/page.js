@@ -39,11 +39,11 @@ export default function LoginDoctorPage() {
   }, [isLoggedDoctor]);
 
   return (
-    <section className="flex-column align-items-center my-auto">
-      <h1 className="fs-4">Login do médico</h1>
-      <div className="flex-column my-5">
-        <div className="input-group">
-          <span className="input-group-text">CPF</span>
+    <section className="d-flex flex-column align-items-center my-auto">
+      <h1 className="d-flex fs-4">Login do médico</h1>
+      <div className="d-flex flex-column my-5">
+        <div className="d-flex input-group">
+          <span className="d-flex input-group-text">CPF</span>
           <input
             type="text"
             className="form-control"
@@ -52,8 +52,8 @@ export default function LoginDoctorPage() {
             onChange={(x) => setCPF(formatCPF(x.target.value))}
           />
         </div>
-        <div className="input-group">
-          <span className="input-group-text">CRM</span>
+        <div className="d-flex input-group">
+          <span className="d-flex input-group-text">CRM</span>
           {/* <input
             type="text"
             className="form-control"

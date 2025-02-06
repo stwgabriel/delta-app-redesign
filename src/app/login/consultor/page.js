@@ -29,11 +29,11 @@ export default function LoginConsultorPage() {
   }, [isLoggedConsultor]);
 
   return (
-    <section className="flex-column align-items-center my-auto">
-      <h2 className="fs-4">Login do Consultor</h2>
-      <div className="flex-column my-5">
-        <div className="input-group">
-          <span className="input-group-text">Email</span>
+    <section className="d-flex flex-column align-items-center my-auto">
+      <h2 className="d-flex fs-4">Login do Consultor</h2>
+      <div className="d-flex flex-column my-5">
+        <div className="d-flex input-group">
+          <span className="d-flex input-group-text">Email</span>
           <input
             type="text"
             className="form-control"
@@ -43,8 +43,8 @@ export default function LoginConsultorPage() {
           />
         </div>
 
-        <div className="input-group">
-          <span className="input-group-text">Senha</span>
+        <div className="d-flex input-group">
+          <span className="d-flex input-group-text">Senha</span>
           <input
             type="password"
             className="form-control"
@@ -53,7 +53,7 @@ export default function LoginConsultorPage() {
           />
         </div>
 
-        <div className="mt-2 align-self-end">
+        <div className="d-flex mt-2 align-self-end">
           <Link href={ROUTES.SIGNUP_CONSULTOR} className="text-decoration-none">
             Cadastre-se
           </Link>

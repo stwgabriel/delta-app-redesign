@@ -34,8 +34,8 @@ export default function ProntuarioPage2Page() {
 
   return (
     <>
-      <section className="flex-column my-4 align-items-center">
-        <span className="fs-1">Prontuário</span>
+      <section className="d-flex flex-column my-4 align-items-center">
+        <span className="d-flex fs-1">Prontuário</span>
       </section>
 
       {chart === null ? (
@@ -48,7 +48,7 @@ export default function ProntuarioPage2Page() {
           <SectionMedicamentosAnticoagulantes myForm={myForm} />
           <SectionMedicamentos myForm={myForm} />
           <SectionComorbidades myForm={myForm} />
-          <section className="flex-column mb-5">
+          <section className="d-flex flex-column mb-5">
             <button className="btn btn-primary" onClick={send_form}>
               Enviar
             </button>

@@ -31,31 +31,24 @@ export default function AvailableFilesItem({ obj }) {
   }
 
   return (
-    <div
-      className="flex-column border rounded my-1 p-2"
-      style={{ cursor: "pointer" }}
-      onClick={download_file}
-    >
-      <div className="align-items-center">
-        <span className="material-icons fs-1">description</span>
-        <div className="flex-column ps-3">
-          <span>{obj.fname.substring(0, 30)}</span>
-          <span>{obj.ftype}</span>
+    <div className="d-flex flex-column border rounded my-1 p-2" style={{ cursor: "pointer" }} onClick={download_file}>
+      <div className="d-flex align-items-center">
+        <span className="d-flex material-icons fs-1">description</span>
+        <div className="d-flex flex-column ps-3">
+          <span className="d-flex">{obj.fname.substring(0, 30)}</span>
+          <span className="d-flex">{obj.ftype}</span>
         </div>
         {downloadData && (
-          <div className="flex-column align-items-end flex-fill pe-2">
-            <span className="py-1">
-              {parseInt(downloadData.progress.toFixed(2) * 100)}%
-            </span>
-            <span>
-              {humanFileSize(downloadData.loaded)} /{" "}
-              {humanFileSize(downloadData.total)}
+          <div className="d-flex flex-column align-items-end flex-fill pe-2">
+            <span className="d-flex py-1">{parseInt(downloadData.progress.toFixed(2) * 100)}%</span>
+            <span className="d-flex">
+              {humanFileSize(downloadData.loaded)} / {humanFileSize(downloadData.total)}
             </span>
           </div>
         )}
       </div>
       {downloadData && (
-        <div className="flex-column mt-1">
+        <div className="d-flex flex-column mt-1">
           <ProgressBar
             className="mt-1"
             now={downloadData.progress}

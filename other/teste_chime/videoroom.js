@@ -46,15 +46,9 @@ const VideoRoom = ({ token }) => {
   }, [token]);
 
   return (
-    <div>
-      <div
-        ref={localVideoRef}
-        style={{ width: "200px", height: "200px" }}
-      ></div>
-      <div
-        ref={remoteVideoRef}
-        style={{ width: "200px", height: "200px" }}
-      ></div>
+    <div className="d-flex">
+      <div className="d-flex" ref={localVideoRef} style={{ width: "200px", height: "200px" }}></div>
+      <div className="d-flex" ref={remoteVideoRef} style={{ width: "200px", height: "200px" }}></div>
     </div>
   );
 };

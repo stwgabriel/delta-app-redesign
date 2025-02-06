@@ -1,27 +1,20 @@
-import { useEffect } from "react";
-
 export default function Anticoagulants({ medicine, i, myForm }) {
   return (
-    <div className="input-group">
+    <div className="d-flex input-group">
       {/* <div className="form-control flex-row d-flex">
         <span className="d-flex align-items-center">{medicine.name}</span>
         {medicine?.should_collect_inr === true && response === "Sim" && (
-          <span className="badge text-bg-warning d-flex ms-2 align-items-center">
+          <span className="d-flex badge text-bg-warning d-flex ms-2 align-items-center">
             Coletar INR
           </span>
         )}
       </div> */}
 
-      <div
-        className="form-control flex-column justify-content-around"
-        role="group"
-      >
-        <div className="flex justify-content-around">
-          <span className="d-flex align-items-center pb-1">
-            {medicine.text}
-          </span>
+      <div className="d-flex form-control flex-column justify-content-around" role="group">
+        <div className="d-flex justify-content-around">
+          <span className="d-flex align-items-center pb-1">{medicine.text}</span>
         </div>
-        <div className="flex justify-content-around">
+        <div className="d-flex justify-content-around">
           {medicine.text_input === true ? (
             <input
               type="text"
@@ -36,7 +29,7 @@ export default function Anticoagulants({ medicine, i, myForm }) {
             />
           ) : (
             ["Sim", "Não", "Não sei"].map((op, j) => (
-              <div key={`${medicine.id}-${j}`}>
+              <div className="d-flex" key={`${medicine.id}-${j}`}>
                 <input
                   type="radio"
                   className="btn-check"
@@ -54,10 +47,7 @@ export default function Anticoagulants({ medicine, i, myForm }) {
                   }}
                 />
 
-                <label
-                  className="btn btn-outline-primary"
-                  htmlFor={`aco-${i}-${j}`}
-                >
+                <label className="d-flex btn btn-outline-primary" htmlFor={`aco-${i}-${j}`}>
                   {op}
                 </label>
               </div>
@@ -66,16 +56,14 @@ export default function Anticoagulants({ medicine, i, myForm }) {
         </div>
       </div>
       {medicine.text_input !== true && (
-        <div className="form-control">
+        <div className="d-flex form-control">
           Última aplicação/ingestão
           <input
             type="datetime-local"
             className="form-control"
             disabled={myForm.getFormValue(medicine.field) !== "Sim"}
             value={myForm.getFormValue(medicine.field_timestamp) || ""}
-            onChange={(x) =>
-              myForm.setFormValue(medicine.field_timestamp, x.target.value)
-            }
+            onChange={(x) => myForm.setFormValue(medicine.field_timestamp, x.target.value)}
           />
         </div>
       )}

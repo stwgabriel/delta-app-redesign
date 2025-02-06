@@ -1,7 +1,7 @@
 export default function Spinner({ className }) {
   return (
-    <div className={`spinner-border ${className}`} role="status">
-      <span className="visually-hidden">Loading...</span>
+    <div className={`d-flex spinner-border ${className}`} role="status">
+      <span className="d-flex visually-hidden">Loading...</span>
     </div>
   );
 }

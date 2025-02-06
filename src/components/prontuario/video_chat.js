@@ -2,30 +2,24 @@
 import { useCall } from "@/contexts/call";
 
 export default function VideoChatComponent({ chart_id }) {
-  const {
-    startCall,
-    attendees,
-    audioOutputElement,
-    videoInputElement,
-    currentMeeting,
-  } = useCall(chart_id);
+  const { startCall, attendees, audioOutputElement, videoInputElement, currentMeeting } = useCall(chart_id);
 
   return (
-    <section className="my-5 flex-column">
+    <section className="d-flex my-5 flex-column">
       {currentMeeting === null && (
         <button className="btn btn-success" onClick={startCall}>
           Iniciar chamada
         </button>
       )}
-      <div>
-        <audio ref={audioOutputElement}></audio>
-        <video ref={videoInputElement}></video>
+      <div className="d-flex">
+        <audio className="d-flex" ref={audioOutputElement}></audio>
+        <video className="d-flex" ref={videoInputElement}></video>
       </div>
 
-      <div className="mt-5 flex-column">
+      <div className="d-flex mt-5 flex-column">
         {Object.keys(attendees).map((key) => {
           if (!attendees[key].tileState.localTile) {
-            return <video key={key} ref={attendees[key].ref} />;
+            return <video className="d-flex" key={key} ref={attendees[key].ref} />;
           }
         })}
       </div>

@@ -30,10 +30,10 @@ export default function AdminUserComponent() {
   }
 
   return (
-    <section className="flex-column flex-fill">
-      <span className="fs-1">Usuários cadastrados</span>
+    <section className="d-flex flex-column flex-fill">
+      <span className="d-flex fs-1">Usuários cadastrados</span>
 
-      <div className="justify-content-center mt-4">
+      <div className="d-flex justify-content-center mt-4">
         {users === null ? (
           <Spinner />
         ) : (

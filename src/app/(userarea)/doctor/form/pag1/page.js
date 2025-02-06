@@ -29,15 +29,15 @@ export default function ProntuarioPage1Page() {
 
   return (
     <>
-      <section className="flex-column my-4 align-items-center">
-        <span className="fs-1">Prontuário</span>
+      <section className="d-flex flex-column my-4 align-items-center">
+        <span className="d-flex fs-1">Prontuário</span>
       </section>
 
       {chart === null ? (
         <Spinner />
       ) : (
         <React.Fragment>
-          <h1 className="fs-4 my-1">Motivo de ter iniciado o protocolo de AVC</h1>
+          <h1 className="d-flex fs-4 my-1">Motivo de ter iniciado o protocolo de AVC</h1>
           <select
             className="form-control"
             onChange={(x) => {
@@ -51,7 +51,7 @@ export default function ProntuarioPage1Page() {
             ))}
           </select>
 
-          <section className="flex-column my-5">
+          <section className="d-flex flex-column my-5">
             <button className="btn btn-primary" onClick={send_form}>
               Enviar
             </button>

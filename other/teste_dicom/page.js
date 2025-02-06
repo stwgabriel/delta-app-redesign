@@ -49,10 +49,11 @@ const DicomViewer = () => {
   };
 
   return (
-    <div>
-      <h1>Visualizador DICOM</h1>
+    <div className="d-flex">
+      <h1 className="d-flex">Visualizador DICOM</h1>
       <input type="file" accept=".dcm" onChange={handleFileChange} />
       <div
+        className="d-flex"
         ref={elementRef}
         style={{
           width: "512px",

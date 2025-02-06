@@ -44,8 +44,8 @@ export default function ChartAttributes({ chart, refreshChart }) {
 
   return (
     <React.Fragment>
-      <section className="flex list-group">
-        <div className="list-group-item">
+      <section className="d-flex flex list-group">
+        <div className="d-flex list-group-item">
           <div className="d-flex input-group justify-content-around">
             <FormDisplay name="Name" text={getValueFromObj(chart.name)} />
             <FormDisplay name="CPF" text={getValueFromObj(chart.cpf)} />
@@ -56,27 +56,27 @@ export default function ChartAttributes({ chart, refreshChart }) {
             />
           </div>
         </div>
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <div className="d-flex input-group justify-content-around">
             <FormDisplay name="Tempo de evento conhecido?" text={getValueFromObj(chart.known_event_time)} />
             <FormDisplay name="ICTUS" text={getValueFromObj(chart.ictus)} />
           </div>
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <FormDisplay name="Motivo" text={getValueFromObj(chart.open_reason)} />
           <FormDisplay name="História coletada com" text={getValueFromObj(chart.history_collected_with)} />
           <FormDisplay name="História" text={getValueFromObj(chart.history)} />
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <div className="d-flex input-group justify-content-around">
             <FormDisplay name="Rankin Score" text={getValueFromObj(chart.rankin_score)} />
             <FormDisplay name="Rankin" text={getValueFromObj(chart.rankin_description)} />
           </div>
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -110,7 +110,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           />
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -128,13 +128,13 @@ export default function ChartAttributes({ chart, refreshChart }) {
                   <td className="px-3">{template.text}</td>
                   <td className="px-3 text-center">
                     {getValueFromObj(chart[template.field])}
-                    <div className="">
+                    <div className="d-flex">
                       {template.case_yes &&
                         template.case_yes.map((subtemplate, j) => (
-                          <div key={`ac-sub-${j}`} className="flex-column px-1">
-                            <span>{subtemplate.text}</span>
-                            <span>{getValueFromObj(chart[subtemplate.field])}</span>
-                            <span>
+                          <div key={`ac-sub-${j}`} className="d-flex flex-column px-1">
+                            <span className="d-flex">{subtemplate.text}</span>
+                            <span className="d-flex">{getValueFromObj(chart[subtemplate.field])}</span>
+                            <span className="d-flex">
                               {subtemplate.field_other ? getValueFromObj(chart[subtemplate.field_other]) : ""}
                             </span>
                           </div>
@@ -147,7 +147,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </table>
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -168,7 +168,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </table>
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           {!nihTemplate ? (
             <Spinner />
           ) : (
@@ -202,11 +202,11 @@ export default function ChartAttributes({ chart, refreshChart }) {
             </table>
           )}
 
-          <div className="flex-column align-items-center">
-            <span className="py-1">
+          <div className="d-flex flex-column align-items-center">
+            <span className="d-flex py-1">
               Pontuação NIHSS: {getNIHScore()} de {getMaxNIHCount(nihTemplate)}
             </span>
-            <span className="py-1">
+            <span className="d-flex py-1">
               Respondidas {getNIHAnswerCount()} de {nihTemplate?.length} (
               {Math.round((100 * getNIHAnswerCount()) / nihTemplate?.length)}
               %)
@@ -214,7 +214,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </div>
         </div>
 
-        <div className="list-group-item">
+        <div className="d-flex list-group-item">
           <FormDisplay
             name="Conduta"
             text={getValueFromObj(chart.conduct)}

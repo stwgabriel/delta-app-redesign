@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 function VideoElement({ id }) {
   const ref = useRef();
-  return <video ref={ref}></video>;
+  return <video className="d-flex" ref={ref}></video>;
 }
 
 let meetingSession;
@@ -36,22 +36,15 @@ export default function MyApp() {
         ExternalMeetingId: "25bcfadb-f306-445f-9718-2baab4c98567",
         MediaRegion: "us-east-1",
         MediaPlacement: {
-          AudioHostUrl:
-            "d1e3922c74d15b7c22a0b3073f60d19d.k.m3.ue1.app.chime.aws:3478",
-          AudioFallbackUrl:
-            "wss://wss.k.m3.ue1.app.chime.aws:443/calls/af88ba44-facd-4192-904d-5f8cc5582713",
-          SignalingUrl:
-            "wss://signal.m3.ue1.app.chime.aws/control/af88ba44-facd-4192-904d-5f8cc5582713",
-          TurnControlUrl:
-            "https://2713.cell.us-east-1.meetings.chime.aws/v2/turn_sessions",
-          ScreenDataUrl:
-            "wss://bitpw.m3.ue1.app.chime.aws:443/v2/screen/af88ba44-facd-4192-904d-5f8cc5582713",
+          AudioHostUrl: "d1e3922c74d15b7c22a0b3073f60d19d.k.m3.ue1.app.chime.aws:3478",
+          AudioFallbackUrl: "wss://wss.k.m3.ue1.app.chime.aws:443/calls/af88ba44-facd-4192-904d-5f8cc5582713",
+          SignalingUrl: "wss://signal.m3.ue1.app.chime.aws/control/af88ba44-facd-4192-904d-5f8cc5582713",
+          TurnControlUrl: "https://2713.cell.us-east-1.meetings.chime.aws/v2/turn_sessions",
+          ScreenDataUrl: "wss://bitpw.m3.ue1.app.chime.aws:443/v2/screen/af88ba44-facd-4192-904d-5f8cc5582713",
           ScreenViewingUrl:
             "wss://bitpw.m3.ue1.app.chime.aws:443/ws/connect?passcode=null&viewer_uuid=null&X-BitHub-Call-Id=af88ba44-facd-4192-904d-5f8cc5582713",
-          ScreenSharingUrl:
-            "wss://bitpw.m3.ue1.app.chime.aws:443/v2/screen/af88ba44-facd-4192-904d-5f8cc5582713",
-          EventIngestionUrl:
-            "https://data.svc.ue1.ingest.chime.aws/v1/client-events",
+          ScreenSharingUrl: "wss://bitpw.m3.ue1.app.chime.aws:443/v2/screen/af88ba44-facd-4192-904d-5f8cc5582713",
+          EventIngestionUrl: "https://data.svc.ue1.ingest.chime.aws/v1/client-events",
         },
         MeetingFeatures: {
           Audio: {
@@ -59,15 +52,12 @@ export default function MyApp() {
           },
         },
         TenantIds: [],
-        MeetingArn:
-          "arn:aws:chime:us-east-1:984007934086:meeting/af88ba44-facd-4192-904d-5f8cc5582713",
+        MeetingArn: "arn:aws:chime:us-east-1:984007934086:meeting/af88ba44-facd-4192-904d-5f8cc5582713",
       };
 
       console.log(Meeting);
 
-      const f_attendee = await fetch(
-        `http://localhost:8000/v1/meeting/add_attendee?meeting_id=${Meeting.MeetingId}`
-      );
+      const f_attendee = await fetch(`http://localhost:8000/v1/meeting/add_attendee?meeting_id=${Meeting.MeetingId}`);
       const d_attendee = await f_attendee.json();
       const Attendee = d_attendee["Attendee"];
 
@@ -76,11 +66,7 @@ export default function MyApp() {
       const logger = new ConsoleLogger("MeetingLogs", LogLevel.INFO);
       const deviceController = new DefaultDeviceController(logger);
       const configuration = new MeetingSessionConfiguration(Meeting, Attendee);
-      meetingSession = new DefaultMeetingSession(
-        configuration,
-        logger,
-        deviceController
-      );
+      meetingSession = new DefaultMeetingSession(configuration, logger, deviceController);
 
       // Invoke devices
       meetingSession.audioVideo.setDeviceLabelTrigger(
@@ -90,16 +76,13 @@ export default function MyApp() {
             video: true,
           })
       );
-      const audioInputDevices =
-        await meetingSession.audioVideo.listAudioInputDevices();
+      const audioInputDevices = await meetingSession.audioVideo.listAudioInputDevices();
       // console.log(audioInputDevices);
 
-      const audioOutputDevices =
-        await meetingSession.audioVideo.listAudioOutputDevices();
+      const audioOutputDevices = await meetingSession.audioVideo.listAudioOutputDevices();
       // console.log(audioOutputDevices);
 
-      const videoInputDevices =
-        await meetingSession.audioVideo.listVideoInputDevices();
+      const videoInputDevices = await meetingSession.audioVideo.listVideoInputDevices();
       // console.log(videoInputDevices);
 
       await meetingSession.audioVideo.startAudioInput(
@@ -107,20 +90,14 @@ export default function MyApp() {
         audioInputDevices[0].deviceId
       );
 
-      await meetingSession.audioVideo.chooseAudioOutput(
-        audioOutputDevices[0].deviceId
-      );
+      await meetingSession.audioVideo.chooseAudioOutput(audioOutputDevices[0].deviceId);
 
-      await meetingSession.audioVideo.startVideoInput(
-        videoInputDevices[0].deviceId
-      );
+      await meetingSession.audioVideo.startVideoInput(videoInputDevices[0].deviceId);
 
       console.log(audioOutputElement);
       meetingSession.audioVideo.bindAudioElement(audioOutputElement.current);
       console.log(videoInputElement);
-      meetingSession.audioVideo.startVideoPreviewForVideoInput(
-        videoInputElement.current
-      );
+      meetingSession.audioVideo.startVideoPreviewForVideoInput(videoInputElement.current);
 
       meetingSession.audioVideo.addObserver({
         audioVideoDidStart: (x) => {
@@ -143,10 +120,7 @@ export default function MyApp() {
             setAttendees((prev) => [...prev, tileState.boundAttendeeId]);
             videoRefs.current[tileState.boundAttendeeId] = React.createRef();
           }
-          console.log(
-            "3",
-            videoRefs.current[tileState.boundAttendeeId]?.current
-          );
+          console.log("3", videoRefs.current[tileState.boundAttendeeId]?.current);
 
           // Bind video tile to the ref's current element
           if (videoRefs.current[tileState.boundAttendeeId]?.current) {
@@ -177,19 +151,15 @@ export default function MyApp() {
   }, []);
 
   return (
-    <div className="flex-column">
-      <div className="flex-column">
-        <button onClick={() => meetingSession.audioVideo.startLocalVideoTile()}>
-          Start Video
-        </button>
-        <button onClick={() => meetingSession.audioVideo.stopLocalVideoTile()}>
-          Stop Video
-        </button>
+    <div className="d-flex flex-column">
+      <div className="d-flex flex-column">
+        <button onClick={() => meetingSession.audioVideo.startLocalVideoTile()}>Start Video</button>
+        <button onClick={() => meetingSession.audioVideo.stopLocalVideoTile()}>Stop Video</button>
       </div>
-      <audio ref={audioOutputElement}></audio>
-      <video ref={videoInputElement}></video>
+      <audio className="d-flex" ref={audioOutputElement}></audio>
+      <video className="d-flex" ref={videoInputElement}></video>
 
-      <div className="mt-5 flex-column">
+      <div className="d-flex mt-5 flex-column">
         {attendees.map((attendeeId) => (
           <video
             key={attendeeId}

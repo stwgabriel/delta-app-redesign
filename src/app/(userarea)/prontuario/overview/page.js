@@ -62,20 +62,23 @@ export default function ProntuarioPage() {
   }
 
   return (
-    <div className="justify-content-center flex-column my-2">
+    <div className="d-flex justify-content-center flex-column my-2">
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
-      <span className="fs-1 my-3">Prontuário</span>
+      <span className="d-flex fs-1 my-3">Prontuário</span>
 
       {chart === null ? <Spinner /> : <ChartAttributes chart={chart} refreshChart={refreshChart} />}
 
-      <section className="mt-4 flex-column">
-        <span className="fs-5 mb-3">Arquivos</span>
+      <section className="d-flex mt-4 flex-column">
+        <span className="d-flex fs-5 mb-3">Arquivos</span>
 
         <AvailableFiles chart_id={chart_id} countCompleted={countCompleted} />
 
-        <div className="flex-column">
-          <label className="custom-file-upload align-items-center align-self-center my-3" style={{ cursor: "pointer" }}>
+        <div className="d-flex flex-column">
+          <label
+            className="d-flex custom-file-upload align-items-center align-self-center my-3"
+            style={{ cursor: "pointer" }}
+          >
             <input
               type="file"
               multiple
@@ -87,7 +90,7 @@ export default function ProntuarioPage() {
                 e.target.value = null;
               }}
             />
-            <span className="material-icons fs-1">upload_file</span>
+            <span className="d-flex material-icons fs-1">upload_file</span>
             Enviar arquivos
           </label>
 
@@ -97,10 +100,10 @@ export default function ProntuarioPage() {
         </div>
       </section>
 
-      <section className="mt-4 flex-column">
-        <span className="fs-5 mb-3">Chat</span>
+      <section className="d-flex mt-4 flex-column">
+        <span className="d-flex fs-5 mb-3">Chat</span>
         <div
-          className="border rounded flex-column p-2"
+          className="d-flex border rounded flex-column p-2"
           style={{ minHeight: "100px", maxHeight: "300px", overflow: "auto" }}
           ref={chatMessagesRef}
         >
@@ -110,16 +113,16 @@ export default function ProntuarioPage() {
             ))}
         </div>
 
-        <div className="input-group mb-3 mt-1">
+        <div className="d-flex input-group mb-3 mt-1">
           <input className="form-control" value={inputMessage} onChange={(x) => setInputMessage(x.target.value)} />
-          <span className="btn input-group-text border" onClick={sendMessage}>
+          <span className="d-flex btn input-group-text border" onClick={sendMessage}>
             Enviar
           </span>
         </div>
       </section>
 
       {chart && chart.status?.value !== "FINALIZADO" && (
-        <section>
+        <section className="d-flex">
           <button
             className="btn btn-warning"
             onClick={() => window.confirm("Tem certeza que deseja encerrar o caso?") && closeCase()}

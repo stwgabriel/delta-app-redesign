@@ -16,10 +16,8 @@ export default function FormDisplay({
   }
   return (
     <div className={`d-flex ${column ? "flex-column" : ""} `}>
-      <span className={`p-1 fw-bold text-secondary ${labelClasses.join(" ")}`}>
-        {name}
-      </span>
-      <span className={`p-1 ${valueClasses.join(" ")}`}>{text}</span>
+      <span className={`d-flex p-1 fw-bold text-secondary ${labelClasses.join(" ")}`}>{name}</span>
+      <span className={`d-flex p-1 ${valueClasses.join(" ")}`}>{text}</span>
     </div>
   );
 }

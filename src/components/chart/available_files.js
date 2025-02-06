@@ -14,7 +14,7 @@ export default function AvailableFiles({ chart_id, countCompleted }) {
   }, [countCompleted]);
 
   return (
-    <div className="flex-column">
+    <div className="d-flex flex-column">
       {files === null ? <Spinner /> : files.map((file) => <AvailableFilesItem key={file.id} obj={file} />)}
     </div>
   );

@@ -31,7 +31,7 @@ export default function OverviewDoctorPage() {
 
   return (
     <React.Fragment>
-      <section className="mt-5 justify-content-center">
+      <section className="d-flex mt-5 justify-content-center">
         <button
           className="btn btn-primary"
           onClick={() => {
@@ -45,25 +45,25 @@ export default function OverviewDoctorPage() {
           Iniciar novo protocolo de AVC
         </button>
       </section>
-      <section className="flex-column mt-5">
-        <span className="fs-3">Meus prontuários</span>
+      <section className="d-flex flex-column mt-5">
+        <span className="d-flex fs-3">Meus prontuários</span>
         {myCharts === null ? (
           <Spinner />
         ) : (
           myCharts.map((chart) => (
             <div
               key={chart.id}
-              className={`card p-3 my-2 ${activeId === chart.id ? "bg-secondary" : ""}`}
+              className={`d-flex card p-3 my-2 ${activeId === chart.id ? "bg-secondary" : ""}`}
               onMouseEnter={() => setActiveElementOnHover(chart.id)}
               onMouseLeave={resetActiveElementOnLeave}
               onClick={() => router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${chart.id}`)}
               style={{ cursor: "pointer" }}
             >
-              <span>ID: {chart.id}</span>
-              <span>Criado em: {new Date(chart.logged_at).toLocaleString()}</span>
-              <span>Nome: {chart.name?.value}</span>
-              <div>
-                <span className="badge bg-primary">Status: {chart.status?.value}</span>
+              <span className="d-flex">ID: {chart.id}</span>
+              <span className="d-flex">Criado em: {new Date(chart.logged_at).toLocaleString()}</span>
+              <span className="d-flex">Nome: {chart.name?.value}</span>
+              <div className="d-flex">
+                <span className="d-flex badge bg-primary">Status: {chart.status?.value}</span>
               </div>
             </div>
           ))

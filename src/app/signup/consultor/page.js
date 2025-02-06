@@ -63,14 +63,14 @@ export default function SignupConsultorPage() {
   }, [isLoggedConsultor]);
 
   return (
-    <section className="flex-column align-items-center flex-fill justify-content-center">
-      <h2 className="fs-4 my-3">Cadastro do Consultor</h2>
+    <section className="d-flex flex-column align-items-center flex-fill justify-content-center">
+      <h2 className="d-flex fs-4 my-3">Cadastro do Consultor</h2>
 
-      <form className="flex-column mb-5">
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">person</span>
+      <form className="d-flex flex-column mb-5">
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">person</span>
             </span>
           </div>
           <input
@@ -88,10 +88,10 @@ export default function SignupConsultorPage() {
             onChange={(e) => setSurname(e.target.value)}
           />
         </div>
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">mail</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">mail</span>
             </span>
           </div>
           <input
@@ -103,10 +103,10 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">badge</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">badge</span>
             </span>
           </div>
           <input
@@ -118,10 +118,10 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">smartphone</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">smartphone</span>
             </span>
           </div>
           <select
@@ -140,10 +140,10 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">medication</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">medication</span>
             </span>
           </div>
           <select
@@ -168,10 +168,10 @@ export default function SignupConsultorPage() {
           />
         </div>
 
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">lock</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">lock</span>
             </span>
           </div>
           <input
@@ -183,10 +183,10 @@ export default function SignupConsultorPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="form-group input-group">
-          <div className="input-group-prepend">
-            <span className="input-group-text">
-              <span className="material-icons fs-2">lock</span>
+        <div className="d-flex form-group input-group">
+          <div className="d-flex input-group-prepend">
+            <span className="d-flex input-group-text">
+              <span className="d-flex material-icons fs-2">lock</span>
             </span>
           </div>
           <input

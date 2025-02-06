@@ -51,10 +51,10 @@ export default function ConductComponent({ chart, refreshChart }) {
   }
 
   return (
-    <section className="flex list-group my-3">
-      <div className="list-group-item">
-        <span className="fs-3">Alterar conduta</span>
-        <span className="fs-6 text-secondary mt-1">Ao clicar em salvar você irá alterar a conduta anterior</span>
+    <section className="d-flex list-group my-3">
+      <div className="d-flex list-group-item">
+        <span className="d-flex fs-3">Alterar conduta</span>
+        <span className="d-flex fs-6 text-secondary mt-1">Ao clicar em salvar você irá alterar a conduta anterior</span>
         <textarea
           className="d-flex form-control mt-4"
           value={conduct}
@@ -72,8 +72,8 @@ export default function ConductComponent({ chart, refreshChart }) {
         </div>
         {condutas_template.map((ctx, i) => (
           <React.Fragment key={`cdt-${i}`}>
-            <span className="mt-4 fs-5">{ctx.title}</span>
-            <div className="flex-column">
+            <span className="d-flex mt-4 fs-5">{ctx.title}</span>
+            <div className="d-flex flex-column">
               {ctx.condutas.map((txt, j) => (
                 <span
                   key={`cdt-${i}-${j}`}

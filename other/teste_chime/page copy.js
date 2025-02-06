@@ -12,17 +12,13 @@ export default function UploadPage() {
   const [audioVideo, setAudioVideo] = useState(null);
 
   const createMeeting = async () => {
-    const response_meeting = await fetch(
-      "http://localhost:8000/v1/meeting/create"
-    );
+    const response_meeting = await fetch("http://localhost:8000/v1/meeting/create");
     const meetingInfo = await response_meeting.json();
 
     console.log(meetingInfo);
     const meeting_id = meetingInfo.Meeting.MeetingId;
 
-    const response_attendee = await fetch(
-      `http://localhost:8000/v1/meeting/add_attendee?meeting_id=${meeting_id}`
-    );
+    const response_attendee = await fetch(`http://localhost:8000/v1/meeting/add_attendee?meeting_id=${meeting_id}`);
     const meetingAttendeeInfo = await response_attendee.json();
     console.log(meetingAttendeeInfo);
 
@@ -30,10 +26,7 @@ export default function UploadPage() {
     setAttendeeId(meetingInfo.AttendeeId);
 
     // Create meeting session
-    const meetingSessionConfig = new MeetingSessionConfiguration(
-      meetingInfo.Meeting,
-      meetingAttendeeInfo.Attendee
-    );
+    const meetingSessionConfig = new MeetingSessionConfiguration(meetingInfo.Meeting, meetingAttendeeInfo.Attendee);
     const session = new DefaultMeetingSession(meetingSessionConfig);
     setMeetingSession(session);
     setAudioVideo(session.audioVideo);
@@ -52,10 +45,10 @@ export default function UploadPage() {
   };
 
   return (
-    <div>
-      <h1>Chime Meeting</h1>
-      {meetingId && <p>Meeting ID: {meetingId}</p>}
-      {attendeeId && <p>Attendee ID: {attendeeId}</p>}
+    <div className="d-flex">
+      <h1 className="d-flex">Chime Meeting</h1>
+      {meetingId && <p className="d-flex">Meeting ID: {meetingId}</p>}
+      {attendeeId && <p className="d-flex">Attendee ID: {attendeeId}</p>}
       <button onClick={createMeeting}>Create Meeting</button>
       <button onClick={startMeeting}>Start Meeting</button>
       <button onClick={stopMeeting}>Stop Meeting</button>

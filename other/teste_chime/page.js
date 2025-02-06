@@ -184,13 +184,13 @@
 //           Stop Video
 //         </button>
 //       </div>
-//       <audio ref={audioOutputElement}></audio>
-//       <video ref={videoInputElement}></video>
+//       <audio className="d-flex" ref={audioOutputElement}></audio>
+//       <video className="d-flex" ref={videoInputElement}></video>
 
 //       <div className="mt-5 flex-column">
 //         {Object.keys(attendees).map((key) => {
 //           if (!attendees[key].tileState.localTile) {
-//             return <video key={key} ref={attendees[key].ref} />;
+//             return <video className="d-flex" key={key} ref={attendees[key].ref} />;
 //           }
 //         })}
 //       </div>

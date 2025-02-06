@@ -17,13 +17,13 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
       </head>
-      <body className="flex-column flex-fill" style={{ minHeight: "100vh" }}>
+      <body className="d-flex flex-column flex-fill" style={{ minHeight: "100vh" }}>
         <Suspense>
           <APIContextProvider>
             <WebSocketContextProvider>
               <ClientNotificationContextProvider>
                 <Header />
-                <main className="container d-flex flex-column flex-fill">{children}</main>
+                <main className="d-flex container d-flex flex-column flex-fill">{children}</main>
                 <Footer />
               </ClientNotificationContextProvider>
             </WebSocketContextProvider>

@@ -43,24 +43,24 @@ export default function UserSettingsPage() {
   }
 
   return (
-    <section className="flex-column justify-content-center my-auto">
+    <section className="d-flex flex-column justify-content-center my-auto">
       {user === null ? (
         <>
-          <span className="text-danger my-3">{error}</span>
+          <span className="d-flex text-danger my-3">{error}</span>
           <Spinner />
         </>
       ) : (
-        <div className="flex-column justify-content-center align-items-center">
-          <span className="align-self-start fs-3 my-2">Perfil</span>
+        <div className="d-flex flex-column justify-content-center align-items-center">
+          <span className="d-flex align-self-start fs-3 my-2">Perfil</span>
 
-          <div className="input-group my-2">
-            <div className="input-group-text">Nome</div>
+          <div className="d-flex input-group my-2">
+            <div className="d-flex input-group-text">Nome</div>
             <input
               className="form-control"
               value={userChanges?.name || user.name || ""}
               onChange={(e) => set_change("name", e.target.value)}
             />
-            <div className="input-group-text">Sobrenome</div>
+            <div className="d-flex input-group-text">Sobrenome</div>
             <input
               className="form-control"
               value={userChanges?.surname || user.surname || ""}
@@ -68,8 +68,8 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <div className="input-group my-2">
-            <div className="input-group-text">Telefone</div>
+          <div className="d-flex input-group my-2">
+            <div className="d-flex input-group-text">Telefone</div>
             <input
               className="form-control"
               value={userChanges?.phone || user.phone || ""}
@@ -77,8 +77,8 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <div className="input-group my-2">
-            <div className="input-group-text">CPF</div>
+          <div className="d-flex input-group my-2">
+            <div className="d-flex input-group-text">CPF</div>
             <input
               className="form-control"
               value={userChanges?.cpf || user.cpf || ""}
@@ -86,8 +86,8 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <div className="input-group my-2">
-            <div className="input-group-text">E-mail</div>
+          <div className="d-flex input-group my-2">
+            <div className="d-flex input-group-text">E-mail</div>
             <input
               className="form-control"
               value={userChanges?.email || user.email || ""}
@@ -95,8 +95,8 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <div className="input-group my-2">
-            <div className="input-group-text">CRM Estado</div>
+          <div className="d-flex input-group my-2">
+            <div className="d-flex input-group-text">CRM Estado</div>
 
             <select
               className="form-select"
@@ -111,7 +111,7 @@ export default function UserSettingsPage() {
                 </option>
               ))}
             </select>
-            <div className="input-group-text">CRM Número</div>
+            <div className="d-flex input-group-text">CRM Número</div>
             <input
               className="form-control"
               value={userChanges?.crm_number || user.crm_number || ""}
@@ -119,16 +119,16 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <div className="input-group mt-2">
-            <div className="input-group-text">Senha atual</div>
+          <div className="d-flex input-group mt-2">
+            <div className="d-flex input-group-text">Senha atual</div>
             <input
               className="form-control"
               type="password"
               onChange={(e) => set_change("old_password", e.target.value)}
             />
           </div>
-          <div className="input-group mb-2">
-            <div className="input-group-text">Senha nova</div>
+          <div className="d-flex input-group mb-2">
+            <div className="d-flex input-group-text">Senha nova</div>
             <input
               className="form-control"
               type="password"
@@ -136,9 +136,9 @@ export default function UserSettingsPage() {
             />
           </div>
 
-          <span className="text-danger">{error}</span>
+          <span className="d-flex text-danger">{error}</span>
           {!isEmpty(userChanges) && (
-            <div className="align-self-end">
+            <div className="d-flex align-self-end">
               {userChangesLoading ? (
                 <Spinner />
               ) : (

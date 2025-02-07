@@ -2,7 +2,7 @@
 import { useAPIContext } from "@/contexts/api";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -16,15 +16,6 @@ export default function Home() {
       }
     }
   }, [isTokenLoaded]);
-
-  // const items = [
-  //   {
-  //     title: "Teste 1",
-  //   },
-  //   {
-  //     title: "May 1941",
-  //   },
-  // ];
 
   return (
     <>

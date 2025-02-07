@@ -31,6 +31,7 @@ export const ROUTES = {
   PRONTUARIO_PAG3: "/doctor/form/pag3",
   // Admin page
   ADMIN_PAGE: "/admin",
+  SCHEDULER_PAGE: "/user/scheduler",
 };
 
 export const API_ROUTES = {

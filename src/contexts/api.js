@@ -340,11 +340,45 @@ export const APIContextProvider = ({ children }) => {
   function signup_hospital(data) {
     const url = API_ROUTES.SIGNUP_HOSPITAL;
     const body = JSON.stringify(data);
-    const configs = { body, method: "POST" };
+    const configs = { body };
+    return _post(url, configs);
+  }
 
-    return new Promise((resolve, reject) => {
-      _request(url, configs).then(resolve).catch(reject);
-    });
+  function list_shifts_on_timespan(start, end) {
+    const url = `/v1/shift/timespan?start=${start}&end=${end}`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function list_active_consultor() {
+    const url = `/v1/user/list/active_consultor`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function search_user_name(name) {
+    const url = `/v1/user/search?name=${name}`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function get_user(user_id) {
+    const url = `/v1/user?user_id=${user_id}`;
+    const configs = {};
+    return _get(url, configs);
+  }
+
+  function request_delete_shift(shift_id) {
+    const url = `/v1/shift/request_delete?shift_id=${shift_id}`;
+    const configs = {};
+    return _put(url, configs);
+  }
+
+  function create_shift(data) {
+    const url = `/v1/shift`;
+    const body = JSON.stringify(data);
+    const configs = { body };
+    return _post(url, configs);
   }
 
   return (
@@ -387,6 +421,12 @@ export const APIContextProvider = ({ children }) => {
         get_hospital,
         put_hospital,
         signup_hospital,
+        list_shifts_on_timespan,
+        list_active_consultor,
+        search_user_name,
+        get_user,
+        request_delete_shift,
+        create_shift,
       }}
     >
       {children}

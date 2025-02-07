@@ -113,3 +113,18 @@ export function getMaxNIHCount(template) {
   let maxScore = template.reduce((acc, section) => acc + Math.max(...section.items.map((q) => q.score)), 0);
   return maxScore;
 }
+
+export function formatDateDifference(startDate, endDate) {
+  const diffInMs = new Date(endDate) - new Date(startDate); // Difference in milliseconds
+
+  if (diffInMs < 0) {
+    return "inválido";
+  }
+
+  const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diffInMs % (1000 * 60)) / 1000);
+
+  return `${days} dias, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+}

@@ -31,6 +31,13 @@ export default function Header() {
           <Spinner />
         ) : isLoggedConsultor ? (
           <div className="d-flex align-items-center">
+            <Link
+              className="material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.SCHEDULER_PAGE}
+            >
+              calendar_month
+            </Link>
             {isAdmin && (
               <Link
                 className="material-icons fs-1 text-decoration-none text-body"

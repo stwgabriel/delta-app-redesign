@@ -23,7 +23,15 @@ function renderEventContent(eventInfo) {
 }
 
 export default function SchedulerPage() {
-  const { list_shifts_on_timespan, search_user_name, get_user, request_delete_shift, create_shift } = useAPIContext();
+  const {
+    list_shifts_on_timespan,
+    search_user_name,
+    get_user,
+    request_delete_shift,
+    create_shift,
+    isAdmin,
+    approve_shift,
+  } = useAPIContext();
   const { notifyError, notifySuccess } = useClientNotificationContext();
 
   const [events, setEvents] = useState(null);
@@ -52,7 +60,15 @@ export default function SchedulerPage() {
     list_shifts_on_timespan(calendarTimespan.start_at, calendarTimespan.end_at)
       .then((es) => {
         const newEvents = es.map((e) => {
-          return { ...e, start: e.start_at, end: e.end_at, rawEvent: e };
+          const color = e.creation_approved_by_user_id === null ? "" : "#198754";
+          return {
+            ...e,
+            start: e.start_at,
+            end: e.end_at,
+            rawEvent: e,
+            backgroundColor: color,
+            borderColor: color,
+          };
         });
         setEvents(newEvents);
       })
@@ -101,10 +117,22 @@ export default function SchedulerPage() {
         setSelectedEvent(null);
         setSelectedUser(null);
         refresh_list_events();
-        notifySuccess("Solicitação para deletar turno enviada para aprovação");
+        notifySuccess("Turno deletado");
       })
       .catch((e) => notifyError(e.message));
   }
+
+  function approve_event(eid) {
+    approve_shift(eid)
+      .then(() => {
+        setSelectedEvent(null);
+        setSelectedUser(null);
+        refresh_list_events();
+        notifySuccess("Turno aprovado!");
+      })
+      .catch((e) => notifyError(e.message));
+  }
+
   function create_event() {
     if (selectedUser === null) {
       notifyError("Usuário não selecionado");
@@ -229,6 +257,7 @@ export default function SchedulerPage() {
               <label htmlFor="endTime" className="form-label">
                 Duração do turno: {formatDateDifference(selectedEvent.start_at, selectedEvent.end_at)}
               </label>
+              {selectedEvent.creation_approved_by_user_id && <label>Approved</label>}
             </div>
             <div className="d-flex">
               <button
@@ -238,8 +267,17 @@ export default function SchedulerPage() {
               >
                 Excluir
               </button>
+              {isAdmin && (
+                <button
+                  className="btn btn-success w-100 mx-5"
+                  disabled={!(selectedEvent.type === "calendar" && selectedEvent.creation_approved_by_user_id === null)}
+                  onClick={() => approve_event(selectedEvent.id)}
+                >
+                  Aprovar
+                </button>
+              )}
               <button
-                className="btn btn-success w-100 mx-5"
+                className="btn btn-primary w-100 mx-5"
                 disabled={selectedEvent.type === "calendar"}
                 onClick={create_event}
               >

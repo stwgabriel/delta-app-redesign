@@ -381,6 +381,12 @@ export const APIContextProvider = ({ children }) => {
     return _post(url, configs);
   }
 
+  function approve_shift(shift_id) {
+    const url = `/v1/shift/approve?shift_id=${shift_id}`;
+    const configs = {};
+    return _put(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -427,6 +433,7 @@ export const APIContextProvider = ({ children }) => {
         get_user,
         request_delete_shift,
         create_shift,
+        approve_shift,
       }}
     >
       {children}

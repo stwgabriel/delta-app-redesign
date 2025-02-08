@@ -39,8 +39,8 @@ export default function OverviewDoctorPage() {
           Iniciar novo protocolo de AVC
         </button>
       </section>
-      <section className="d-flex flex-column mt-5">
-        <span className="d-flex fs-3">Meus prontuários</span>
+      <section className="card shadow p-4 d-flex flex-column mt-5">
+        <span className="d-flex fs-3">Meus prontuários em andamento</span>
         {myCharts === null ? (
           <Spinner />
         ) : (

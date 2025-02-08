@@ -1,4 +1,5 @@
 "use client";
+import SearchChartsComponent from "@/components/search_charts/search_charts";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
 import { useRouter } from "next/navigation";
@@ -66,6 +67,7 @@ export default function ConsultorOverviewPage() {
 
   return (
     <React.Fragment>
+      <SearchChartsComponent />
       {[
         {
           title: "Em preenchimento",

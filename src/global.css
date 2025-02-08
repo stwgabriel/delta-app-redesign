@@ -24,3 +24,17 @@ time, mark, audio, video {
 	vertical-align: baseline;
 }
 
+
+.clickable {
+	cursor: pointer;
+}
+
+.hover-highlight {
+	transition: 0.3s ease-in-out;
+}
+  
+.hover-highlight:hover {
+	background-color: #e2e6ea; /* Cor clara para destacar */
+	transform: scale(1.03); /* Efeito de leve zoom */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
+}

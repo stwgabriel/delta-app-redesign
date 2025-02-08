@@ -6,6 +6,7 @@ import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useClientNotificationContext } from "@/contexts/client_notification";
+import SearchChartsComponent from "@/components/search_charts/search_charts";
 
 export default function OverviewDoctorPage() {
   const { notifyError } = useClientNotificationContext();
@@ -13,7 +14,6 @@ export default function OverviewDoctorPage() {
   const router = useRouter();
 
   const [myCharts, setMyCharts] = useState(null);
-  const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
     get_my_charts("INICIADO,EM_ATENDIMENTO")
@@ -21,16 +21,10 @@ export default function OverviewDoctorPage() {
       .catch((e) => notifyError(e.message));
   }, []);
 
-  const setActiveElementOnHover = (id) => {
-    setActiveId(id);
-  };
-
-  const resetActiveElementOnLeave = () => {
-    setActiveId(null);
-  };
-
   return (
     <React.Fragment>
+      <SearchChartsComponent />
+
       <section className="d-flex mt-5 justify-content-center">
         <button
           className="btn btn-primary"
@@ -53,11 +47,8 @@ export default function OverviewDoctorPage() {
           myCharts.map((chart) => (
             <div
               key={chart.id}
-              className={`d-flex card p-3 my-2 ${activeId === chart.id ? "bg-secondary" : ""}`}
-              onMouseEnter={() => setActiveElementOnHover(chart.id)}
-              onMouseLeave={resetActiveElementOnLeave}
+              className="d-flex card clickable hover-highlight p-3 my-2"
               onClick={() => router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${chart.id}`)}
-              style={{ cursor: "pointer" }}
             >
               <span className="d-flex">ID: {chart.id}</span>
               <span className="d-flex">Criado em: {new Date(chart.logged_at).toLocaleString()}</span>

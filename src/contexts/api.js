@@ -387,6 +387,13 @@ export const APIContextProvider = ({ children }) => {
     return _put(url, configs);
   }
 
+  function search_chart(field_type, field_text) {
+    const url = `/v1/chart/search`;
+    const body = JSON.stringify({ [field_type]: field_text });
+    const configs = { body };
+    return _post(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -434,6 +441,7 @@ export const APIContextProvider = ({ children }) => {
         request_delete_shift,
         create_shift,
         approve_shift,
+        search_chart,
       }}
     >
       {children}

@@ -17,7 +17,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
     get_nih_template().then(setNihTemplate).catch(console.error);
   }, []);
 
-  const { get_nih_template } = useAPIContext();
+  const { get_nih_template, isLoggedConsultor } = useAPIContext();
 
   function getNIHScore() {
     let score = 0;
@@ -224,7 +224,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
         </div>
       </section>
 
-      <ConductComponent chart={chart} refreshChart={refreshChart} />
+      {isLoggedConsultor && <ConductComponent chart={chart} refreshChart={refreshChart} />}
     </React.Fragment>
   );
 }

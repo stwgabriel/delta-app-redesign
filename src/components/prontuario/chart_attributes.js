@@ -63,7 +63,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </div>
         </div>
 
-        <div className="d-flex list-group-item">
+        <div className="d-flex flex-column list-group-item">
           <FormDisplay name="Motivo" text={getValueFromObj(chart.open_reason)} />
           <FormDisplay name="História coletada com" text={getValueFromObj(chart.history_collected_with)} />
           <FormDisplay name="História" text={getValueFromObj(chart.history)} />
@@ -76,7 +76,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </div>
         </div>
 
-        <div className="d-flex list-group-item">
+        <div className="d-flex flex-column list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -110,7 +110,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           />
         </div>
 
-        <div className="d-flex list-group-item">
+        <div className="d-flex flex-column list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -147,7 +147,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </table>
         </div>
 
-        <div className="d-flex list-group-item">
+        <div className="d-flex flex-column list-group-item">
           <table className="table table-striped">
             <thead>
               <tr>
@@ -168,7 +168,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
           </table>
         </div>
 
-        <div className="d-flex list-group-item">
+        <div className="d-flex flex-column list-group-item">
           {!nihTemplate ? (
             <Spinner />
           ) : (

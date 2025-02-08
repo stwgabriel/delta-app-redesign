@@ -1,6 +1,5 @@
 "use client";
 
-import { useAPIContext } from "@/contexts/api";
 import { humanFileSize } from "@/utils/funcs";
 import { ProgressBar } from "react-bootstrap";
 

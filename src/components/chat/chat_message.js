@@ -1,7 +1,6 @@
 "use client";
 
 export default function ChatMessage({ msg, isCurrentUser }) {
-  //   console.log(isCurrentUser);
   return (
     <div className="d-flex">
       {isCurrentUser && <div className="d-flex flex-fill"></div>}

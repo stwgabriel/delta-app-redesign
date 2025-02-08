@@ -52,7 +52,7 @@ export default function ConductComponent({ chart, refreshChart }) {
 
   return (
     <section className="d-flex list-group my-3">
-      <div className="d-flex list-group-item">
+      <div className="d-flex list-group-item flex-column">
         <span className="d-flex fs-3">Alterar conduta</span>
         <span className="d-flex fs-6 text-secondary mt-1">Ao clicar em salvar você irá alterar a conduta anterior</span>
         <textarea
@@ -77,7 +77,8 @@ export default function ConductComponent({ chart, refreshChart }) {
               {ctx.condutas.map((txt, j) => (
                 <span
                   key={`cdt-${i}-${j}`}
-                  className="my-2 border p-2 rounded pointer"
+                  className="my-2 border p-2 rounded"
+                  style={{ cursor: "pointer" }}
                   onClick={() => setConduct((old) => old + "\n" + txt)}
                 >
                   {txt}

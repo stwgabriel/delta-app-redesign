@@ -1,7 +1,5 @@
-import Spinner from "@/components/spinner";
-import { isEmpty } from "@/utils/funcs";
 import { comorbidities_template } from "@/utils/templates";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function SectionComorbidades({ myForm }) {
   return (

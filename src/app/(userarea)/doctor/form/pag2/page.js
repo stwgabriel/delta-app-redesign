@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "@/contexts/form";
 import SectionInformacoesBasicas from "./section_informacoes_basicas";
 import SectionContraindicacoesAbsolutas from "./section_contraindicacoes_absolutas";

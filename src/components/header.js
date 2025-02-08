@@ -14,7 +14,7 @@ export default function Header() {
   return (
     <nav className="d-flex navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
       <div className="d-flex justify-content-center">
-        <Link className="text-dark align-items-center text-decoration-none" href={ROUTES.HOME}>
+        <Link className="d-flex text-dark align-items-center text-decoration-none" href={ROUTES.HOME}>
           <Image
             src={"/delta_stroke_icon.webp"}
             width={80}
@@ -32,7 +32,14 @@ export default function Header() {
         ) : isLoggedConsultor ? (
           <div className="d-flex align-items-center">
             <Link
-              className="material-icons fs-1 text-decoration-none text-body"
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.HOME}
+            >
+              home
+            </Link>
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
               href={ROUTES.SCHEDULER_PAGE}
             >
@@ -40,7 +47,7 @@ export default function Header() {
             </Link>
             {isAdmin && (
               <Link
-                className="material-icons fs-1 text-decoration-none text-body"
+                className="d-flex material-icons fs-1 text-decoration-none text-body"
                 style={{ cursor: "pointer" }}
                 href={ROUTES.ADMIN_PAGE}
               >
@@ -48,7 +55,7 @@ export default function Header() {
               </Link>
             )}
             <Link
-              className="material-icons fs-1 text-decoration-none text-body"
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
               href={ROUTES.SETTINGS_PAGE_USER}
             >
@@ -61,7 +68,14 @@ export default function Header() {
         ) : isLoggedDoctor ? (
           <div className="d-flex align-items-center">
             <Link
-              className="material-icons fs-1 text-decoration-none text-body"
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.HOME}
+            >
+              home
+            </Link>
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
               href={ROUTES.SETTINGS_PAGE_USER}
             >

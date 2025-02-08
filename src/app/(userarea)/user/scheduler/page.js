@@ -14,7 +14,10 @@ function renderEventContent(eventInfo) {
   return (
     <span className="d-flex flex-column align-items-center justify-content-center">
       <b>{eventInfo.timeText}</b>
-      {/* <b>{eventInfo.event.extendedProps.aaaaa}</b> */}
+      <b>{eventInfo?.event?.extendedProps?.user?.name}</b>
+      <b>
+        {eventInfo?.event?.extendedProps?.user?.crm_state}/{eventInfo?.event?.extendedProps?.user?.crm_number}
+      </b>
     </span>
   );
 }
@@ -60,10 +63,6 @@ export default function SchedulerPage() {
     refresh_list_events();
   }, [calendarTimespan]);
 
-  useEffect(() => {
-    console.log(selectedEvent);
-  }, [selectedEvent]);
-
   function _search_user_name(name) {
     search_user_name(name)
       .then(setUserList)
@@ -107,6 +106,11 @@ export default function SchedulerPage() {
       .catch((e) => notifyError(e.message));
   }
   function create_event() {
+    if (selectedUser === null) {
+      notifyError("Usuário não selecionado");
+      return;
+    }
+
     create_shift({
       user_id: selectedUser.id,
       start_at: selectedEvent.start_at,

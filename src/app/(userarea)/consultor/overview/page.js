@@ -1,7 +1,6 @@
 "use client";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
-import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -46,9 +45,7 @@ function ChartsList({ charts }) {
 }
 
 export default function ConsultorOverviewPage() {
-  const { isTokenLoaded, isLoggedConsultor, get_charts_by_status } = useAPIContext();
-  const router = useRouter();
-
+  const { isTokenLoaded, get_charts_by_status } = useAPIContext();
   const [chartsIniciado, setChartsIniciado] = useState(null);
   const [chartsEmAtendimento, setChartsEmAtendimento] = useState(null);
 

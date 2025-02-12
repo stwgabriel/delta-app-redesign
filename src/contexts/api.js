@@ -394,6 +394,20 @@ export const APIContextProvider = ({ children }) => {
     return _post(url, configs);
   }
 
+  function search_user(field_type, field_text) {
+    const url = `/v1/user/search`;
+    const body = JSON.stringify({ [field_type]: field_text });
+    const configs = { body };
+    return _post(url, configs);
+  }
+
+  function search_hospital(field_type, field_text) {
+    const url = `/v1/hospital/search`;
+    const body = JSON.stringify({ [field_type]: field_text });
+    const configs = { body };
+    return _post(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -442,6 +456,8 @@ export const APIContextProvider = ({ children }) => {
         create_shift,
         approve_shift,
         search_chart,
+        search_user,
+        search_hospital,
       }}
     >
       {children}

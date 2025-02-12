@@ -1,5 +1,5 @@
 "use client";
-import SearchChartsComponent from "@/components/search_charts/search_charts";
+import SearchChartsComponent from "@/components/search/search_charts";
 import Spinner from "@/components/spinner";
 import { useAPIContext } from "@/contexts/api";
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ function ChartCard({ detail }) {
 
   return (
     <div
-      className="d-flex card my-1"
+      className="d-flex card my-1 clickable hover-highlight"
       onClick={() => router.push(`/prontuario/overview?chart_id=${id}`)}
       style={{ cursor: "pointer" }}
     >

@@ -1,14 +1,18 @@
 "use client";
 
-import AdminUserComponent from "@/components/admin/adm_user";
-import AdminHospitaisComponent from "@/components/admin/adm_hospital";
 import React from "react";
+import SearchUsersComponent from "@/components/search/search_users";
+import SearchHospitalComponent from "@/components/search/search_hospitals";
 
 export default function AdminOverviewPage() {
   return (
     <React.Fragment>
-      <AdminHospitaisComponent />
-      <AdminUserComponent />
+      <div className="mt-5">
+        <SearchHospitalComponent />
+      </div>
+      <div className="mt-5">
+        <SearchUsersComponent />
+      </div>
     </React.Fragment>
   );
 }

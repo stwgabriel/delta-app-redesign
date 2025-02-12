@@ -1,5 +1,6 @@
 "use client";
 import { useAPIContext } from "@/contexts/api";
+import { useClientNotificationContext } from "@/contexts/client_notification";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -17,45 +18,33 @@ export default function Home() {
     }
   }, [isTokenLoaded]);
 
+  // const { notifyConfirm } = useClientNotificationContext();
+  //
+  // useEffect(async () => {
+  //   navigator.serviceWorker.register("service-worker.js").then(async (serviceWorker) => {
+  //     let subscription = await serviceWorker.pushManager.getSubscription();
+  //     if (!subscription) {
+  //       const publicKeyResponse = await fetch("http://localhost:8000/public_key");
+  //       const publicKeyData = await publicKeyResponse.json();
+  //       subscription = await serviceWorker.pushManager.subscribe({
+  //         userVisibleOnly: true,
+  //         applicationServerKey: publicKeyData.publicKey,
+  //       });
+  //     }
+
+  //     await fetch("http://localhost:8000/register", { method: "POST", body: JSON.stringify(subscription) });
+  //     console.log(subscription);
+  //   });
+
+  //   // window.Notification.requestPermission((permission) => {
+  //   //   if (permission === "granted") {
+  //   //     new window.Notification("Habis", { body: "teste" });
+  //   //   }
+  //   // });
+  // }, []);
+
   return (
     <>
-      <section className="d-flex flex-column align-items-center mt-5">
-        {/* <Link className="text-dark align-items-center text-decoration-none" href={ROUTES.SIGNUP_HOSPITAL}>
-          Cadastrar hospital
-        </Link> */}
-      </section>
-
-      {/* <ol className="progress" data-steps="4">
-        <li className="done">
-          <span className="d-flex name">Foo</span>
-          <span className="d-flex step">
-            <span className="d-flex">1</span>
-          </span>
-        </li>
-        <li className="done">
-          <span className="d-flex name">Bar</span>
-          <span className="d-flex step">
-            <span className="d-flex">2</span>
-          </span>
-        </li>
-        <li className="active">
-          <span className="d-flex name">Baz</span>
-          <span className="d-flex step">
-            <span className="d-flex">3</span>
-          </span>
-        </li>
-        <li>
-          <span className="d-flex name">Quux</span>
-          <span className="d-flex step">
-            <span className="d-flex">4</span>
-          </span>
-        </li>
-      </ol> */}
-
-      {/* <section style={{ width: "500px", height: "950px" }}>
-        <ProgressChart />
-      </section> */}
-
       <section className="d-flex flex-column mt-5">
         <span className="d-flex fs-3 mb-2">Sobre nós</span>
         <span className="d-flex text-justify">

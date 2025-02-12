@@ -6,7 +6,7 @@ import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useClientNotificationContext } from "@/contexts/client_notification";
-import SearchChartsComponent from "@/components/search_charts/search_charts";
+import SearchChartsComponent from "@/components/search/search_charts";
 
 export default function OverviewDoctorPage() {
   const { notifyError } = useClientNotificationContext();

@@ -43,10 +43,6 @@ export default function SearchHospitalComponent() {
       .catch((e) => notifyError(e.message));
   }
 
-  useEffect(() => {
-    console.log(searchHospitalResults);
-  }, [searchHospitalResults]);
-
   return (
     <div className="card shadow p-4">
       <h4 className="fw-bold">Pesquisar Hospital</h4>

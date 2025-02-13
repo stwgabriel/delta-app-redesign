@@ -40,10 +40,6 @@ export default function SearchUsersComponent() {
       .catch((e) => notifyError(e.message));
   }
 
-  useEffect(() => {
-    console.log(searchUserResults);
-  }, [searchUserResults]);
-
   return (
     <div className="card shadow p-4">
       <h4 className="fw-bold">Pesquisar Usuário</h4>

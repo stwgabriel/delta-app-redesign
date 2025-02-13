@@ -36,10 +36,6 @@ export default function SearchChartsComponent() {
       });
   }
 
-  useEffect(() => {
-    console.log(searchChartResults);
-  }, [searchChartResults]);
-
   return (
     <div className="card shadow p-4 mt-5">
       <h4 className="fw-bold">Pesquisar Prontuário</h4>

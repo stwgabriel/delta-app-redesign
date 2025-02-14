@@ -9,7 +9,7 @@ import Spinner from "@/components/spinner";
 import { getMaxNIHCount } from "@/utils/funcs";
 import { useClientNotificationContext } from "@/contexts/client_notification";
 export default function ProntuarioPage3Page() {
-  const { notifyError } = useClientNotificationContext();
+  const { notifyError, notifyWarn } = useClientNotificationContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes, get_nih_template } = useAPIContext();
@@ -132,7 +132,7 @@ export default function ProntuarioPage3Page() {
         </div>
 
         <div className="d-flex input-group mb-2">
-          <span className="d-flex input-group-text">Pressão arterial</span>
+          <span className="d-flex input-group-text">Pressão arterial (mm/Hg)</span>
           <input
             type="number"
             className="form-control"

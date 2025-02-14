@@ -25,9 +25,9 @@ export default function OverviewDoctorPage() {
     <React.Fragment>
       <SearchChartsComponent />
 
-      <section className="d-flex mt-5 justify-content-center">
+      <section className="d-flex mt-5 justify-content-center flex-column">
         <button
-          className="btn btn-primary"
+          className="btn btn-primary my-2"
           onClick={() => {
             create_chart()
               .then((r) => {
@@ -38,6 +38,8 @@ export default function OverviewDoctorPage() {
         >
           Iniciar novo protocolo de AVC
         </button>
+
+        <button className="btn btn-primary  my-2">Parecer de neurologia geral</button>
       </section>
       <section className="card shadow p-4 d-flex flex-column mt-5">
         <span className="d-flex fs-3">Meus prontuários em andamento</span>

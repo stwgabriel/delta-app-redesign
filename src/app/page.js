@@ -1,22 +1,25 @@
 "use client";
 import { useAPIContext } from "@/contexts/api";
-import { useClientNotificationContext } from "@/contexts/client_notification";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
+import Image from "next/image";
+import "./page.css";
 
 export default function Home() {
   const router = useRouter();
-  const { isLoggedConsultor, isLoggedDoctor, isTokenLoaded } = useAPIContext();
-  useEffect(() => {
-    if (isTokenLoaded) {
-      if (isLoggedConsultor) {
-        router.push(ROUTES.LANDING_PAGE_CONSULTOR);
-      } else if (isLoggedDoctor) {
-        router.push(ROUTES.LANDING_PAGE_DOCTOR);
-      }
-    }
-  }, [isTokenLoaded]);
+
+  // const { isLoggedConsultor, isLoggedDoctor, isTokenLoaded } = useAPIContext();
+
+  // useEffect(() => {
+  //   if (isTokenLoaded) {
+  //     if (isLoggedConsultor) {
+  //       router.push(ROUTES.LANDING_PAGE_CONSULTOR);
+  //     } else if (isLoggedDoctor) {
+  //       router.push(ROUTES.LANDING_PAGE_DOCTOR);
+  //     }
+  //   }
+  // }, [isTokenLoaded]);
 
   // const { notifyConfirm } = useClientNotificationContext();
   //
@@ -45,20 +48,41 @@ export default function Home() {
 
   return (
     <>
-      <section className="d-flex flex-column mt-5">
-        <span className="d-flex fs-3 mb-2">Sobre nós</span>
-        <span className="d-flex text-justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet elit purus. Donec mauris ante,
-          consequat a aliquet et, vehicula malesuada libero. Vivamus eget magna id quam semper auctor vel vitae nisi.
-          Nunc tempor, ligula quis egestas vestibulum, augue lorem vulputate justo, vitae posuere massa nisl vel dui.
-          Integer non nulla aliquet, laoreet ipsum vel, molestie quam. Mauris vitae leo vehicula, finibus sem vitae,
-          laoreet metus. Mauris sollicitudin vehicula leo ac aliquam. Suspendisse et molestie libero. In hac habitasse
-          platea dictumst. Nam quis nulla ipsum. Nam nunc velit, iaculis et odio sed, ultricies consectetur enim.
-          Phasellus vel nunc et eros auctor ullamcorper. Quisque eleifend finibus placerat. Integer scelerisque ipsum
-          dignissim ex lobortis, sed interdum sem ultricies. Aliquam iaculis tincidunt pharetra. Donec fermentum orci et
-          libero malesuada malesuada. Vivamus tristique nec massa nec facilisis. Pellentesque elit urna, scelerisque vel
-          dolor et, ultricies condimentum risus.
+      <section className="d-flex justify-content-end">
+        <span className="px-3 py-2 default-color clickable" onClick={() => router.push(ROUTES.LANDING_PAGE_CONSULTOR)}>
+          Área do colaborador
         </span>
+      </section>
+      <section
+        className="d-flex flex-column flex-fill  flex-grow align-items-center justify-content-center"
+        style={{ width: "100%", height: "100%", position: "relative" }}
+      >
+        <Image src="/img1.avif" layout="fill" objectFit="cover" style={{ zIndex: -10, opacity: 0.5 }} />
+        <h3 className="fs-2 default-color">Instituto Delta</h3>
+        <hr style={{ height: "2px", background: "#000", width: "300px" }} />
+        <span className="default-color">Uma equipe exclusiva de neurologistas especialistas,</span>
+        <span className="default-color">buscando fazer a diferença para o seu tratamento</span>
+      </section>
+      <section className="d-flex align-items-center justify-content-around ">
+        <div className="p-3 landing-page-button align-middle align-items-center">
+          <span className="default-color clickable">Área do associado</span>
+          <span
+            className="material-icons fs-1 ms-2"
+            style={{ backgroundColor: "#243067", color: "#FFF", borderRadius: "50%" }}
+          >
+            chevron_right
+          </span>
+        </div>
+        <Image src={"/Screenshot_203.png"} width={100} height={100} />
+        <div className="p-3 landing-page-button align-middle align-items-center">
+          <span className="default-color">Área do paciente</span>
+          <span
+            className="material-icons fs-1 ms-2"
+            style={{ backgroundColor: "#243067", color: "#FFF", borderRadius: "50%" }}
+          >
+            chevron_right
+          </span>
+        </div>
       </section>
     </>
   );

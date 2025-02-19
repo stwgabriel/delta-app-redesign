@@ -64,7 +64,7 @@ export default function Home() {
         <span className="default-color">buscando fazer a diferença para o seu tratamento</span>
       </section>
       <section className="d-flex align-items-center justify-content-around ">
-        <div className="p-3 landing-page-button align-middle align-items-center">
+        <div className="d-flex p-3 landing-page-button align-middle align-items-center">
           <span className="default-color clickable">Área do associado</span>
           <span
             className="material-icons fs-1 ms-2"
@@ -74,7 +74,7 @@ export default function Home() {
           </span>
         </div>
         <Image src={"/Screenshot_203.png"} width={100} height={100} />
-        <div className="p-3 landing-page-button align-middle align-items-center">
+        <div className="d-flex p-3 landing-page-button align-middle align-items-center">
           <span className="default-color">Área do paciente</span>
           <span
             className="material-icons fs-1 ms-2"

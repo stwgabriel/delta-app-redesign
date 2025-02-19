@@ -12,6 +12,19 @@ export default function Header() {
   const { isTokenLoaded, isLoggedConsultor, isLoggedHospital, isLoggedDoctor, logout, isAdmin } = useAPIContext();
 
   return (
+    <nav className="d-flex container navbar justify-content-start">
+      <span className="px-2" style={{ color: "#243067" }}>
+        Início
+      </span>
+      <span className="px-2" style={{ color: "#243067" }}>
+        Sobre Nós
+      </span>
+      <span className="px-2" style={{ color: "#243067" }}>
+        Tratamentos
+      </span>
+    </nav>
+  );
+  /* return (
     <nav className="d-flex navbar ps-4 p-2" style={{ background: "rgb(34, 139, 240, 0.5)" }}>
       <div className="d-flex justify-content-center">
         <Link className="d-flex text-dark align-items-center text-decoration-none" href={ROUTES.HOME}>
@@ -113,5 +126,5 @@ export default function Header() {
         )}
       </div>
     </nav>
-  );
+  ); */
 }

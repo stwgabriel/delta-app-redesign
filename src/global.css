@@ -38,3 +38,17 @@ time, mark, audio, video {
 	transform: scale(1.03); /* Efeito de leve zoom */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destaque */
 }
+
+
+.landing-page-button {
+    border: 2px solid #243067;
+    border-radius: 30px;
+}
+
+.default-color {
+    color: #243067;;
+}
+
+.fading-img {
+	mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 0) 80%);
+}

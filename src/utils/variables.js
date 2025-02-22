@@ -11,6 +11,8 @@ export function get_socket_host() {
 export const ROUTES = {
   // Home
   HOME: "/",
+  ABOUT: "/about",
+  TRATAMENTOS: "/tratamentos",
   // Signup
   SIGNUP_CONSULTOR: "/signup/consultor",
   SIGNUP_HOSPITAL: "/signup/hospital",

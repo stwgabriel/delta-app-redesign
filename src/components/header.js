@@ -13,15 +13,15 @@ export default function Header() {
 
   return (
     <nav className="d-flex container navbar justify-content-start">
-      <span className="px-2" style={{ color: "#243067" }}>
+      <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.HOME}>
         Início
-      </span>
-      <span className="px-2" style={{ color: "#243067" }}>
+      </Link>
+      <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.ABOUT}>
         Sobre Nós
-      </span>
-      <span className="px-2" style={{ color: "#243067" }}>
+      </Link>
+      {/* <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.TRATAMENTOS}>
         Tratamentos
-      </span>
+      </Link> */}
     </nav>
   );
   /* return (

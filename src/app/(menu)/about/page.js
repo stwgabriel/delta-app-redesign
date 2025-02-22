@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import Image from "next/image";
 
-export default function Home() {
+export default function AboutPage() {
   const router = useRouter();
 
   // const { isLoggedConsultor, isLoggedDoctor, isTokenLoaded } = useAPIContext();
@@ -48,53 +48,39 @@ export default function Home() {
   return (
     <>
       <section className="d-flex flex-column flex-fill">
-        <div className="d-flex justify-content-end">
-          <span
-            className="px-3 py-2 default-color clickable"
-            onClick={() => router.push(ROUTES.LANDING_PAGE_CONSULTOR)}
-          >
-            Área do colaborador
-          </span>
-        </div>
         <div
           className="d-flex flex-column flex-fill align-items-center justify-content-center"
-          style={{ width: "100%", position: "relative", minWidth: "400px" }}
+          style={{ width: "100%", position: "relative", minWidth: "520px" }}
         >
           <Image
-            src="/img1.avif"
+            src="/mesa.jpeg"
             className="fading-img"
             layout="fill"
             objectFit="cover"
             alt=""
-            style={{ zIndex: -10, opacity: 0.5 }}
+            style={{ zIndex: -10, opacity: 0.2 }}
           />
-          <h3 className="fs-2 default-color">Instituto Delta</h3>
+          <h3 className="fs-2 default-color mt-5">NOSSA MISSÃO</h3>
           <hr style={{ height: "2px", background: "#000", width: "300px" }} />
-          <span className="default-color">Uma equipe exclusiva de neurologistas especialistas,</span>
-          <span className="default-color">buscando fazer a diferença para o seu tratamento</span>
-        </div>
-        <div className="d-flex align-items-center justify-content-around ">
-          <div
-            className="d-flex p-3 landing-page-button align-middle align-items-center clickable"
-            onClick={() => router.push(ROUTES.LANDING_PAGE_DOCTOR)}
-          >
-            <span className="default-color">Área do associado</span>
-            <span
-              className="material-icons fs-1 ms-2"
-              style={{ backgroundColor: "#243067", color: "#FFF", borderRadius: "50%" }}
-            >
-              chevron_right
-            </span>
+          <span className="default-color text-center">
+            Levar o melhor tratamento disponível aos pacientes que sofrem de AVC
+          </span>
+          <div className="row w-100 text-center mt-5 default-color">
+            <div className="col fs-2">Agilizar o atendimento</div>
+            <div className="col fs-2">Suporte com Neurologista</div>
+            <div className="col fs-2">Atendimento TeleStroke 24 horas / dia</div>
           </div>
-          <Image src={"/Screenshot_203.png"} width={100} height={100} alt="" />
-          <div className="d-flex p-3 landing-page-button align-middle align-items-center clickable">
-            <span className="default-color">Área do paciente</span>
-            <span
-              className="material-icons fs-1 ms-2"
-              style={{ backgroundColor: "#243067", color: "#FFF", borderRadius: "50%" }}
-            >
-              chevron_right
-            </span>
+          <div className="row w-100 text-center my-2 default-color">
+            <div className="col">Levar atendimento especializado a todos os locais</div>
+            <div className="col"></div>
+            <div className="col"></div>
+          </div>
+          <div className="row w-100 text-center my-2 default-color">
+            <div className="col">Consultoria em tempo real com especialista na emergência</div>
+            <div className="col">
+              Avaliação conjunta de indicações e contraindicações a terapias de reperfusão cerebral
+            </div>
+            <div className="col">Educação continuada para médico generealista em emergência</div>
           </div>
         </div>
       </section>

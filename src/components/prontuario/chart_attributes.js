@@ -115,7 +115,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
             <thead>
               <tr>
                 <th className="px-3" scope="col">
-                  Contraindicações absolutas
+                  Contraindicações
                 </th>
                 <th className="px-3 text-center" scope="col">
                   Resposta

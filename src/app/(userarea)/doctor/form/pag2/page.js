@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm } from "@/contexts/form";
 import SectionInformacoesBasicas from "./section_informacoes_basicas";
-import SectionContraindicacoesAbsolutas from "./section_contraindicacoes_absolutas";
+import SectionContraindicacoes from "./section_contraindicacoes";
 import SectionRankin from "./section_rankin";
 import SectionComorbidades from "./section_comorbidades";
 import SectionMedicamentosAnticoagulantes from "./section_medicamentos_anticoagulantes";
@@ -43,7 +43,7 @@ export default function ProntuarioPage2Page() {
       ) : (
         <React.Fragment>
           <SectionInformacoesBasicas myForm={myForm} />
-          <SectionContraindicacoesAbsolutas myForm={myForm} />
+          <SectionContraindicacoes myForm={myForm} />
           <SectionRankin myForm={myForm} />
           <SectionMedicamentosAnticoagulantes myForm={myForm} />
           <SectionMedicamentos myForm={myForm} />

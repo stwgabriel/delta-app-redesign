@@ -7,7 +7,9 @@ const ClientNotificationContext = createContext();
 function ConfirmNotificationContainer({ toastProps, closeToast, data }) {
   const { msg, onConfirm } = data;
   const handleConfirm = () => {
-    onConfirm({ toastId: toastProps.toastId, ...data });
+    if (onConfirm) {
+      onConfirm({ toastId: toastProps.toastId, ...data });
+    }
     closeToast(true);
   };
 

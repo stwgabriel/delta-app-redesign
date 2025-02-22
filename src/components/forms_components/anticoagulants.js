@@ -1,15 +1,10 @@
+import { useClientNotificationContext } from "@/contexts/client_notification";
+
 export default function Anticoagulants({ medicine, i, myForm }) {
+  const { notifyConfirm } = useClientNotificationContext();
+
   return (
     <div className="d-flex input-group">
-      {/* <div className="form-control flex-row d-flex">
-        <span className="d-flex align-items-center">{medicine.name}</span>
-        {medicine?.should_collect_inr === true && response === "Sim" && (
-          <span className="d-flex badge text-bg-warning d-flex ms-2 align-items-center">
-            Coletar INR
-          </span>
-        )}
-      </div> */}
-
       <div className="d-flex form-control flex-column justify-content-around" role="group">
         <div className="d-flex justify-content-around">
           <span className="d-flex align-items-center pb-1">{medicine.text}</span>
@@ -22,7 +17,6 @@ export default function Anticoagulants({ medicine, i, myForm }) {
               onChange={(x) => {
                 let newVal = {
                   [medicine.field]: x.target.value,
-                  // [medicine.field_timestamp]: null,
                 };
                 myForm.setMultipleFormValue(newVal);
               }}
@@ -36,9 +30,12 @@ export default function Anticoagulants({ medicine, i, myForm }) {
                   name={`aco-${i}`}
                   autoComplete="off"
                   id={`aco-${i}-${j}`}
-                  onChange={(x) => {
-                    console.log(myForm.getFormValue(medicine.field));
-                    console.log(myForm.getFormValue(medicine.field) === "Sim");
+                  onChange={() => {
+                    if (op === "Sim") {
+                      if (medicine.on_yes_confirm_warn) {
+                        notifyConfirm({ msg: medicine.on_yes_confirm_warn });
+                      }
+                    }
                     let newVal = {
                       [medicine.field]: op,
                       [medicine.field_timestamp]: null,

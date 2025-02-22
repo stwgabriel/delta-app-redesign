@@ -45,6 +45,9 @@ export const ClientNotificationContextProvider = ({ children }) => {
   }
 
   function notifyConfirm(data) {
+    if (typeof data === "string" || data instanceof String) {
+      data = { msg: data };
+    }
     console.log(data.toastId, data.toastId || undefined);
     toast(ConfirmNotificationContainer, {
       autoClose: false,

@@ -9,7 +9,7 @@ import Spinner from "@/components/spinner";
 import { getMaxNIHCount } from "@/utils/funcs";
 import { useClientNotificationContext } from "@/contexts/client_notification";
 export default function ProntuarioPage3Page() {
-  const { notifyError, notifyWarn } = useClientNotificationContext();
+  const { notifyError, notifyWarn, notifyConfirm } = useClientNotificationContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes, get_nih_template } = useAPIContext();
@@ -26,6 +26,11 @@ export default function ProntuarioPage3Page() {
   }, []);
 
   function send_form() {
+    const dextrovalue = parseFloat(myForm.getFormValue("dextro"));
+    if (dextrovalue >= 400 || dextrovalue <= 70) {
+      notifyConfirm("Considere correção glicêmica");
+    }
+
     chart_update_attributes(chart_id, { ...myForm.values, clock_form_end: new Date().toISOString() })
       .then(() => refreshChart(false))
       .catch((e) => notifyError(e.message));
@@ -151,7 +156,7 @@ export default function ProntuarioPage3Page() {
         <div className="d-flex input-group mb-2">
           <span className="d-flex input-group-text">Dextro</span>
           <input
-            type="text"
+            type="int"
             className="form-control"
             value={myForm.getFormValue("dextro") || ""}
             onChange={(e) => myForm.setFormValue("dextro", e.target.value)}

@@ -31,6 +31,12 @@ export default function ProntuarioPage3Page() {
       notifyConfirm("Considere correção glicêmica");
     }
 
+    const blood_pressure_systolic_value = parseFloat(myForm.getFormValue("blood_pressure_systolic"));
+    const blood_pressure_diastolic_value = parseFloat(myForm.getFormValue("blood_pressure_diastolic"));
+    if (blood_pressure_diastolic_value >= 120 || blood_pressure_systolic_value >= 220) {
+      notifyConfirm("Considere redução pressórica");
+    }
+
     chart_update_attributes(chart_id, { ...myForm.values, clock_form_end: new Date().toISOString() })
       .then(() => refreshChart(false))
       .catch((e) => notifyError(e.message));
@@ -156,7 +162,7 @@ export default function ProntuarioPage3Page() {
         <div className="d-flex input-group mb-2">
           <span className="d-flex input-group-text">Dextro</span>
           <input
-            type="int"
+            type="number"
             className="form-control"
             value={myForm.getFormValue("dextro") || ""}
             onChange={(e) => myForm.setFormValue("dextro", e.target.value)}

@@ -51,7 +51,7 @@ export const APIContextProvider = ({ children }) => {
         return reject({ message: "No token" });
       }
       let decodedToken = decodeJWT(_token);
-      let valid_to = new Date(decodedToken.valid_to).getTime() - 60 * 1000 * 1;
+      let valid_to = new Date(decodedToken.valid_to).getTime() - 15 * 1000 * 1;
       if (valid_to > new Date()) {
         // More than one minute to expire token
         resolve(_token);

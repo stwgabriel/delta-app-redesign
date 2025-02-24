@@ -50,7 +50,7 @@ export default function SignupConsultorPage() {
   }
 
   useEffect(() => {
-    if (isTokenLoaded && isLoggedConsultor) router.push(ROUTES.LANDING_PAGE_CONSULTOR);
+    if (isTokenLoaded && isLoggedConsultor) router.push(ROUTES.CONSULTOR.LANDING_PAGE_CONSULTOR);
   }, [isLoggedConsultor]);
 
   return (

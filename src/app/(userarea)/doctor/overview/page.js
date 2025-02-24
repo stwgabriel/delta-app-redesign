@@ -31,7 +31,7 @@ export default function OverviewDoctorPage() {
           onClick={() => {
             create_chart()
               .then((r) => {
-                router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${r.id}`);
+                router.push(`${ROUTES.DOCTOR.PRONTUARIO_PAG1}?chart_id=${r.id}`);
               })
               .catch((e) => notifyError(e.message));
           }}
@@ -50,7 +50,7 @@ export default function OverviewDoctorPage() {
             <div
               key={chart.id}
               className="d-flex card clickable hover-highlight p-3 my-2"
-              onClick={() => router.push(`${ROUTES.PRONTUARIO_PAG1}?chart_id=${chart.id}`)}
+              onClick={() => router.push(`${ROUTES.DOCTOR.PRONTUARIO_PAG1}?chart_id=${chart.id}`)}
             >
               <span className="d-flex">ID: {chart.id}</span>
               <span className="d-flex">Criado em: {new Date(chart.logged_at).toLocaleString()}</span>

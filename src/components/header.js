@@ -13,15 +13,96 @@ export default function Header() {
 
   return (
     <nav className="d-flex container navbar justify-content-start">
-      <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.HOME}>
-        Início
-      </Link>
-      <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.ABOUT}>
-        Sobre Nós
-      </Link>
-      {/* <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.TRATAMENTOS}>
+      <div className="d-flex flex-fill">
+        <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.HOME}>
+          Início
+        </Link>
+        <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.ABOUT}>
+          Sobre Nós
+        </Link>
+        {/* <Link className="px-2 text-decoration-none" style={{ color: "#243067" }} href={ROUTES.TRATAMENTOS}>
         Tratamentos
       </Link> */}
+      </div>
+      <div className="d-flex flex-column">
+        {!isTokenLoaded ? (
+          <Spinner />
+        ) : isLoggedConsultor ? (
+          <div className="d-flex align-items-center">
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.HOME}
+            >
+              home
+            </Link>
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.CONSULTOR.SCHEDULER_PAGE}
+            >
+              calendar_month
+            </Link>
+            {isAdmin && (
+              <Link
+                className="d-flex material-icons fs-1 text-decoration-none text-body"
+                style={{ cursor: "pointer" }}
+                href={ROUTES.ADMIN.ADMIN_PAGE}
+              >
+                admin_panel_settings
+              </Link>
+            )}
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.USER.SETTINGS_PAGE_USER}
+            >
+              settings
+            </Link>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
+          </div>
+        ) : isLoggedDoctor ? (
+          <div className="d-flex align-items-center">
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.HOME}
+            >
+              home
+            </Link>
+            <Link
+              className="d-flex material-icons fs-1 text-decoration-none text-body"
+              style={{ cursor: "pointer" }}
+              href={ROUTES.USER.SETTINGS_PAGE_USER}
+            >
+              settings
+            </Link>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
+          </div>
+        ) : isLoggedHospital ? (
+          <div className="d-flex align-items-center">
+            <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}>
+              Entrar Médico
+            </button>
+            <span
+              className="material-icons fs-1"
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push(ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL)}
+            >
+              settings
+            </span>
+            <span className="d-flex material-icons fs-1" style={{ cursor: "pointer" }} onClick={logout}>
+              logout
+            </span>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
     </nav>
   );
   /* return (

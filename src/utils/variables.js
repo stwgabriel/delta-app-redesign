@@ -20,20 +20,39 @@ export const ROUTES = {
   LOGIN_HOSPITAL: "/login/hospital",
   LOGIN_DOCTOR: "/login/doctor",
   LOGIN_CONSULTOR: "/login/consultor",
-  //Landing pages
-  LANDING_PAGE_DOCTOR: "/doctor/overview",
-  LANDING_PAGE_CONSULTOR: "/consultor/overview",
-  //Settings pages
-  SETTINGS_PAGE_USER: "/user/settings",
-  SETTINGS_PAGE_HOSPITAL: "/hospital/settings",
-  // Prontuário
-  PRONTUARIO: "/prontuario/overview",
-  PRONTUARIO_PAG1: "/doctor/form/pag1",
-  PRONTUARIO_PAG2: "/doctor/form/pag2",
-  PRONTUARIO_PAG3: "/doctor/form/pag3",
-  // Admin page
-  ADMIN_PAGE: "/admin",
-  SCHEDULER_PAGE: "/user/scheduler",
+
+  ADMIN: {
+    // Admin page
+    ADMIN_PAGE: "/admin",
+  },
+
+  CONSULTOR: {
+    //Landing pages
+    LANDING_PAGE_CONSULTOR: "/consultor/overview",
+    // Shift
+    SCHEDULER_PAGE: "/user/scheduler",
+  },
+
+  DOCTOR: {
+    //Landing pages
+    LANDING_PAGE_DOCTOR: "/doctor/overview",
+    // Prontuário
+    PRONTUARIO_PAG1: "/doctor/form/pag1",
+    PRONTUARIO_PAG2: "/doctor/form/pag2",
+    PRONTUARIO_PAG3: "/doctor/form/pag3",
+  },
+
+  USER: {
+    //Settings pages
+    SETTINGS_PAGE_USER: "/user/settings",
+    // Prontuário
+    PRONTUARIO: "/prontuario/overview",
+  },
+
+  HOSPITAL: {
+    //Settings pages
+    SETTINGS_PAGE_HOSPITAL: "/hospital/settings",
+  },
 };
 
 export const API_ROUTES = {

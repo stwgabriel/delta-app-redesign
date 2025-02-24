@@ -35,7 +35,7 @@ export default function LoginDoctorPage() {
   }
 
   useEffect(() => {
-    if (isTokenLoaded && isLoggedDoctor) router.push(ROUTES.LANDING_PAGE_DOCTOR);
+    if (isTokenLoaded && isLoggedDoctor) router.push(ROUTES.DOCTOR.LANDING_PAGE_DOCTOR);
   }, [isLoggedDoctor]);
 
   return (

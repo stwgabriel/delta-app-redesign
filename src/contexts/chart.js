@@ -27,13 +27,13 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
     if (redirectToFormSequencePageFlag) {
       let newUrl = null;
       if (chart.page1_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.PRONTUARIO_PAG1;
+        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG1;
       } else if (chart.page2_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.PRONTUARIO_PAG2;
+        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG2;
       } else if (chart.page3_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.PRONTUARIO_PAG3;
+        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG3;
       } else {
-        newUrl = ROUTES.PRONTUARIO;
+        newUrl = ROUTES.USER.PRONTUARIO;
       }
       if (newUrl && newUrl !== pathname) {
         newUrl = `${newUrl}?chart_id=${chart_id}`;

@@ -19,7 +19,7 @@ export default function UserLoggedAreaLayout({ children }) {
         setIsAuthenticated(true);
       } else {
         if (isLoggedHospital) {
-          if (pathname.toLowerCase() !== ROUTES.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
+          if (pathname.toLowerCase() !== ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
             console.log("Sending back to doctor login page");
             router.push(ROUTES.LOGIN_DOCTOR);
             setIsAuthenticated(false);

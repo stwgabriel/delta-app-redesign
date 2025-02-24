@@ -91,7 +91,7 @@ export default function SearchChartsComponent() {
                 <tr
                   className="clickable hover-highlight"
                   key={`cr-${r.id}`}
-                  onClick={() => router.push(`${ROUTES.PRONTUARIO}?chart_id=${r.id}`)}
+                  onClick={() => router.push(`${ROUTES.USER.PRONTUARIO}?chart_id=${r.id}`)}
                 >
                   <td className="p-2 text-center">{r.name?.value}</td>
                   <td className="p-2 text-center">{r.status.value}</td>

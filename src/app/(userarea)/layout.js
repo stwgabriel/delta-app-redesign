@@ -15,22 +15,32 @@ export default function UserLoggedAreaLayout({ children }) {
 
   useEffect(() => {
     if (isTokenLoaded) {
+      setIsAuthenticated(isLoggedDoctor || isLoggedConsultor)
+
       if (isLoggedDoctor || isLoggedConsultor) {
         setIsAuthenticated(true);
-      } else {
-        if (isLoggedHospital) {
-          if (pathname.toLowerCase() !== ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
-            console.log("Sending back to doctor login page");
-            router.push(ROUTES.LOGIN_DOCTOR);
-            setIsAuthenticated(false);
-          } else {
-            setIsAuthenticated(true);
-          }
-        } else {
-          console.log("Sending back to home page");
-          router.push(ROUTES.HOME);
-          setIsAuthenticated(false);
-        }
+      } 
+      
+      // else {
+        
+        
+        
+      //   [].includes(pathname.toLowerCase())
+
+      //   if (isLoggedHospital) {
+      //     if (pathname.toLowerCase() !== ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
+      //       console.log("Sending back to doctor login page");
+      //       router.push(ROUTES.LOGIN_DOCTOR);
+      //       setIsAuthenticated(false);
+      //     } else {
+      //       setIsAuthenticated(true);
+      //     }
+      //   } else {
+      //     console.log("Sending back to home page");
+      //     router.push(ROUTES.HOME);
+      //     setIsAuthenticated(false);
+      //   }
+
       }
     }
   }, [isTokenLoaded, _token]);

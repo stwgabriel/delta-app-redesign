@@ -15,16 +15,14 @@ export default function UserLoggedAreaLayout({ children }) {
 
   useEffect(() => {
     if (isTokenLoaded) {
-      setIsAuthenticated(isLoggedDoctor || isLoggedConsultor)
+      setIsAuthenticated(isLoggedDoctor || isLoggedConsultor);
 
       if (isLoggedDoctor || isLoggedConsultor) {
         setIsAuthenticated(true);
-      } 
-      
+      }
+
       // else {
-        
-        
-        
+
       //   [].includes(pathname.toLowerCase())
 
       //   if (isLoggedHospital) {
@@ -41,7 +39,7 @@ export default function UserLoggedAreaLayout({ children }) {
       //     setIsAuthenticated(false);
       //   }
 
-      }
+      // }
     }
   }, [isTokenLoaded, _token]);
 

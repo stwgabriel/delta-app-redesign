@@ -22,9 +22,7 @@ export default function UserLoggedAreaLayout({ children }) {
       }
 
       // else {
-
       //   [].includes(pathname.toLowerCase())
-
       //   if (isLoggedHospital) {
       //     if (pathname.toLowerCase() !== ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
       //       console.log("Sending back to doctor login page");
@@ -38,7 +36,6 @@ export default function UserLoggedAreaLayout({ children }) {
       //     router.push(ROUTES.HOME);
       //     setIsAuthenticated(false);
       //   }
-
       // }
     }
   }, [isTokenLoaded, _token]);

@@ -49,10 +49,7 @@ export default function Home() {
     <>
       <section className="d-flex flex-column flex-fill">
         <div className="d-flex justify-content-end">
-          <span
-            className="px-3 py-2 default-color clickable"
-            onClick={() => router.push(ROUTES.CONSULTOR.LANDING_PAGE_CONSULTOR)}
-          >
+          <span className="px-3 py-2 default-color clickable" onClick={() => router.push(ROUTES.LOGIN_CONSULTOR)}>
             Área do colaborador
           </span>
         </div>
@@ -76,7 +73,7 @@ export default function Home() {
         <div className="d-flex align-items-center justify-content-around ">
           <div
             className="d-flex p-3 landing-page-button align-middle align-items-center clickable"
-            onClick={() => router.push(ROUTES.DOCTOR.LANDING_PAGE_DOCTOR)}
+            onClick={() => router.push(ROUTES.LOGIN_HOSPITAL)}
           >
             <span className="default-color">Área do associado</span>
             <span

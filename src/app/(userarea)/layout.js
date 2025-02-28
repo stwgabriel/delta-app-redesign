@@ -14,12 +14,49 @@ export default function UserLoggedAreaLayout({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    console.log(isAuthenticated);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
     if (isTokenLoaded) {
+      // const isAuth = isLoggedDoctor || isLoggedConsultor;
       setIsAuthenticated(isLoggedDoctor || isLoggedConsultor);
 
-      if (isLoggedDoctor || isLoggedConsultor) {
-        setIsAuthenticated(true);
-      }
+      // if (isLoggedDoctor || isLoggedConsultor) {
+      //   setIsAuthenticated(true);
+      // }
+
+      // // Consultor routes
+      // if (Object.values(ROUTES.CONSULTOR).includes(pathname.toLowerCase())) {
+      //   if (!isLoggedConsultor) {
+      //     router.push(ROUTES.LOGIN_CONSULTOR);
+      //     return;
+      //   }
+      // }
+
+      // // User routes
+      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
+      //   if (!isLoggedHospital) {
+      //     router.push(ROUTES.LOGIN_HOSPITAL);
+      //     return;
+      //   }
+      // }
+
+      // // Hospital routes
+      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
+      //   if (!isLoggedHospital) {
+      //     router.push(ROUTES.LOGIN_HOSPITAL);
+      //     return;
+      //   }
+      // }
+
+      // // Hospital routes
+      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
+      //   if (!isLoggedHospital) {
+      //     router.push(ROUTES.LOGIN_HOSPITAL);
+      //     return;
+      //   }
+      // }
 
       // else {
       //   [].includes(pathname.toLowerCase())

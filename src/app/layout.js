@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
               <ClientNotificationContextProvider>
                 <Header />
                 {children}
-                <Footer />
+                {/* <Footer /> */}
               </ClientNotificationContextProvider>
             </WebSocketContextProvider>
           </APIContextProvider>

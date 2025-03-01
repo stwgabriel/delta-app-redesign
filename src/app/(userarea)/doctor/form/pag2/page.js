@@ -27,6 +27,41 @@ export default function ProntuarioPage2Page() {
   // ---------------------------------------------------------------------------
 
   function send_form() {
+    if (myForm.getFormValue("name").trim() === "") {
+      notifyError("Nome não preenchido");
+      return;
+    }
+
+    const only_age = myForm.getFormValue("only_age", false);
+    if (only_age) {
+      const age = myForm.getFormValue("age", "");
+      if (age.trim() === "") {
+        notifyError("Idade não preenchida");
+        return;
+      }
+    } else {
+      const birth_date = myForm.getFormValue("birth_date", "");
+      if (birth_date.trim() === "") {
+        notifyError("Data de nascimento não preenchida");
+        return;
+      }
+    }
+
+    const known_event_time = myForm.getFormValue("known_event_time", false);
+    if (known_event_time) {
+      const ictus = myForm.getFormValue("ictus", "");
+      if (ictus.trim() === "") {
+        notifyError("ICTUS não preenchido");
+        return;
+      }
+    } else {
+      const last_seen_well_at = myForm.getFormValue("last_seen_well_at", "");
+      if (last_seen_well_at.trim() === "") {
+        notifyError("Data de última vez visto bem não preenchida");
+        return;
+      }
+    }
+
     chart_update_attributes(chart_id, myForm.values)
       .then(() => refreshChart(false))
       .catch((e) => notifyError(e.message));

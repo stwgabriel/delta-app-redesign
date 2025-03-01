@@ -8,10 +8,10 @@ export default function FormInput({
   listName,
   listItemId,
   itemName,
+  onChange,
   ...otherProps
 }) {
-  const { getFormValue, setFormValue, setFormValueElement, setIDListValue } =
-    myForm;
+  const { getFormValue, setFormValue, setFormValueElement, setIDListValue } = myForm;
 
   let updateFunction = undefined;
 
@@ -30,17 +30,23 @@ export default function FormInput({
     updateFunction = (e) => setFormValueElement(e);
   }
 
+  let newOnChange = undefined;
+  if (onChange) {
+    newOnChange = function () {
+      onChange(...arguments);
+      updateFunction(...arguments);
+    };
+  } else {
+    newOnChange = updateFunction;
+  }
+
   let commonProps = {
     ...otherProps,
     type,
     name,
     value: getFormValue(name),
-    onChange: updateFunction,
+    onChange: newOnChange,
   };
 
-  return type !== "textarea" ? (
-    <input {...commonProps} />
-  ) : (
-    <textarea {...commonProps} />
-  );
+  return type !== "textarea" ? <input {...commonProps} /> : <textarea {...commonProps} />;
 }

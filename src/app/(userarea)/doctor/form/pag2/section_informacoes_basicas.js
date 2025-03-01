@@ -26,12 +26,24 @@ export default function SectionInformacoesBasicas({ myForm }) {
             <FormInput type="date" className="form-control" name="birth_date" myForm={myForm} />
           </>
         )}
-
         <span className="d-flex input-group-text">
           {getFormValue("only_age", false) ? getFormValue("age") : calculateAge(getFormValue("birth_date"))} anos
         </span>
         <div className="d-flex input-group-text">
-          <FormInput type="checkbox" className="form-check-input" name="only_age" id={`cb-age`} myForm={myForm} />
+          <FormInput
+            type="checkbox"
+            className="form-check-input"
+            name="only_age"
+            id={`cb-age`}
+            myForm={myForm}
+            onChange={(e) => {
+              if (e.target.checked) {
+                myForm.popFormValue("birth_date");
+              } else {
+                myForm.popFormValue("age");
+              }
+            }}
+          />
 
           <label className="d-flex form-check-label ms-1" htmlFor={`cb-age`}>
             Informar somente idade
@@ -51,6 +63,9 @@ export default function SectionInformacoesBasicas({ myForm }) {
               className="form-check-input me-1 mt-0"
               name="known_event_time"
               myForm={myForm}
+              onChange={() => {
+                myForm.popFormValue("last_seen_well_at");
+              }}
             />
             Sim
           </label>
@@ -61,6 +76,9 @@ export default function SectionInformacoesBasicas({ myForm }) {
               className="form-check-input me-1 mt-0"
               name="known_event_time"
               myForm={myForm}
+              onChange={() => {
+                myForm.popFormValue("ictus");
+              }}
             />
             Não
           </label>

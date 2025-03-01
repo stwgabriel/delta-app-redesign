@@ -6,7 +6,7 @@ import { ROUTES } from "@/utils/variables";
 import LoadingPage from "@/components/loadingPage";
 
 export default function UserLoggedAreaLayout({ children }) {
-  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor } = useAPIContext();
+  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor, _token } = useAPIContext();
 
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(null);
 
@@ -49,7 +49,7 @@ export default function UserLoggedAreaLayout({ children }) {
         }
       }
     }
-  }, [isTokenLoaded]);
+  }, [isTokenLoaded, _token]);
 
   if (isUserAuthenticated) {
     return <React.Fragment>{children}</React.Fragment>;

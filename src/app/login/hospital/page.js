@@ -26,7 +26,7 @@ export default function LoginHospitalPage() {
   }
 
   useEffect(() => {
-    if (isTokenLoaded && isLoggedHospital) router.push(ROUTES.LOGIN_DOCTOR);
+    if (isTokenLoaded && isLoggedHospital) router.push(ROUTES.HOSPITAL.LOGIN_DOCTOR);
   }, [isLoggedHospital]);
 
   return (

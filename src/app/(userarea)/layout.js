@@ -6,78 +6,52 @@ import { ROUTES } from "@/utils/variables";
 import LoadingPage from "@/components/loadingPage";
 
 export default function UserLoggedAreaLayout({ children }) {
-  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor, _token } = useAPIContext();
+  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor } = useAPIContext();
 
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isUserAuthenticated, setIsUserAuthenticated] = useState(null);
 
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log(isAuthenticated);
-  }, [isAuthenticated]);
-
-  useEffect(() => {
     if (isTokenLoaded) {
-      // const isAuth = isLoggedDoctor || isLoggedConsultor;
-      setIsAuthenticated(isLoggedDoctor || isLoggedConsultor);
+      setIsUserAuthenticated(isLoggedDoctor || isLoggedConsultor);
 
-      // if (isLoggedDoctor || isLoggedConsultor) {
-      //   setIsAuthenticated(true);
-      // }
-
-      // // Consultor routes
-      // if (Object.values(ROUTES.CONSULTOR).includes(pathname.toLowerCase())) {
-      //   if (!isLoggedConsultor) {
-      //     router.push(ROUTES.LOGIN_CONSULTOR);
-      //     return;
-      //   }
-      // }
-
-      // // User routes
-      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
-      //   if (!isLoggedHospital) {
-      //     router.push(ROUTES.LOGIN_HOSPITAL);
-      //     return;
-      //   }
-      // }
-
-      // // Hospital routes
-      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
-      //   if (!isLoggedHospital) {
-      //     router.push(ROUTES.LOGIN_HOSPITAL);
-      //     return;
-      //   }
-      // }
-
-      // // Hospital routes
-      // if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
-      //   if (!isLoggedHospital) {
-      //     router.push(ROUTES.LOGIN_HOSPITAL);
-      //     return;
-      //   }
-      // }
-
-      // else {
-      //   [].includes(pathname.toLowerCase())
-      //   if (isLoggedHospital) {
-      //     if (pathname.toLowerCase() !== ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL.toLowerCase()) {
-      //       console.log("Sending back to doctor login page");
-      //       router.push(ROUTES.LOGIN_DOCTOR);
-      //       setIsAuthenticated(false);
-      //     } else {
-      //       setIsAuthenticated(true);
-      //     }
-      //   } else {
-      //     console.log("Sending back to home page");
-      //     router.push(ROUTES.HOME);
-      //     setIsAuthenticated(false);
-      //   }
-      // }
+      if (Object.values(ROUTES.CONSULTOR).includes(pathname.toLowerCase())) {
+        // Consultor routes
+        if (!isLoggedConsultor) {
+          router.push(ROUTES.LOGIN_CONSULTOR);
+          return;
+        }
+      } else if (Object.values(ROUTES.DOCTOR).includes(pathname.toLowerCase())) {
+        // Doctor routes
+        if (!isLoggedDoctor) {
+          router.push(ROUTES.HOSPITAL.LOGIN_DOCTOR);
+          return;
+        }
+      } else if (Object.values(ROUTES.USER).includes(pathname.toLowerCase())) {
+        // User routes
+        if (!isLoggedDoctor && !isLoggedConsultor) {
+          router.push(ROUTES.HOME);
+          return;
+        }
+      } else if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
+        // Hospital routes
+        if (!isLoggedHospital) {
+          router.push(ROUTES.LOGIN_HOSPITAL);
+          return;
+        }
+      } else if (Object.values(ROUTES.ADMIN).includes(pathname.toLowerCase())) {
+        // Admin routes
+        if (!isLoggedConsultor) {
+          router.push(ROUTES.LOGIN_CONSULTOR);
+          return;
+        }
+      }
     }
-  }, [isTokenLoaded, _token]);
+  }, [isTokenLoaded]);
 
-  if (isAuthenticated) {
+  if (isUserAuthenticated) {
     return <React.Fragment>{children}</React.Fragment>;
   } else {
     return (

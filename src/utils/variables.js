@@ -18,7 +18,6 @@ export const ROUTES = {
   SIGNUP_HOSPITAL: "/signup/hospital",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
-  LOGIN_DOCTOR: "/login/doctor",
   LOGIN_CONSULTOR: "/login/consultor",
 
   ADMIN: {
@@ -52,6 +51,7 @@ export const ROUTES = {
   HOSPITAL: {
     //Settings pages
     SETTINGS_PAGE_HOSPITAL: "/hospital/settings",
+    LOGIN_DOCTOR: "/login/doctor",
   },
 };
 

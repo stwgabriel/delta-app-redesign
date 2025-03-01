@@ -85,7 +85,11 @@ export default function Header() {
           </div>
         ) : isLoggedHospital ? (
           <div className="d-flex align-items-center">
-            <button type="button" className="btn btn-primary my-2" onClick={() => router.push(ROUTES.LOGIN_DOCTOR)}>
+            <button
+              type="button"
+              className="btn btn-primary my-2"
+              onClick={() => router.push(ROUTES.HOSPITAL.LOGIN_DOCTOR)}
+            >
               Entrar Médico
             </button>
             <span

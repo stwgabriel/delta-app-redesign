@@ -14,6 +14,7 @@ export default function AbsoluteContraindicationsForm({ myForm, question, i }) {
             <input
               type="radio"
               className="btn-check"
+              checked={getFormValue(question.field) === option}
               id={`ac-${i}-op-${j}`}
               name={`ac-${i}`}
               autoComplete="off"

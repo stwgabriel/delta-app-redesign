@@ -32,7 +32,7 @@ export default function Header() {
             <Link
               className="d-flex material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
-              href={ROUTES.HOME}
+              href={ROUTES.CONSULTOR.LANDING_PAGE_CONSULTOR}
             >
               home
             </Link>
@@ -68,7 +68,7 @@ export default function Header() {
             <Link
               className="d-flex material-icons fs-1 text-decoration-none text-body"
               style={{ cursor: "pointer" }}
-              href={ROUTES.HOME}
+              href={ROUTES.DOCTOR.LANDING_PAGE_DOCTOR}
             >
               home
             </Link>

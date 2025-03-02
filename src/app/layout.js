@@ -6,6 +6,7 @@ import { APIContextProvider } from "@/contexts/api";
 import { Suspense } from "react";
 import Footer from "@/components/footer";
 import { ClientNotificationContextProvider } from "@/contexts/client_notification";
+import { ModalContextProvider } from "@/contexts/modal";
 
 export const metadata = {
   title: "Delta Stroke Inc",
@@ -22,9 +23,11 @@ export default function RootLayout({ children }) {
           <APIContextProvider>
             <WebSocketContextProvider>
               <ClientNotificationContextProvider>
-                <Header />
-                {children}
-                {/* <Footer /> */}
+                <ModalContextProvider>
+                  <Header />
+                  {children}
+                  {/* <Footer /> */}
+                </ModalContextProvider>
               </ClientNotificationContextProvider>
             </WebSocketContextProvider>
           </APIContextProvider>

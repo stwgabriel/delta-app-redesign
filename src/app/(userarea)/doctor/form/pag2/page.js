@@ -12,6 +12,7 @@ import { useAPIContext } from "@/contexts/api";
 import { useChart } from "@/contexts/chart";
 import Spinner from "@/components/spinner";
 import { useClientNotificationContext } from "@/contexts/client_notification";
+import { absolute_contraindication_template, medicines_anticoagulant_template } from "@/utils/templates";
 
 export default function ProntuarioPage2Page() {
   const { notifyError } = useClientNotificationContext();
@@ -59,6 +60,57 @@ export default function ProntuarioPage2Page() {
       if (last_seen_well_at.trim() === "") {
         notifyError("Data de última vez visto bem não preenchida");
         return;
+      }
+    }
+
+    for (const question of absolute_contraindication_template) {
+      const { field, text, case_yes } = question;
+      const field_value = myForm.getFormValue(field, "");
+      if (field_value.trim() === "") {
+        notifyError(`Pergunta de contraindicação não respondida: ${text}`);
+        return;
+      }
+
+      if (case_yes && field_value.trim() === "Sim") {
+        for (const subquestion of case_yes) {
+          const { field: subfield, field_other: subfield_other, text: subtext } = subquestion;
+          const subfield_value = myForm.getFormValue(subfield, "");
+          if (subfield_value.trim() === "") {
+            notifyError(`Pergunta de contraindicação não respondida: ${subtext}`);
+            return;
+          }
+          if (subfield_value.trim() === "Outro") {
+            const subfield_other_value = myForm.getFormValue(subfield_other, "");
+            if (subfield_other_value === null || subfield_other_value.trim() === "") {
+              notifyError(`Pergunta de contraindicação não respondida: ${subtext}`);
+              return;
+            }
+          }
+        }
+      }
+    }
+
+    const rankin_score = myForm.getFormValue("rankin_score", null);
+    if (rankin_score === null || rankin_score === "") {
+      notifyError("Rankin não preenchido");
+      return;
+    }
+
+    for (const med of medicines_anticoagulant_template) {
+      const { text, field, field_timestamp, text_input } = med;
+      if (text_input) continue;
+
+      const field_value = myForm.getFormValue(field, "");
+      if (field_value.trim() === "") {
+        notifyError(`Anticoagulante não preenchido: ${text}`);
+        return;
+      }
+      if (field_value.trim() === "Sim") {
+        const field_timestamp_value = myForm.getFormValue(field_timestamp, "");
+        if (field_timestamp_value === null || field_timestamp_value.trim() === "") {
+          notifyError(`Data do anticoagulante não preenchido: ${text}`);
+          return;
+        }
       }
     }
 

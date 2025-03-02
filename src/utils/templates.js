@@ -48,10 +48,8 @@ export const rankin_template = [
 export const medicines_anticoagulant_template = [
   {
     text: "Marevan (warfarina)",
-    should_collect_inr: true,
     field: "aco_marevan",
     field_timestamp: "aco_marevan_taken_at",
-    on_yes_confirm_warn: "Coletar INR imediatamente se possível",
   },
   {
     text: "Rivaroxabana (xarelto)",

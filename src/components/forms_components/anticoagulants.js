@@ -53,8 +53,8 @@ export default function Anticoagulants({ medicine, i, myForm }) {
         </div>
       </div>
       {medicine.text_input !== true && (
-        <div className="d-flex form-control">
-          Última aplicação/ingestão
+        <div className="d-flex flex-column form-control">
+          <span>Última aplicação/ingestão</span>
           <input
             type="datetime-local"
             className="form-control"

@@ -7,17 +7,17 @@ export default function SectionComorbidades({ myForm }) {
       <span className="d-flex fw-bold fs-4 mb-2">Comorbidades</span>
       <div className="d-flex list-group">
         {comorbidities_template.map((op, i) => (
-          <div key={`cm-${i}`} className="d-flex list-group-item flex flex-row">
+          <div key={`cm-${i}`} className="d-flex list-group-item flex-row">
             {op.text_input === true ? (
-              <React.Fragment>
+              <div className="d-flex flex-column flex-fill">
                 <span className="d-flex">{op.text}</span>
                 <input
                   type="text"
-                  className="form-control mt-2"
+                  className="form-control mt-2 flex-fill d-flex"
                   value={myForm.getFormValue(op.field) || ""}
                   onChange={(x) => myForm.setFormValue(op.field, x.target.value)}
                 />
-              </React.Fragment>
+              </div>
             ) : (
               <label className="d-flex">
                 <input

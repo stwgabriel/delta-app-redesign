@@ -13,7 +13,7 @@ export default function ProntuarioPage3Page() {
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes, get_nih_template } = useAPIContext();
-  const [template, setTemplate] = useState(null);
+  const [NIHTemplate, setNIHTemplate] = useState(null);
   // ---------------------------------------------------------------------------
 
   const myForm = useForm({ page3_status: "COMPLETO" });
@@ -22,10 +22,49 @@ export default function ProntuarioPage3Page() {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    get_nih_template().then(setTemplate).catch(console.error);
+    get_nih_template().then(setNIHTemplate).catch(console.error);
   }, []);
 
   function send_form() {
+    for (const { description, field, items } of NIHTemplate) {
+      const field_value = myForm.getFormValue(field, "");
+      if (field_value.trim() === "") {
+        notifyError(`NIH não preenchido: ${description}`);
+        return;
+      }
+
+      for (const itm of items) {
+        if (itm.id === field_value) {
+          if (itm.require_text_input) {
+            console.log("fOUND I");
+            const field_value_other = myForm.getFormValue(`${field}_other`, "");
+            if (field_value_other.trim() === "") {
+              notifyError(`Descrioção de NIH não preenchido: ${description}`);
+              return;
+            }
+          }
+        }
+      }
+    }
+
+    const blood_pressure_systolic = myForm.getFormValue("blood_pressure_systolic", "");
+    if (blood_pressure_systolic === null || blood_pressure_systolic === "") {
+      notifyError("Pressão arterial sistólica não preenchida");
+      return;
+    }
+
+    const blood_pressure_diastolic = myForm.getFormValue("blood_pressure_diastolic", "");
+    if (blood_pressure_diastolic === null || blood_pressure_diastolic === "") {
+      notifyError("Pressão arterial diastólica não preenchida");
+      return;
+    }
+
+    const dextro = myForm.getFormValue("dextro", "");
+    if (dextro === null || dextro === "") {
+      notifyError("Dextro não preenchido");
+      return;
+    }
+
     const dextrovalue = parseFloat(myForm.getFormValue("dextro"));
     if (dextrovalue >= 400 || dextrovalue <= 70) {
       notifyConfirm("Considere correção glicêmica");
@@ -44,7 +83,7 @@ export default function ProntuarioPage3Page() {
 
   function getNIHCount() {
     let cnt = 0;
-    for (const section of template) {
+    for (const section of NIHTemplate) {
       const itemId = myForm.getFormValue(section.field);
       for (const item of section.items) {
         if (item.id == itemId) {
@@ -64,7 +103,7 @@ export default function ProntuarioPage3Page() {
 
       <section className="d-flex flex-column mb-4">
         <span className="d-flex fw-bold fs-4 mb-2">NIH</span>
-        {template === null ? (
+        {NIHTemplate === null ? (
           <Spinner />
         ) : (
           <div className="d-flex flex-column">
@@ -73,35 +112,36 @@ export default function ProntuarioPage3Page() {
               <span
                 className="d-flex input-group-text "
                 style={{
-                  backgroundColor: interpolateColour("#198754", "#dc3545", getNIHCount() / getMaxNIHCount(template)),
+                  backgroundColor: interpolateColour("#198754", "#dc3545", getNIHCount() / getMaxNIHCount(NIHTemplate)),
                 }}
               >
                 {getNIHCount()} pontos
               </span>
             </div>
-            {template.map((section, i) => (
+            {NIHTemplate.map((section, i) => (
               <div key={`sc-${i}`} className="d-flex flex-column mb-3">
                 <span className="d-flex fw-bold">{section.description}</span>
                 {section.items.map((item, j) => (
-                  <div key={`qst-${j}`} className="d-flex form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      id={`sc-${i}-qst-${j}`}
-                      name={`sc-${i}`}
-                      checked={myForm.getFormValue(section.field) === item.id}
-                      onChange={() => {
-                        console.log("Popping", `${section.field}_other`);
-                        myForm.popFormValue(`${section.field}_other`);
-                        myForm.setFormValue(section.field, item.id);
-                      }}
-                    />
-                    <label className="d-flex form-check-label mt-1" htmlFor={`sc-${i}-qst-${j}`}>
-                      {item.description} ({item.score} pontos)
-                    </label>
-
+                  <div key={`qst-${j}`} className="d-flex flex-column form-check">
+                    <div>
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        id={`sc-${i}-qst-${j}`}
+                        name={`sc-${i}`}
+                        checked={myForm.getFormValue(section.field) === item.id}
+                        onChange={() => {
+                          console.log("Popping", `${section.field}_other`);
+                          myForm.popFormValue(`${section.field}_other`);
+                          myForm.setFormValue(section.field, item.id);
+                        }}
+                      />
+                      <label className="d-flex form-check-label mt-1" htmlFor={`sc-${i}-qst-${j}`}>
+                        {item.description} ({item.score} pontos)
+                      </label>
+                    </div>
                     {item.require_text_input === true && (
-                      <div className="d-flex form-floating" id={`sc-${i}-qst-${j}-txt`}>
+                      <div className="d-flex form-floating mt-2" id={`sc-${i}-qst-${j}-txt`}>
                         <input
                           type="text"
                           className="form-control"

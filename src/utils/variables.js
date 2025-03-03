@@ -45,7 +45,7 @@ export const ROUTES = {
     //Settings pages
     SETTINGS_PAGE_USER: "/user/settings",
     // Prontuário
-    PRONTUARIO: "/prontuario/overview",
+    PRONTUARIO: "/prontuario",
   },
 
   HOSPITAL: {

@@ -1,10 +1,6 @@
-import { calculateAge, getMaxNIHCount, getValueFromObj } from "@/utils/funcs";
+import { calculateAge, formatDateDifference, getMaxNIHCount, getValueFromObj } from "@/utils/funcs";
 import FormDisplay from "./display";
-import {
-  absolute_contraindication_template,
-  comorbidities_template,
-  medicines_anticoagulant_template,
-} from "@/utils/templates";
+import { contraindication_template, comorbidities_template, medicines_anticoagulant_template } from "@/utils/templates";
 import React, { useEffect, useState } from "react";
 import { useAPIContext } from "@/contexts/api";
 import Spinner from "../spinner";
@@ -12,6 +8,7 @@ import ConductComponent from "./conduct";
 
 export default function ChartAttributes({ chart, refreshChart }) {
   const [nihTemplate, setNihTemplate] = useState(null);
+  const [attentionPoints, setAttentionPoints] = useState([]);
 
   useEffect(() => {
     get_nih_template().then(setNihTemplate).catch(console.error);
@@ -42,14 +39,88 @@ export default function ChartAttributes({ chart, refreshChart }) {
     return count;
   }
 
+  useEffect(() => {
+    const newAttentionPoints = [];
+    contraindication_template.forEach(({ text, field }) => {
+      if (getValueFromObj(chart[field]) !== "NÃO") {
+        newAttentionPoints.push({
+          name: text,
+          response: getValueFromObj(chart[field]),
+        });
+      }
+    });
+
+    if (chart.last_seen_well_at?.value) {
+      const lstime = new Date(chart.last_seen_well_at.value).getTime();
+      if (new Date() - lstime >= (4 * 60 + 30) * 60 * 1000) {
+        newAttentionPoints.push({
+          name: "Última vez visto bem",
+          response: `${getValueFromObj(chart.last_seen_well_at)}`,
+          response_second_line: `Há ${formatDateDifference(chart.last_seen_well_at.value, new Date())}`,
+        });
+      }
+    }
+
+    if (chart.ictus?.value) {
+      const lstime = new Date(chart.ictus.value).getTime();
+      if (new Date() - lstime >= (4 * 60 + 30) * 60 * 1000) {
+        newAttentionPoints.push({
+          name: "ICTUS",
+          response: `${getValueFromObj(chart.ictus)}`,
+          response_second_line: `Há ${formatDateDifference(chart.ictus.value, new Date())}`,
+        });
+      }
+    }
+
+    if (chart.rankin_score?.value) {
+      if (chart.rankin_score?.value >= 4) {
+        newAttentionPoints.push({
+          name: "Rankin",
+          response: getValueFromObj(chart.rankin_score),
+          response_second_line: getValueFromObj(chart.rankin_description),
+        });
+      }
+    }
+
+    if (chart.blood_pressure_systolic?.value >= 220 || chart.blood_pressure_diastolic?.value >= 120) {
+      newAttentionPoints.push({
+        name: "Pressão arterial elevada",
+        response: `${getValueFromObj(chart.blood_pressure_systolic)} / ${getValueFromObj(
+          chart.blood_pressure_diastolic
+        )}`,
+      });
+    }
+
+    setAttentionPoints(newAttentionPoints);
+  }, []);
+
   return (
     <React.Fragment>
       <section className="d-flex flex list-group">
+        {isLoggedConsultor && attentionPoints && (
+          <div className="d-flex flex-column list-group-item">
+            <span className="text-danger fs-3 mb-2">Pontos de atenção</span>
+            <table className="table table-danger">
+              <tbody>
+                {attentionPoints.map(({ name, response, response_second_line }, i) => (
+                  <tr key={`ac-${i}`} className=" text-danger">
+                    <td className="px-3 align-middle">{name}</td>
+                    <td className="px-3 text-center d-flex flex-column">
+                      <span>{response}</span>
+                      {response_second_line && <span className="mt-2">{response_second_line}</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         <div className="d-flex list-group-item">
           <div className="d-flex input-group justify-content-around">
             <FormDisplay name="Name" text={getValueFromObj(chart.name)} />
             <FormDisplay name="CPF" text={getValueFromObj(chart.cpf)} />
             <FormDisplay name="Data de nascimento" text={getValueFromObj(chart.birth_date)} />
+            <FormDisplay name="Peso" text={getValueFromObj(chart.weight)} />
             <FormDisplay
               name="Idade"
               text={chart.birth_date === null ? chart.age?.value || "" : calculateAge(chart.birth_date.value)}
@@ -60,13 +131,29 @@ export default function ChartAttributes({ chart, refreshChart }) {
           <div className="d-flex input-group justify-content-around">
             <FormDisplay name="Tempo de evento conhecido?" text={getValueFromObj(chart.known_event_time)} />
             <FormDisplay name="ICTUS" text={getValueFromObj(chart.ictus)} />
+            <FormDisplay name="Última vez visto bem" text={getValueFromObj(chart.last_seen_well_at)} />
           </div>
         </div>
 
         <div className="d-flex flex-column list-group-item">
-          <FormDisplay name="Motivo" text={getValueFromObj(chart.open_reason)} />
-          <FormDisplay name="História coletada com" text={getValueFromObj(chart.history_collected_with)} />
-          <FormDisplay name="História" text={getValueFromObj(chart.history)} />
+          <FormDisplay
+            name="Motivo"
+            text={getValueFromObj(chart.open_reason)}
+            align_label_center={false}
+            align_value_center={false}
+          />
+          <FormDisplay
+            name="História coletada com"
+            text={getValueFromObj(chart.history_collected_with)}
+            align_label_center={false}
+            align_value_center={false}
+          />
+          <FormDisplay
+            name="História"
+            text={getValueFromObj(chart.history)}
+            align_label_center={false}
+            align_value_center={false}
+          />
         </div>
 
         <div className="d-flex list-group-item">
@@ -123,7 +210,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
               </tr>
             </thead>
             <tbody>
-              {absolute_contraindication_template.map((template, i) => (
+              {contraindication_template.map((template, i) => (
                 <tr key={`ac-${i}`}>
                   <td className="px-3">{template.text}</td>
                   <td className="px-3 text-center">

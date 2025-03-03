@@ -93,6 +93,8 @@ export function getValueFromObj(obj, _default = "NÃO INFORMADO") {
       return obj.value;
     case "value_int":
       return obj.value;
+    case "value_float":
+      return obj.value;
     case "value_bool":
       return obj.value ? "Sim" : "Não";
     case "value_timestamptz":

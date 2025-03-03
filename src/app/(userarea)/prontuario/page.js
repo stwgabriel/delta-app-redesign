@@ -11,24 +11,23 @@ import AvailableFiles from "@/components/chart/available_files";
 import VideoChatComponent from "@/components/prontuario/video_chat";
 import ChartAttributes from "@/components/prontuario/chart_attributes";
 import { useClientNotificationContext } from "@/contexts/client_notification";
+import { getValueFromObj } from "@/utils/funcs";
 
 export default function ProntuarioPage() {
   const { notifySuccess, notifyError } = useClientNotificationContext();
-  const { chart_update_attributes } = useAPIContext();
+  const { chart_update_attributes, get_chart_chat, get_my_user_id, post_chart_chat_message, isLoggedConsultor } =
+    useAPIContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart, refreshChart } = useChart(chart_id);
   const [chartChat, setChartChat] = useState(null);
   const [inputMessage, setInputMessage] = useState("");
   const chatMessagesRef = useRef(null);
+  const { uploadingFiles, upload_file, countCompleted } = useFileUpload(chart_id);
 
   useEffect(() => {
     reloadMessages();
   }, []);
-
-  const { uploadingFiles, upload_file, countCompleted } = useFileUpload(chart_id);
-
-  const { get_chart_chat, get_my_user_id, post_chart_chat_message } = useAPIContext();
 
   function reloadMessages() {
     get_chart_chat(chart_id)
@@ -65,7 +64,7 @@ export default function ProntuarioPage() {
     <div className="d-flex justify-content-center flex-column my-2">
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
-      <span className="d-flex fs-1 my-3">Prontuário</span>
+      <span className="d-flex fs-1 my-3">Prontuário: {getValueFromObj(chart.status)}</span>
 
       {chart === null ? <Spinner /> : <ChartAttributes chart={chart} refreshChart={refreshChart} />}
 
@@ -121,7 +120,7 @@ export default function ProntuarioPage() {
         </div>
       </section>
 
-      {chart && chart.status?.value !== "FINALIZADO" && (
+      {isLoggedConsultor && chart && chart.status?.value !== "FINALIZADO" && (
         <section className="d-flex">
           <button
             className="btn btn-warning"

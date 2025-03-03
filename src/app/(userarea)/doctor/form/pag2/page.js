@@ -12,7 +12,7 @@ import { useAPIContext } from "@/contexts/api";
 import { useChart } from "@/contexts/chart";
 import Spinner from "@/components/spinner";
 import { useClientNotificationContext } from "@/contexts/client_notification";
-import { absolute_contraindication_template, medicines_anticoagulant_template } from "@/utils/templates";
+import { contraindication_template, medicines_anticoagulant_template } from "@/utils/templates";
 
 export default function ProntuarioPage2Page() {
   const { notifyError } = useClientNotificationContext();
@@ -63,7 +63,7 @@ export default function ProntuarioPage2Page() {
       }
     }
 
-    for (const question of absolute_contraindication_template) {
+    for (const question of contraindication_template) {
       const { field, text, case_yes } = question;
       const field_value = myForm.getFormValue(field, "");
       if (field_value.trim() === "") {

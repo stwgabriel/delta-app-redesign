@@ -28,6 +28,7 @@ export default function Anticoagulants({ medicine, i, myForm }) {
                   type="radio"
                   className="btn-check"
                   name={`aco-${i}`}
+                  checked={myForm.getFormValue(medicine.field) === op}
                   autoComplete="off"
                   id={`aco-${i}-${j}`}
                   onChange={() => {

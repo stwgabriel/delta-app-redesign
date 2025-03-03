@@ -107,7 +107,7 @@ export const comorbidities_template = [
   { text: "Outras", field: "cm_others", text_input: true },
 ];
 
-export const absolute_contraindication_template = [
+export const contraindication_template = [
   {
     text: "O paciente sofreu traumatismo cranioencefálico grave nos últimos 3 meses?",
     field: "ac_severe_head_trauma_last_3_months",

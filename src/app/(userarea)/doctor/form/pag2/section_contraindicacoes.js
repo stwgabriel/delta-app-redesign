@@ -1,12 +1,12 @@
 import AbsoluteContraindicationsForm from "@/components/forms_components/absolute_contraindication";
 import { useModalContext } from "@/contexts/modal";
-import { absolute_contraindication_template } from "@/utils/templates";
+import { contraindication_template } from "@/utils/templates";
 
 export default function SectionContraindicacoes({ myForm }) {
   const { createDeviateConfirmModal } = useModalContext();
 
   function onConfirmModal() {
-    for (const { field, case_yes } of absolute_contraindication_template) {
+    for (const { field, case_yes } of contraindication_template) {
       myForm.setFormValue(field, "Não");
       if (case_yes) {
         for (const { field, field_other } of case_yes) {
@@ -36,7 +36,7 @@ export default function SectionContraindicacoes({ myForm }) {
         </button>
       </div>
 
-      {absolute_contraindication_template.map((question, i) => (
+      {contraindication_template.map((question, i) => (
         <AbsoluteContraindicationsForm key={`ac_${i}`} myForm={myForm} question={question} i={i} />
       ))}
     </section>

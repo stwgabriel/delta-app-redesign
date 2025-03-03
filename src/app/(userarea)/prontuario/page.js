@@ -60,11 +60,18 @@ export default function ProntuarioPage() {
       .finally(() => refreshChart());
   }
 
+  function evalLaterCase() {
+    chart_update_attributes(chart_id, { status: "AVALIAR_DEPOIS" })
+      .then(() => notifySuccess("Status alterado com sucesso"))
+      .catch((e) => notifyError(`Erro ao alterar status do caso: ${e.message}`))
+      .finally(() => refreshChart());
+  }
+
   return (
     <div className="d-flex justify-content-center flex-column my-2">
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
-      <span className="d-flex fs-1 my-3">Prontuário: {getValueFromObj(chart.status)}</span>
+      <span className="d-flex fs-1 my-3">Prontuário: {getValueFromObj(chart?.status)}</span>
 
       {chart === null ? <Spinner /> : <ChartAttributes chart={chart} refreshChart={refreshChart} />}
 
@@ -121,13 +128,18 @@ export default function ProntuarioPage() {
       </section>
 
       {isLoggedConsultor && chart && chart.status?.value !== "FINALIZADO" && (
-        <section className="d-flex">
+        <section className="d-flex align-items-center justify-content-around">
           <button
             className="btn btn-warning"
             onClick={() => window.confirm("Tem certeza que deseja encerrar o caso?") && closeCase()}
           >
             Encerrar atendimento
           </button>
+          {chart.status?.value !== "AVALIAR_DEPOIS" && (
+            <button className="btn btn-success" onClick={evalLaterCase}>
+              Avaliar depois
+            </button>
+          )}
         </section>
       )}
     </div>

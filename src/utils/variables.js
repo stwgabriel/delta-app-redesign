@@ -39,6 +39,8 @@ export const ROUTES = {
     PRONTUARIO_PAG1: "/doctor/form/pag1",
     PRONTUARIO_PAG2: "/doctor/form/pag2",
     PRONTUARIO_PAG3: "/doctor/form/pag3",
+    // Parecer
+    PARECER: "/doctor/parecer",
   },
 
   USER: {

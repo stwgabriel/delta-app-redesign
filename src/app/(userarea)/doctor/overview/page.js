@@ -29,7 +29,7 @@ export default function OverviewDoctorPage() {
         <button
           className="btn btn-primary my-2"
           onClick={() => {
-            create_chart()
+            create_chart("AVC")
               .then((r) => {
                 router.push(`${ROUTES.DOCTOR.PRONTUARIO_PAG1}?chart_id=${r.id}`);
               })
@@ -39,7 +39,30 @@ export default function OverviewDoctorPage() {
           Iniciar novo protocolo de AVC
         </button>
 
-        <button className="btn btn-primary  my-2">Parecer de neurologia geral</button>
+        <button
+          className="btn btn-primary my-2"
+          onClick={() => {
+            create_chart("PARECER", "URGENCIA")
+              .then((r) => {
+                router.push(`${ROUTES.DOCTOR.PARECER}?chart_id=${r.id}`);
+              })
+              .catch((e) => notifyError(e.message));
+          }}
+        >
+          Parecer de neurologia geral (Urgência)
+        </button>
+        <button
+          className="btn btn-primary my-2"
+          onClick={() => {
+            create_chart("PARECER", "ENFERMARIA")
+              .then((r) => {
+                router.push(`${ROUTES.DOCTOR.PARECER}?chart_id=${r.id}`);
+              })
+              .catch((e) => notifyError(e.message));
+          }}
+        >
+          Parecer de neurologia geral (Enfermaria)
+        </button>
       </section>
       <section className="card shadow p-4 d-flex flex-column mt-5">
         <span className="d-flex fs-3">Meus prontuários em andamento</span>

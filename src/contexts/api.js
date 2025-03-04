@@ -235,9 +235,13 @@ export const APIContextProvider = ({ children }) => {
     return _post(url, configs);
   }
 
-  function create_chart() {
+  function create_chart(type, subtype) {
     const url = `/v1/chart/create`;
-    const configs = {};
+    const body = { type };
+    if (subtype) {
+      body["subtype"] = subtype;
+    }
+    const configs = { body: JSON.stringify(body) };
     return _post(url, configs);
   }
 

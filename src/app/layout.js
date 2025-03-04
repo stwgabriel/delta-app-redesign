@@ -9,7 +9,7 @@ import { ClientNotificationContextProvider } from "@/contexts/client_notificatio
 import { ModalContextProvider } from "@/contexts/modal";
 
 export const metadata = {
-  title: "Delta Stroke Inc",
+  title: "Instituto Delta",
 };
 
 export default function RootLayout({ children }) {

@@ -8,7 +8,7 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
   const { notifyInfo, notifyError } = useClientNotificationContext();
   const pathname = usePathname();
   const router = useRouter();
-  const { get_chart } = useAPIContext();
+  const { get_chart, isLoggedConsultor, isLoggedDoctor } = useAPIContext();
   const [chart, setChart] = useState(null);
 
   useEffect(() => {
@@ -25,20 +25,37 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
 
   function onLoad() {
     if (redirectToFormSequencePageFlag) {
-      let newUrl = null;
-      if (chart.page1_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG1;
-      } else if (chart.page2_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG2;
-      } else if (chart.page3_status?.value !== "COMPLETO") {
-        newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG3;
+      if (chart.type.value === "AVC") {
+        let newUrl = null;
+        if (chart.avc_page1_complete?.value !== true) {
+          newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG1;
+        } else if (chart.avc_page2_complete?.value !== true) {
+          newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG2;
+        } else if (chart.avc_page3_complete?.value !== true) {
+          newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG3;
+        } else {
+          newUrl = ROUTES.USER.PRONTUARIO;
+        }
+        if (newUrl && newUrl !== pathname) {
+          newUrl = `${newUrl}?chart_id=${chart_id}`;
+          console.log("Redirecting to", newUrl);
+          router.push(newUrl);
+        }
+      } else if (chart.type.value === "PARECER") {
+        let newUrl = null;
+        if (chart.opinion_page1_complete?.value !== true) {
+          newUrl = ROUTES.DOCTOR.PARECER;
+        } else {
+          newUrl = ROUTES.USER.PRONTUARIO;
+        }
+
+        if (newUrl && newUrl !== pathname) {
+          newUrl = `${newUrl}?chart_id=${chart_id}`;
+          console.log("Redirecting to", newUrl);
+          router.push(newUrl);
+        }
       } else {
-        newUrl = ROUTES.USER.PRONTUARIO;
-      }
-      if (newUrl && newUrl !== pathname) {
-        newUrl = `${newUrl}?chart_id=${chart_id}`;
-        console.log("Redirecting to", newUrl);
-        router.push(newUrl);
+        console.warn("Chart type unknown", chart);
       }
     }
   }
@@ -51,7 +68,18 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
           notifyInfo("Prontuário atualizado");
         }
       })
-      .catch((e) => notifyError(e.message));
+      .catch((e) => {
+        notifyError(e.message);
+        if (e?.error_class === "ChartNotFoundError") {
+          if (isLoggedConsultor) {
+            router.push(ROUTES.CONSULTOR.LANDING_PAGE_CONSULTOR);
+          } else if (isLoggedDoctor) {
+            router.push(ROUTES.DOCTOR.LANDING_PAGE_DOCTOR);
+          } else {
+            router.push(ROUTES.HOME);
+          }
+        }
+      });
   }
 
   return {

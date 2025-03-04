@@ -22,7 +22,7 @@ export default function ProntuarioPage2Page() {
 
   // ---------------------------------------------------------------------------
 
-  const myForm = useForm({ page2_status: "COMPLETO" });
+  const myForm = useForm({ avc_page2_complete: true });
   const { chart, refreshChart } = useChart(chart_id, true);
 
   // ---------------------------------------------------------------------------

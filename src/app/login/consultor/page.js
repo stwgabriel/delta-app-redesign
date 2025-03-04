@@ -37,7 +37,7 @@ export default function LoginConsultorPage() {
           <input
             type="text"
             className="form-control"
-            placeholder="deltastroke"
+            placeholder="institutodelta"
             value={email}
             onChange={(x) => setEmail(x.target.value)}
           />

@@ -16,7 +16,7 @@ export default function ProntuarioPage1Page() {
 
   // ---------------------------------------------------------------------------
 
-  const myForm = useForm({ page1_status: "COMPLETO", clock_form_start: new Date().toISOString() });
+  const myForm = useForm({ avc_page1_complete: true, clock_form_start: new Date().toISOString() });
   const { chart, refreshChart } = useChart(chart_id, true);
 
   // ---------------------------------------------------------------------------

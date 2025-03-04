@@ -9,14 +9,14 @@ import Spinner from "@/components/spinner";
 import { getMaxNIHCount } from "@/utils/funcs";
 import { useClientNotificationContext } from "@/contexts/client_notification";
 export default function ProntuarioPage3Page() {
-  const { notifyError, notifyWarn, notifyConfirm } = useClientNotificationContext();
+  const { notifyError, notifyConfirm } = useClientNotificationContext();
   const searchParams = useSearchParams();
   const chart_id = searchParams.get("chart_id");
   const { chart_update_attributes, get_nih_template } = useAPIContext();
   const [NIHTemplate, setNIHTemplate] = useState(null);
   // ---------------------------------------------------------------------------
 
-  const myForm = useForm({ page3_status: "COMPLETO" });
+  const myForm = useForm({ avc_page3_complete: true });
   const { refreshChart } = useChart(chart_id, true);
 
   // ---------------------------------------------------------------------------

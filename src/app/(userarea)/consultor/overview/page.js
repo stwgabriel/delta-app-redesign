@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 
 function ChartCard({ detail }) {
   const router = useRouter();
-  const { id, name, status, page1_status, page2_status, page3_status, open_reason } = detail;
+  const { id, name, status, avc_page1_complete, avc_page2_complete, avc_page3_complete, open_reason } = detail;
 
   return (
     <div
@@ -21,13 +21,15 @@ function ChartCard({ detail }) {
 
         <div className="d-flex flex-wrap">
           <span className="d-flex badge bg-primary me-2 mt-1">{status?.value}</span>
-          {page1_status?.value && (
-            <span className="d-flex badge bg-primary me-2 mt-1">Página 1: {page1_status?.value}</span>
+          {avc_page1_complete?.value && (
+            <span className="d-flex badge bg-primary me-2 mt-1">Página 1: {avc_page1_complete?.value}</span>
           )}
-          {page2_status?.value && (
-            <span className="d-flex badge bg-primary me-2 mt-1">Página 2: {page2_status?.value}</span>
+          {avc_page2_complete?.value && (
+            <span className="d-flex badge bg-primary me-2 mt-1">Página 2: {avc_page2_complete?.value}</span>
           )}
-          {page3_status?.value && <span className="d-flex badge bg-primary mt-1">Página 3: {page3_status?.value}</span>}
+          {avc_page3_complete?.value && (
+            <span className="d-flex badge bg-primary mt-1">Página 3: {avc_page3_complete?.value}</span>
+          )}
         </div>
       </div>
     </div>

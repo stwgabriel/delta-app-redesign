@@ -25,7 +25,7 @@ export function useChart(chart_id, redirectToFormSequencePageFlag = false) {
 
   function onLoad() {
     if (redirectToFormSequencePageFlag) {
-      if (chart.type.value === "AVC") {
+      if (chart.type.value === "PROTOCOLO_AVC") {
         let newUrl = null;
         if (chart.avc_page1_complete?.value !== true) {
           newUrl = ROUTES.DOCTOR.PRONTUARIO_PAG1;

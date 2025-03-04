@@ -73,10 +73,10 @@ export default function ProntuarioPage() {
 
       <span className="d-flex fs-1 my-3">Prontuário</span>
       <span class="badge bg-secondary fs-5 my-1">{getValueFromObj(chart?.status)}</span>
-      <span class={`badge fs-5 my-1 ${getValueFromObj(chart?.type) === "AVC" ? "bg-danger" : "bg-primary"}`}>
-        {getValueFromObj(chart?.type) === "AVC" ? "Protocolo de AVC" : getValueFromObj(chart?.type)}
+      <span class={`badge fs-5 my-1 ${getValueFromObj(chart?.type) === "PROTOCOLO_AVC" ? "bg-danger" : "bg-primary"}`}>
+        {getValueFromObj(chart?.type) === "PROTOCOLO_AVC" ? "Protocolo de AVC" : getValueFromObj(chart?.type)}
       </span>
-      {getValueFromObj(chart?.type) !== "AVC" && (
+      {getValueFromObj(chart?.type) !== "PROTOCOLO_AVC" && (
         <span class={`badge fs-5 my-1 ${getValueFromObj(chart?.subtype) === "URGENCIA" ? "bg-warning" : "bg-primary"}`}>
           {getValueFromObj(chart?.subtype)}
         </span>

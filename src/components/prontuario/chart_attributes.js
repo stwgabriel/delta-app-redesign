@@ -14,7 +14,7 @@ export default function ChartAttributes({ chart, refreshChart }) {
 
   useEffect(() => {
     setIsTypeAvc(() => {
-      const isavc = chart.type.value === "AVC";
+      const isavc = chart.type.value === "PROTOCOLO_AVC";
       console.log("isTypeAvc=", isavc);
       return isavc;
     });

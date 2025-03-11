@@ -15,14 +15,13 @@ export const ROUTES = {
   TRATAMENTOS: "/tratamentos",
   // Signup
   SIGNUP_CONSULTOR: "/signup/consultor",
-  SIGNUP_HOSPITAL: "/signup/hospital",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
   LOGIN_CONSULTOR: "/login/consultor",
 
   ADMIN: {
-    // Admin page
     ADMIN_PAGE: "/admin",
+    SIGNUP_HOSPITAL: "/admin/signup/hospital",
   },
 
   CONSULTOR: {
@@ -46,13 +45,13 @@ export const ROUTES = {
   USER: {
     //Settings pages
     SETTINGS_PAGE_USER: "/user/settings",
+    SETTINGS_PAGE_HOSPITAL: "/user/hospital",
     // Prontuário
     PRONTUARIO: "/prontuario",
   },
 
   HOSPITAL: {
     //Settings pages
-    SETTINGS_PAGE_HOSPITAL: "/hospital/settings",
     LOGIN_DOCTOR: "/login/doctor",
   },
 };
@@ -61,7 +60,6 @@ export const API_ROUTES = {
   // Auth
   REFRESH_TOKEN: "/v1/auth/refresh_token",
   SIGNUP_CONSULTOR: "/v1/auth/signup/consultor",
-  SIGNUP_HOSPITAL: "/v1/auth/signup/hospital",
   LOGIN_CONSULTOR: "/v1/auth/login/consultor",
   LOGIN_HOSPITAL: "/v1/auth/login/hospital",
   LOGIN_DOCTOR: "/v1/auth/login/doctor",

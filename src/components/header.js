@@ -95,7 +95,7 @@ export default function Header() {
             <span
               className="material-icons fs-1"
               style={{ cursor: "pointer" }}
-              onClick={() => router.push(ROUTES.HOSPITAL.SETTINGS_PAGE_HOSPITAL)}
+              onClick={() => router.push(ROUTES.USER.SETTINGS_PAGE_HOSPITAL)}
             >
               settings
             </span>

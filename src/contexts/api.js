@@ -114,10 +114,16 @@ export const APIContextProvider = ({ children }) => {
     return _authorized_request(_url, configs);
   }
 
+  function _patch(_url, configs = {}) {
+    configs["method"] = "PATCH";
+    return _authorized_request(_url, configs);
+  }
+
   function _put(_url, configs = {}) {
     configs["method"] = "PUT";
     return _authorized_request(_url, configs);
   }
+
   function _post(_url, configs = {}) {
     configs["method"] = "POST";
     return _authorized_request(_url, configs);
@@ -300,9 +306,9 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function change_hospital(hospitalChanges) {
-    const url = `/v1/admin/change_hospital`;
+    const url = `/v1/admin/hospital/change`;
     const configs = { body: JSON.stringify(hospitalChanges) };
-    return _put(url, configs);
+    return _patch(url, configs);
   }
 
   function list_users() {
@@ -341,8 +347,8 @@ export const APIContextProvider = ({ children }) => {
     return _put(url, configs);
   }
 
-  function signup_hospital(data) {
-    const url = API_ROUTES.SIGNUP_HOSPITAL;
+  function create_hospital(data) {
+    const url = "/v1/admin/hospital/create";
     const body = JSON.stringify(data);
     const configs = { body };
     return _post(url, configs);
@@ -411,6 +417,11 @@ export const APIContextProvider = ({ children }) => {
     const configs = { body };
     return _post(url, configs);
   }
+  function get_hospital_by_id(hospital_id) {
+    const url = `/v1/admin/hospital?hospital_id=${hospital_id}`;
+    const configs = {};
+    return _get(url, configs);
+  }
 
   return (
     <APIContext.Provider
@@ -451,7 +462,7 @@ export const APIContextProvider = ({ children }) => {
         put_me,
         get_hospital,
         put_hospital,
-        signup_hospital,
+        create_hospital,
         list_shifts_on_timespan,
         list_active_consultor,
         search_user_name,
@@ -462,6 +473,7 @@ export const APIContextProvider = ({ children }) => {
         search_chart,
         search_user,
         search_hospital,
+        get_hospital_by_id,
       }}
     >
       {children}

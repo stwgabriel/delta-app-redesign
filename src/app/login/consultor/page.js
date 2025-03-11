@@ -34,13 +34,7 @@ export default function LoginConsultorPage() {
       <div className="d-flex flex-column my-5">
         <div className="d-flex input-group">
           <span className="d-flex input-group-text">Email</span>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="institutodelta"
-            value={email}
-            onChange={(x) => setEmail(x.target.value)}
-          />
+          <input type="text" className="form-control" value={email} onChange={(x) => setEmail(x.target.value)} />
         </div>
 
         <div className="d-flex input-group">

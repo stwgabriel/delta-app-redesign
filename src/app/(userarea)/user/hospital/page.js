@@ -9,17 +9,19 @@ import { HospitalDataComponent, ListaContatoComponent } from "@/components/hospi
 
 export default function HospitalSettingsPage() {
   const { notifyError } = useClientNotificationContext();
-  const { get_hospital, change_hospital, get_hospital_by_id, isAdmin } = useAPIContext();
+  const { get_hospital, change_hospital, get_hospital_by_id, isAdmin, create_hospital_one_time_password } =
+    useAPIContext();
   const [loadingHospital, setLoadingHospital] = useState(false);
   const [hospital, setHospital] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
   const [hospitalChanges, setHospitalChanges] = useState({});
   const [hospitalContactsChanges, setHospitalContactsChanges] = useState([]);
   const [hospitalContactsDeletes, setHospitalContactsDeletes] = useState([]);
-
   const [hospitalChangesLoading, setHospitalChangesLoading] = useState(false);
-
   const searchParams = useSearchParams();
   const hospital_id = searchParams.get("hospital_id");
+  const [hospitalOneTimePasswordLoading, setHospitalOneTimePasswordLoading] = useState(false);
+  const [hospitalOneTimePassword, setHospitalOneTimePassword] = useState(null);
 
   useEffect(() => {
     setLoadingHospital(true);
@@ -40,6 +42,12 @@ export default function HospitalSettingsPage() {
     });
   }
 
+  function resetChanges() {
+    setHospitalChanges({});
+    setHospitalContactsChanges([]);
+    setHospitalContactsDeletes([]);
+  }
+
   function handleSubmitChanges() {
     setHospitalChangesLoading(true);
 
@@ -53,12 +61,20 @@ export default function HospitalSettingsPage() {
     change_hospital(changes)
       .then((u) => {
         setHospital(u);
-        setHospitalChanges({});
-        setHospitalContactsChanges([]);
-        setHospitalContactsDeletes([]);
+        resetChanges();
       })
       .catch((e) => notifyError(e.message || "Erro ao salvar alterações"))
       .finally(() => setHospitalChangesLoading(false));
+  }
+
+  function handleGenerateOneTimePassword() {
+    setHospitalOneTimePasswordLoading(true);
+    setHospitalOneTimePassword(null);
+
+    create_hospital_one_time_password(hospital_id)
+      .then(setHospitalOneTimePassword)
+      .catch((e) => notifyError(e.message || "Erro ao gerar senha"))
+      .finally(() => setHospitalOneTimePasswordLoading(false));
   }
 
   useEffect(() => {
@@ -74,11 +90,45 @@ export default function HospitalSettingsPage() {
       ) : (
         <div className="container">
           <span className="fs-3 my-5">Cadastro do Hospital</span>
+          {isAdmin && (
+            <div className="d-flex flex-column my-2">
+              {hospitalOneTimePasswordLoading ? (
+                <Spinner />
+              ) : (
+                <button className="btn btn-primary" onClick={handleGenerateOneTimePassword}>
+                  Resetar / gerar senha para o hospital
+                </button>
+              )}
+              {hospitalOneTimePassword && (
+                <div className="d-flex flex-column align-items-center ms-3">
+                  <span className="my-1 me-2">Senha gerada:</span>
+                  <span className="my-1 fw-bold">{hospitalOneTimePassword.code}</span>
+                  <span className="my-1 ms-2">Válida até:</span>
+                  <span className="my-1 fw-bold">{new Date(hospitalOneTimePassword.valid_to).toLocaleString()}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {isAdmin && (
+            <div className="d-flex flex-column my-2">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setIsEditing(!isEditing);
+                  resetChanges();
+                }}
+              >
+                {isEditing ? "Parar de editar" : "Editar hospital"}
+              </button>
+            </div>
+          )}
+
           <HospitalDataComponent
             hospital={hospital}
             hospitalChanges={hospitalChanges}
             setHospitalChanges={handleHospitalChanges}
-            isEditing={isAdmin}
+            isEditing={isAdmin && isEditing}
           />
 
           <ListaContatoComponent

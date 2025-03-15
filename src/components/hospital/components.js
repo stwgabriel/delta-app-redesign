@@ -47,7 +47,7 @@ function ContatoComponent({ contact, handleChange, handleDelete }) {
         </RowComponent>
       ))}
       <div className="d-flex justify-content-end">
-        <button className="btn btn-warning" onClick={handleDelete}>
+        <button className="btn btn-warning mt-2" onClick={handleDelete}>
           Deletar
         </button>
       </div>

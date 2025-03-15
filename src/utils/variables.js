@@ -17,6 +17,7 @@ export const ROUTES = {
   SIGNUP_CONSULTOR: "/signup/consultor",
   // Logins
   LOGIN_HOSPITAL: "/login/hospital",
+  LOGIN_HOSPITAL_ONE_TIME_PASSWORD: "/login/hospital/one_time_password",
   LOGIN_CONSULTOR: "/login/consultor",
 
   ADMIN: {

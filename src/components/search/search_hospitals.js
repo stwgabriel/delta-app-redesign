@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../spinner";
 import { useAPIContext } from "@/contexts/api";
 import { useClientNotificationContext } from "@/contexts/client_notification";
+import { ROUTES } from "@/utils/variables";
+import { useRouter } from "next/navigation";
 
 export default function SearchHospitalComponent() {
+  const router = useRouter();
   const { search_hospital, change_hospital } = useAPIContext();
   const { notifyError } = useClientNotificationContext();
   const [selectedFilterType, setSelectedFilterType] = useState(null);
@@ -96,9 +99,9 @@ export default function SearchHospitalComponent() {
             <tbody>
               {searchHospitalResults.map((hsp) => (
                 <tr
-                  //   className="clickable hover-highlight"
+                  className="clickable hover-highlight"
                   key={`hsp-${hsp.id}`}
-                  //   onClick={() => router.push(`${ROUTES.PRONTUARIO}?chart_id=${usr.id}`)}
+                  onClick={() => router.push(`${ROUTES.USER.SETTINGS_PAGE_HOSPITAL}?hospital_id=${hsp.id}`)}
                 >
                   <td className="align-middle">{hsp.name}</td>
                   <td className="align-middle text-center">{hsp.username}</td>

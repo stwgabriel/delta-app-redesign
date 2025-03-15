@@ -169,6 +169,21 @@ export const APIContextProvider = ({ children }) => {
     });
   }
 
+  function login_hospital_one_time_password(username, oneTimePassword, password) {
+    const url = "/v1/auth/login/hospital/one_time_password";
+    const body = JSON.stringify({ username, password, one_time_password: oneTimePassword });
+    const configs = { body, method: "POST" };
+
+    return new Promise((resolve, reject) => {
+      _request(url, configs)
+        .then((r) => {
+          setToken(r["token"]);
+          resolve();
+        })
+        .catch(reject);
+    });
+  }
+
   function login_doctor(cpf, crm_number, crm_state) {
     const url = API_ROUTES.LOGIN_DOCTOR;
     const body = JSON.stringify({ cpf, crm_state, crm_number });
@@ -423,6 +438,12 @@ export const APIContextProvider = ({ children }) => {
     return _get(url, configs);
   }
 
+  function create_hospital_one_time_password(hospital_id) {
+    const url = `/v1/admin/hospital/generate_one_time_password?hospital_id=${hospital_id}`;
+    const configs = {};
+    return _put(url, configs);
+  }
+
   return (
     <APIContext.Provider
       value={{
@@ -474,6 +495,8 @@ export const APIContextProvider = ({ children }) => {
         search_user,
         search_hospital,
         get_hospital_by_id,
+        create_hospital_one_time_password,
+        login_hospital_one_time_password,
       }}
     >
       {children}

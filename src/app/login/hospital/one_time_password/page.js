@@ -12,14 +12,15 @@ export default function LoginHospitalPage() {
   const { notifyError } = useClientNotificationContext();
   const router = useRouter();
 
-  const { login_hospital, isLoggedHospital, isTokenLoaded } = useAPIContext();
+  const { login_hospital_one_time_password, isLoggedHospital, isTokenLoaded } = useAPIContext();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [oneTimePassword, setOneTimePassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   function do_login() {
     setLoading(true);
-    login_hospital(username, password)
+    login_hospital_one_time_password(username, oneTimePassword, password)
       .catch((e) => notifyError(e.message || "Erro desconhecido"))
       .finally(() => {
         setLoading(false);
@@ -34,7 +35,7 @@ export default function LoginHospitalPage() {
     <section className="d-flex flex-column align-items-center my-auto">
       <h2 className="d-flex fs-4">Login do Hospital</h2>
       <div className="d-flex flex-column my-5">
-        <div className="d-flex input-group">
+        <div className="d-flex input-group  my-1">
           <span className="d-flex input-group-text">Username</span>
           <input
             type="text"
@@ -44,8 +45,17 @@ export default function LoginHospitalPage() {
             onChange={(x) => setUsername(x.target.value)}
           />
         </div>
-        <div className="d-flex input-group">
-          <span className="d-flex input-group-text">Senha</span>
+        <div className="d-flex input-group my-1">
+          <span className="d-flex input-group-text">Senha de utilização única</span>
+          <input
+            type="password"
+            className="form-control"
+            value={oneTimePassword}
+            onChange={(x) => setOneTimePassword(x.target.value)}
+          />
+        </div>
+        <div className="d-flex input-group my-1">
+          <span className="d-flex input-group-text">Nova senha</span>
           <input
             type="password"
             className="form-control"
@@ -53,9 +63,7 @@ export default function LoginHospitalPage() {
             onChange={(x) => setPassword(x.target.value)}
           />
         </div>
-        <Link href={ROUTES.LOGIN_HOSPITAL_ONE_TIME_PASSWORD} className="text-decoration-none">
-          Entrar com a senha única
-        </Link>
+        <Link href={ROUTES.LOGIN_HOSPITAL_ONE_TIME_PASSWORD} />
         {loading ? (
           <Spinner />
         ) : (

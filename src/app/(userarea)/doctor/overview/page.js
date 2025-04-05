@@ -29,7 +29,7 @@ export default function OverviewDoctorPage() {
         <button
           className="btn btn-primary my-2"
           onClick={() => {
-            create_chart("AVC")
+            create_chart("PROTOCOLO_AVC")
               .then((r) => {
                 router.push(`${ROUTES.DOCTOR.PRONTUARIO_PAG1}?chart_id=${r.id}`);
               })

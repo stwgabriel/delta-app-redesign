@@ -1,5 +1,4 @@
 "use client";
-import { useAPIContext } from "@/contexts/api";
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import React from "react";

@@ -1,9 +1,10 @@
 "use client";
-import { useAPIContext } from "@/contexts/api";
+
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { useLayoutEffect } from "react";
 import Image from "next/image";
+import Header from "../components/header";
 
 export default function Home() {
   const router = useRouter();
@@ -45,8 +46,25 @@ export default function Home() {
   //   // });
   // }, []);
 
+  useLayoutEffect(() => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
+    link.id = 'bootstrap-css';
+    document.head.appendChild(link);
+
+    return () => {
+      const existingLink = document.getElementById('bootstrap-css');
+      if (existingLink) {
+        existingLink.remove();
+      }
+    };
+  }, []);
+
   return (
     <>
+      <Header />
+
       <section className="d-flex flex-column flex-fill">
         <div className="d-flex justify-content-end">
           <span className="px-3 py-2 default-color clickable" onClick={() => router.push(ROUTES.LOGIN_CONSULTOR)}>

@@ -41,9 +41,9 @@ export default function LoginDoctorPage() {
   return (
     <section className="d-flex flex-column align-items-center my-auto">
       <h1 className="d-flex fs-4">Login do médico</h1>
-      <div className="d-flex flex-column my-5">
+      <div className="d-flex flex-column my-5 gap-2">
         <div className="d-flex input-group">
-          <span className="d-flex input-group-text">CPF</span>
+          <span className="d-flex input-group-text w-16">CPF</span>
           <input
             type="text"
             className="form-control"
@@ -53,7 +53,7 @@ export default function LoginDoctorPage() {
           />
         </div>
         <div className="d-flex input-group">
-          <span className="d-flex input-group-text">CRM</span>
+          <span className="d-flex input-group-text w-16">CRM</span>
           {/* <input
             type="text"
             className="form-control"

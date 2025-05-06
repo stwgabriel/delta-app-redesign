@@ -33,9 +33,9 @@ export default function LoginHospitalPage() {
   return (
     <section className="d-flex flex-column align-items-center my-auto">
       <h2 className="d-flex fs-4">Login do Hospital</h2>
-      <div className="d-flex flex-column my-5">
+      <div className="d-flex flex-column my-5 gap-1">
         <div className="d-flex input-group">
-          <span className="d-flex input-group-text">Username</span>
+          <span className="d-flex input-group-text w-26">Username</span>
           <input
             type="text"
             className="form-control"
@@ -45,7 +45,7 @@ export default function LoginHospitalPage() {
           />
         </div>
         <div className="d-flex input-group">
-          <span className="d-flex input-group-text">Senha</span>
+          <span className="d-flex input-group-text w-26" >Senha</span>
           <input
             type="password"
             className="form-control"

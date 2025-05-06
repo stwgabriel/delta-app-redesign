@@ -1,12 +1,21 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
 import { useAPIContext } from "@/contexts/api";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { ROUTES } from "@/utils/variables";
 import LoadingPage from "@/components/loadingPage";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import Spinner from "@/components/spinner";
 
 export default function UserLoggedAreaLayout({ children }) {
-  const { isLoggedDoctor, isTokenLoaded, isLoggedHospital, isLoggedConsultor, _token } = useAPIContext();
+  const {
+    isLoggedDoctor,
+    isTokenLoaded,
+    isLoggedHospital,
+    isLoggedConsultor,
+    _token,
+  } = useAPIContext();
 
   const [isUserAuthenticated, setIsUserAuthenticated] = useState(null);
 
@@ -23,7 +32,9 @@ export default function UserLoggedAreaLayout({ children }) {
           router.push(ROUTES.LOGIN_CONSULTOR);
           return;
         }
-      } else if (Object.values(ROUTES.DOCTOR).includes(pathname.toLowerCase())) {
+      } else if (
+        Object.values(ROUTES.DOCTOR).includes(pathname.toLowerCase())
+      ) {
         // Doctor routes
         if (!isLoggedDoctor) {
           router.push(ROUTES.HOSPITAL.LOGIN_DOCTOR);
@@ -35,7 +46,9 @@ export default function UserLoggedAreaLayout({ children }) {
           router.push(ROUTES.HOME);
           return;
         }
-      } else if (Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())) {
+      } else if (
+        Object.values(ROUTES.HOSPITAL).includes(pathname.toLowerCase())
+      ) {
         // Hospital routes
         if (!isLoggedHospital) {
           router.push(ROUTES.LOGIN_HOSPITAL);
@@ -52,7 +65,15 @@ export default function UserLoggedAreaLayout({ children }) {
   }, [isTokenLoaded, _token]);
 
   if (isUserAuthenticated) {
-    return <React.Fragment>{children}</React.Fragment>;
+    return (
+      <SidebarProvider className="w-full">
+        <Suspense fallback={<Spinner />}>
+          <AppSidebar />
+        </Suspense>
+
+        <main className="w-full py-6 px-4">{children}</main>
+      </SidebarProvider>
+    );
   } else {
     return (
       <React.Fragment>

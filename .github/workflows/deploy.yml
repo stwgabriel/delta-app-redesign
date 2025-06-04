@@ -47,7 +47,7 @@ jobs:
           aws-region: sa-east-1
 
       - name: Deploy to S3
-        run: aws s3 sync ./out s3://${ENVIRONMENT}-webapp-deltainstituto --delete
+        run: aws s3 sync ./out s3://${ENVIRONMENT}-webapp-deltainstituto
 
       - name: Invalidate CloudFront Cache
         run: aws cloudfront create-invalidation --distribution-id ${{ env.ENVIRONMENT == 'prd' && secrets.PRD_CLOUDFRONT_DISTRIBUTION_ID || secrets.DEV_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"

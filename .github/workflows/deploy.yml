@@ -1,4 +1,4 @@
-name: Deploy to Amazon
+name: Deploy WebApp to Amazon
 
 permissions:
   contents: read # This is required for actions/checkout

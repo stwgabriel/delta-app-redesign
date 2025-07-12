@@ -1,7 +1,11 @@
 export function get_api_host() {
-  return process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:8000";
-  // return "https://3l03puaz4j.execute-api.sa-east-1.amazonaws.com/dev";
-  // return "http://mylocaldbalex.duckdns.org:8000";
+  if (process.env.NEXT_PUBLIC_API_ENDPOINT) return process.env.NEXT_PUBLIC_API_ENDPOINT;
+
+  if (process.env.NEXT_PUBLIC_ENVIRONMENT === "prd") {
+    return "https://api.deltainstituto.com";
+  }
+
+  return "https://dev.api.deltainstituto.com";
 }
 export function get_socket_host() {
   return process.env.NEXT_PUBLIC_WS_ENDPOINT || "wss://i2751iwn1e.execute-api.us-east-1.amazonaws.com/production";

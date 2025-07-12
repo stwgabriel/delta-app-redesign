@@ -1,5 +1,4 @@
 "use client";
-
 import { ROUTES } from "@/utils/variables";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect } from "react";

@@ -245,7 +245,7 @@ export const APIContextProvider = ({ children }) => {
   }
 
   function get_my_charts(status) {
-    const url = `/v1/chart/my?${new URLSearchParams({ status }).toString()}`;
+    // const url = `/v1/chart/my?${new URLSearchParams({ status }).toString()}`;
     const configs = {};
     return _get(url, configs);
   }

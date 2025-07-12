@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export const getStatusStyle = (status) => {
+const getStatusStyle = (status) => {
   switch (status) {
     case "INICIADO":
       return "bg-gray-300 text-gray-800";
@@ -32,7 +32,7 @@ export const getStatusStyle = (status) => {
   }
 };
 
-export const formatStatus = (status) => {
+const formatStatus = (status) => {
 
   if (!status) return ""
   return `${status}`

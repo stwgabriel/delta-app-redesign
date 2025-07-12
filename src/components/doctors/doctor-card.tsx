@@ -54,6 +54,7 @@ export default function DoctorCard({
         )}
         <Link href={`/profissionais/${id}`}>
           <Button
+            size="sm"
             variant={compact ? "link" : "default"}
             className={`${compact ? "p-0 h-auto text-blue-600" : "w-full bg-blue-800 hover:bg-blue-900 text-white"}`}
           >

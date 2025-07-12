@@ -12,6 +12,8 @@ import VideoChatComponent from "@/components/prontuario/video_chat";
 import ChartAttributes from "@/components/prontuario/chart_attributes";
 import { useClientNotificationContext } from "@/contexts/client_notification";
 import { getValueFromObj } from "@/utils/funcs";
+import { cn } from "@/lib/utils";
+import { formatStatus, getStatusStyle } from "../doctor/overview/page";
 
 export default function ProntuarioPage() {
   const { notifySuccess, notifyError } = useClientNotificationContext();
@@ -72,15 +74,19 @@ export default function ProntuarioPage() {
       {/* <VideoChatComponent chart_id={chart_id} /> */}
 
       <span className="d-flex fs-1 my-3">Prontuário</span>
-      <span class="badge bg-secondary fs-5 my-1">{getValueFromObj(chart?.status)}</span>
-      <span class={`badge fs-5 my-1 ${getValueFromObj(chart?.type) === "PROTOCOLO_AVC" ? "bg-danger" : "bg-primary"}`}>
-        {getValueFromObj(chart?.type) === "PROTOCOLO_AVC" ? "Protocolo de AVC" : getValueFromObj(chart?.type)}
-      </span>
-      {getValueFromObj(chart?.type) !== "PROTOCOLO_AVC" && (
-        <span class={`badge fs-5 my-1 ${getValueFromObj(chart?.subtype) === "URGENCIA" ? "bg-warning" : "bg-primary"}`}>
-          {getValueFromObj(chart?.subtype)}
+      {/* <span class="badge bg-secondary fs-5 my-1">{getValueFromObj(chart?.status)}</span> */}
+
+      <div className="flex gap-2 mb-2">
+        <span className={cn(getStatusStyle(chart?.status?.value), "rounded-lg px-2 py-1")}>
+          {formatStatus(chart?.status?.value)}
         </span>
-      )}
+
+        {chart?.subStatus && (
+          <span className={cn(getStatusStyle(chart?.subStatus?.value), "rounded-lg px-2 py-1")}>
+            {formatStatus(chart?.subStatus?.value)}
+          </span>
+        )}
+      </div>
       {chart === null ? <Spinner /> : <ChartAttributes chart={chart} refreshChart={refreshChart} />}
 
       <section className="d-flex mt-4 flex-column">
